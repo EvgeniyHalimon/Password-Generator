@@ -11,9 +11,9 @@ const PasswordGenerator = () => {
 
     const engUpperCaseLetters: string[] = getCharacters(26, 65)
 
-    const cyrillicUpperCaseLetters : string[] = getCharacters(32, 1040)
+    const cyrillicLowerCaseLetters : string[] = getCharacters(32, 1040)
 
-    const cyrillicLowerCaseLetters : string[] = getCharacters(32, 1072)
+    const cyrillicUpperCaseLetters : string[] = getCharacters(32, 1072)
     
     const generatePassword = (
         length: number, 
@@ -32,20 +32,25 @@ const PasswordGenerator = () => {
             ...(hasEngUpperCase ? engUpperCaseLetters : []),
             ...(hasCyrillicLowerCase ? cyrillicLowerCaseLetters : []),
             ...(hasCyrillicUpperCase ? cyrillicUpperCaseLetters : []),
-        ]
+        ].sort(() => Math.random() - 0.5)
+        console.log("🚀 ~ file: PasswordGenerator.tsx ~ line 36 ~ PasswordGenerator ~ availableCharacters", availableCharacters)
 
         if(availableCharacters.length === 0) return 'You must choose at least 1 option'
 
-        const password: string = availableCharacters.reduce((accum: string) => {
+        let password = ''
+
+        for (let i = 0; i < length; i++) {
             const randomIndex = Math.floor(Math.random() * availableCharacters.length)
-            return accum + availableCharacters[randomIndex]
-        },'')
+            password += availableCharacters[randomIndex]
+        }
 
         return password
     }
 
+    
+
     useEffect(() => {
-        console.log(generatePassword(100, true, true, true, true, true, true))
+        console.log(generatePassword(666, true, true, true, true, true, true,))
     },[])
     
     return(
