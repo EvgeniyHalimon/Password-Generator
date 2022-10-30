@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { getCharacters } from "../../utils/getCharacters"
 
 const PasswordGenerator = () => {
@@ -45,12 +44,6 @@ const PasswordGenerator = () => {
 
         return password
     }
-
-    
-
-    useEffect(() => {
-        
-    },[])
     
     return(
         <h1>{generatePassword(77, true, true, true, true, true, true,)}</h1>
