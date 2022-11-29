@@ -1,10 +1,11 @@
 body{
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .App {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -12,5 +13,5 @@ body{
 }
 
 .background{
-    background-color: rgb(236, 205, 204);
+  background-color: rgb(236, 205, 204);
 }
