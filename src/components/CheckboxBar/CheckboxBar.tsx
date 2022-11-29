@@ -1,5 +1,6 @@
-import { FC } from "react"
+import { FC, memo } from "react"
 import { Box, Checkbox, FormGroup, FormControlLabel, FormLabel } from "@mui/material"
+import PasswordOption from "../PasswordOption/PasswordOption"
 
 interface ICheckboxBar{
     hasEngUpperCase: boolean,
@@ -35,37 +36,37 @@ const CheckboxBar: FC<ICheckboxBar> = ({
             <FormLabel component="legend">Choose options</FormLabel>
             <Box>
                 <Box>
-                    <FormControlLabel 
-                        control={<Checkbox checked={hasEngUpperCase}/>}
-                        onClick={() => setHasEngUpperCase(!hasEngUpperCase)} 
-                        label="Allow English upper case letters" 
+                    <PasswordOption
+                        flag={hasEngUpperCase}
+                        setFlag={setHasEngUpperCase}
+                        label='Allow English upper case letters'
                     />
-                    <FormControlLabel 
-                        control={<Checkbox checked={hasEngLowerCase}/>} 
-                        onClick={() => setHasEngLowerCase(!hasEngLowerCase)}
-                        label="Allow English lower case letters" 
+                    <PasswordOption
+                        flag={hasEngLowerCase}
+                        setFlag={setHasEngLowerCase}
+                        label='Allow English lower case letters'
                     />
-                    <FormControlLabel 
-                        control={<Checkbox checked={hasCyrUpperCase}/>} 
-                        onClick={() => setHasCyrUpperCase(!hasCyrUpperCase)}
-                        label="Allow Cyrillic upper case letters" 
+                    <PasswordOption
+                        flag={hasCyrUpperCase}
+                        setFlag={setHasCyrUpperCase}
+                        label='Allow Cyrillic upper case letters'
                     />
                 </Box>
                 <Box>
-                    <FormControlLabel 
-                        control={<Checkbox checked={hasCyrLowerCase}/>} 
-                        onClick={() => setHasCyrLowerCase(!hasCyrLowerCase)}
-                        label="Allow Cyrillic lower case letters" 
+                    <PasswordOption
+                        flag={hasCyrLowerCase}
+                        setFlag={setHasCyrLowerCase}
+                        label='Allow Cyrillic lower case letters'
                     />
-                    <FormControlLabel 
-                        control={<Checkbox checked={hasNumbers}/>} 
-                        onClick={() => setHasNumbers(!hasNumbers)}
-                        label="Allow numbers" 
+                    <PasswordOption
+                        flag={hasNumbers}
+                        setFlag={setHasNumbers}
+                        label='Allow numbers'
                     />
-                    <FormControlLabel 
-                        control={<Checkbox checked={hasSymbols}/>} 
-                        onClick={() => setHasSymbols(!hasSymbols)}
-                        label="Allow special symbols" 
+                    <PasswordOption
+                        flag={hasSymbols}
+                        setFlag={setHasSymbols}
+                        label='Allow special symbols'
                     />
                 </Box>
             </Box>
@@ -73,4 +74,4 @@ const CheckboxBar: FC<ICheckboxBar> = ({
     )
 }
 
-export {CheckboxBar}
+export default memo(CheckboxBar)
