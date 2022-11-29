@@ -2,11 +2,12 @@ import { FC } from "react"
 import { Button } from "@mui/material"
 
 interface IGenerateButton{
-    title: string
+    title: string,
+    onClick: any
 }
 
-const GenerateButton: FC<IGenerateButton> = ({title}) => {
-    return <Button>{title}</Button>
+const GenerateButton: FC<IGenerateButton> = ({title, onClick}) => {
+    return <Button onClick={onClick}>{title}</Button>
 }
 
 export {GenerateButton}

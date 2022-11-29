@@ -1,0 +1,21 @@
+.container{
+    width: 54%;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 1px 4px 15px 7px rgba(0,0,0,0.78);
+    background-color: pink;
+
+    &-box{
+        display: flex;
+        justify-content: space-between;
+
+        &-input{
+            width: 94%;
+            text-align: center;
+            background-color: rgb(236, 205, 204);
+            border-radius: 5px;
+            border: none;
+            box-shadow: 1px 2px 7px 3px rgb(0 0 0 / 78%);
+        }
+    }
+}
