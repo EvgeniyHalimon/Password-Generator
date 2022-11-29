@@ -1,12 +1,12 @@
 import './App.scss';
-import { PasswordGenerator } from './components/PasswordGenerator';
+import { Layout } from './components/Layout';
+import PasswordGenerator from './components/PasswordGenerator/PasswordGenerator';
 
 function App() {
   return (
-    <div className="App">
-      <p>&#129314;</p>
-      <PasswordGenerator/>
-    </div>
+    <Layout>
+        <PasswordGenerator/>
+    </Layout>
   );
 }
 
