@@ -1,5 +1,5 @@
 import {memo, useRef, FC} from 'react'
-import { Box, IconButton, Snackbar } from '@mui/material';
+import { Alert, Box, IconButton, Snackbar, TextField } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 import './style.scss'
@@ -30,13 +30,12 @@ const PasswordInput: FC<IPasswordInput> = ({openClipboard, setClipboardOpen, pas
     return (
       <>
         <Box className="container-box">
-            <input className="container-box-input" value={password} ref={ref}/>
-            <IconButton onClick={() => copyTextToClipboard(password)} onFocus={(e: any) => handleClick(e)}>
+            <TextField className="container-box-input" value={password} ref={ref}/>
+            <IconButton className='container-box-icon-button' onClick={() => copyTextToClipboard(password)} onFocus={(e: any) => handleClick(e)}>
                 <ContentCopyIcon/>
             </IconButton>
         </Box>
         <Snackbar
-          message="Copied to clibboard"
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
           autoHideDuration={2000}
           onClose={() => setClipboardOpen(false)}
@@ -46,7 +45,9 @@ const PasswordInput: FC<IPasswordInput> = ({openClipboard, setClipboardOpen, pas
                 margin: '0 auto'
             }
           }}
-        />
+        >
+            <Alert color='success'>Copied to clibboard</Alert>
+        </Snackbar>
       </>
     )
 }

@@ -10,7 +10,7 @@ interface ILayout{
 const Layout: FC<ILayout> = ({children}) => {
 
     return (
-        <Box className="App background">
+        <Box className="App">
             {children}
         </Box>
     )
