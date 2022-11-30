@@ -1,1 +1,1 @@
-export * from './PasswordLengthSlider'
+export * from './PasswordLengthSlider';
