@@ -1,5 +1,5 @@
-import { Checkbox, FormControlLabel } from '@mui/material'
 import { memo, FC } from 'react'
+import { Checkbox, FormControlLabel } from '@mui/material'
 
 interface IPasswordOption{
   flag: boolean,

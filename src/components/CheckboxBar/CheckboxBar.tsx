@@ -1,5 +1,5 @@
 import { FC, memo } from "react"
-import { Box, Checkbox, FormGroup, FormControlLabel, FormLabel } from "@mui/material"
+import { Box, FormGroup, FormLabel } from "@mui/material"
 import PasswordOption from "../PasswordOption/PasswordOption"
 
 interface ICheckboxBar{
