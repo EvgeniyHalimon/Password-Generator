@@ -1,5 +1,5 @@
-import { useState, useRef, memo } from "react";
-import { Box, Snackbar, Alert } from "@mui/material"
+import { useState, memo } from "react";
+import { Snackbar, Alert, Paper } from "@mui/material"
 
 import { GenerateButton } from "../Button";
 import CheckboxBar from "../CheckboxBar/CheckboxBar";
@@ -9,8 +9,6 @@ import { generatePassword } from "../../utils/generatePassword";
 import './styles.scss'
 
 const PasswordGenerator = () => {
-
-    const ref = useRef<any>(null)
 
     const [password, setPassword] = useState<string>('')
     const [openClipboard, setClipboardOpen] = useState<boolean>(false);
@@ -36,7 +34,7 @@ const PasswordGenerator = () => {
     }
 
     return(
-        <Box className="container">
+        <Paper className="container">
             <PasswordLengthSlider setLength={setPasswordLength}/>
             <CheckboxBar 
                 hasEngUpperCase={hasEngUpperCase} setHasEngUpperCase={setHasEngUpperCase} 
@@ -68,7 +66,7 @@ const PasswordGenerator = () => {
             >
                 <Alert severity="warning" onClose={() => setLengthOpen(false)}>Password length must not be 0. Set at least 16</Alert>
             </Snackbar>
-        </Box>
+        </Paper>
     )
 }
 
