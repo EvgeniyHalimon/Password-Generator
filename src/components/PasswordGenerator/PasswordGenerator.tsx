@@ -1,5 +1,5 @@
-import { useState, useRef, memo } from "react";
-import { Box, Snackbar, Alert, Paper } from "@mui/material"
+import { useState, memo } from "react";
+import { Snackbar, Alert, Paper } from "@mui/material"
 
 import { GenerateButton } from "../Button";
 import CheckboxBar from "../CheckboxBar/CheckboxBar";
