@@ -1,5 +1,5 @@
-import { FC } from "react"
-import { Button } from "@mui/material"
+import { Button } from '@mui/material';
+import { FC } from 'react';
 
 interface IGenerateButton{
     title: string,
@@ -7,7 +7,7 @@ interface IGenerateButton{
 }
 
 const GenerateButton: FC<IGenerateButton> = ({title, onClick}) => {
-    return <Button variant="contained" sx={{m: '15px 0'}} onClick={onClick}>{title}</Button>
-}
+  return <Button variant='contained' sx={{m: '15px 0'}} onClick={onClick}>{title}</Button>;
+};
 
-export {GenerateButton}
+export {GenerateButton};

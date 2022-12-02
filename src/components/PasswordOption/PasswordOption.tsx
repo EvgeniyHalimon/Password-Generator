@@ -1,5 +1,5 @@
-import { memo, FC } from 'react'
-import { Checkbox, FormControlLabel } from '@mui/material'
+import { Checkbox, FormControlLabel } from '@mui/material';
+import { memo, FC } from 'react';
 
 interface IPasswordOption{
   flag: boolean,
@@ -14,7 +14,7 @@ const PasswordOption: FC<IPasswordOption> = ({flag, setFlag, label}) => {
       onClick={() => setFlag(!flag)}
       label={label}
     />
-  )
-}
+  );
+};
 
-export default memo(PasswordOption)
+export default memo(PasswordOption);

@@ -1,26 +1,26 @@
-import { useState, memo } from 'react';
 import { Snackbar, Alert, Paper } from '@mui/material';
+import { useState, memo } from 'react';
 
+import { generatePassword } from '../../utils/generatePassword';
 import { GenerateButton } from '../Button';
 import CheckboxBar from '../CheckboxBar/CheckboxBar';
-import PasswordLengthSlider from '../PasswordLengthSlider/PasswordLengthSlider';
 import PasswordInput from '../PasswordInput/PasswordInput';
-import { generatePassword } from '../../utils/generatePassword';
+import PasswordLengthSlider from '../PasswordLengthSlider/PasswordLengthSlider';
 import './styles.scss';
 
 const PasswordGenerator = () => {
-  const [password, setPassword] = useState < string > ('');
-  const [openClipboard, setClipboardOpen] = useState < boolean > (false);
-  const [openOption, setOptionOpen] = useState < boolean > (false);
-  const [openLength, setLengthOpen] = useState < boolean > (false);
-
-  const [passwordLength, setPasswordLength] = useState < number > (16);
-  const [hasNumbers, setHasNumbers] = useState < boolean > (false);
-  const [hasSymbols, setHasSymbols] = useState < boolean > (false);
-  const [hasEngLowerCase, setHasEngLowerCase] = useState < boolean > (false);
-  const [hasEngUpperCase, setHasEngUpperCase] = useState < boolean > (false);
-  const [hasCyrLowerCase, setHasCyrLowerCase] = useState < boolean > (false);
-  const [hasCyrUpperCase, setHasCyrUpperCase] = useState < boolean > (false);
+  const [password, setPassword] = useState<string>('');
+  const [openClipboard, setClipboardOpen] = useState<boolean>(false);
+  const [openOption, setOptionOpen] = useState<boolean>(false);
+  const [openLength, setLengthOpen] = useState<boolean>(false);
+  
+  const [passwordLength, setPasswordLength] = useState<number>(16);
+  const [hasNumbers, setHasNumbers] = useState<boolean>(false);
+  const [hasSymbols, setHasSymbols] = useState<boolean>(false);
+  const [hasEngLowerCase, setHasEngLowerCase] = useState<boolean>(false);
+  const [hasEngUpperCase, setHasEngUpperCase] = useState<boolean>(false);
+  const [hasCyrLowerCase, setHasCyrLowerCase] = useState<boolean>(false);
+  const [hasCyrUpperCase, setHasCyrUpperCase] = useState<boolean>(false);
 
   const createPassword = () => {
     if (!hasNumbers && !hasSymbols && !hasEngLowerCase && !hasEngUpperCase && !hasCyrLowerCase && !hasCyrUpperCase) {
@@ -33,7 +33,7 @@ const PasswordGenerator = () => {
   };
 
   return (
-    <Paper className="container">
+    <Paper className='container'>
       <PasswordLengthSlider setLength={setPasswordLength} />
       <CheckboxBar
         hasEngUpperCase={hasEngUpperCase}
@@ -49,7 +49,7 @@ const PasswordGenerator = () => {
         hasSymbols={hasSymbols}
         setHasSymbols={setHasSymbols}
       />
-      <GenerateButton title="Generate password" onClick={createPassword} />
+      <GenerateButton title='Generate password' onClick={createPassword} />
       <PasswordInput
         openClipboard={openClipboard}
         setClipboardOpen={setClipboardOpen}
@@ -61,7 +61,7 @@ const PasswordGenerator = () => {
         onClose={() => setOptionOpen(false)}
         open={openOption}
       >
-        <Alert severity="error" onClose={() => setOptionOpen(false)}>You must choose at least 1 option</Alert>
+        <Alert severity='error' onClose={() => setOptionOpen(false)}>You must choose at least 1 option</Alert>
       </Snackbar>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
@@ -69,10 +69,10 @@ const PasswordGenerator = () => {
         onClose={() => setLengthOpen(false)}
         open={openLength}
       >
-        <Alert severity="warning" onClose={() => setLengthOpen(false)}>Password length must not be 0. Set at least 16</Alert>
+        <Alert severity='warning' onClose={() => setLengthOpen(false)}>Password length must not be 0. Set at least 16</Alert>
       </Snackbar>
     </Paper>
   );
-}
+};
 
 export default memo(PasswordGenerator);
