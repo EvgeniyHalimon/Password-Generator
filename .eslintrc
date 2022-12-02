@@ -20,6 +20,7 @@
     "comma-dangle": ["error", "always-multiline"],
     "func-call-spacing": ["error", "never"],
     "padded-blocks": ["error", "never"],
+    "max-params": ["error", 8],
     "import/order": [
       "error",
       {        
