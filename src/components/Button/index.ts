@@ -1,1 +1,1 @@
-export * from './GenerateButton'
+export * from './GenerateButton';

@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+message="$(cat $1)" 
+if ! head -1 "$1" | grep -qE "^(GM)-[[:digit:]]+: "; then 
+echo "Bad commit message, see example: GM-123: commit message" 
+echo "-" 
+echo "Your commit message was:" 
+echo $message 
+echo "-" 
+exit 1 
+fi

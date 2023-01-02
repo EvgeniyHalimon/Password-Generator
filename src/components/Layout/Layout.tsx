@@ -1,19 +1,18 @@
+import { Box } from '@mui/material';
+import { FC, ReactNode } from 'react';
 
-import { Box } from "@mui/material"
-import { FC, ReactNode } from "react"
-import './style.scss'
+import './style.scss';
 
 interface ILayout{
-    children: ReactNode
+  children: ReactNode
 }
 
-const Layout: FC<ILayout> = ({children}) => {
+const Layout: FC<ILayout> = ({ children }) => {
+  return (
+    <Box className='App'>
+      {children}
+    </Box>
+  );
+};
 
-    return (
-        <Box className="App">
-            {children}
-        </Box>
-    )
-}
-
-export {Layout}
+export { Layout };

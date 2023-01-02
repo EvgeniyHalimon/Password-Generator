@@ -1,4 +1,4 @@
-import { ThemeOptions } from "@mui/material";
+import { ThemeOptions } from '@mui/material';
 
 export const lightTheme: ThemeOptions = {
   palette: {
@@ -37,9 +37,9 @@ export const lightTheme: ThemeOptions = {
     MuiTextField:{
       styleOverrides:{
         root: {
-          backgroundColor: '#f19292'
-        }
-      }
-    }
-  }
+          backgroundColor: '#f19292',
+        },
+      },
+    },
+  },
 };
