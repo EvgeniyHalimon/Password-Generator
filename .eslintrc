@@ -21,6 +21,8 @@
     "func-call-spacing": ["error", "never"],
     "padded-blocks": ["error", "never"],
     "max-params": ["error", 8],
+    "array-bracket-spacing": ["error","never"],
+    "object-curly-spacing": ["error", "always"],
     "import/order": [
       "error",
       {        

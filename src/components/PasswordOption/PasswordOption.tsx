@@ -7,7 +7,7 @@ interface IPasswordOption{
   label: string
 }
 
-const PasswordOption: FC<IPasswordOption> = ({flag, setFlag, label}) => {
+const PasswordOption: FC<IPasswordOption> = ({ flag, setFlag, label }) => {
   return (
     <FormControlLabel 
       control={<Checkbox checked={flag}/>} 

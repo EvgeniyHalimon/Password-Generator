@@ -1,6 +1,6 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { Alert, Box, IconButton, Snackbar, TextField } from '@mui/material';
-import {memo, useRef, FC} from 'react';
+import { memo, useRef, FC } from 'react';
 
 import './style.scss';
 
@@ -10,7 +10,7 @@ interface IPasswordInput{
     password: string
 }
 
-const PasswordInput: FC<IPasswordInput> = ({openClipboard, setClipboardOpen, password}) => {
+const PasswordInput: FC<IPasswordInput> = ({ openClipboard, setClipboardOpen, password }) => {
   const ref = useRef<any>(null);
 
   const handleClick = (e:any) => {
