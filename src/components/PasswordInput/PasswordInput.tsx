@@ -5,9 +5,19 @@ import { memo, useRef, FC } from 'react';
 import './style.scss';
 
 interface IPasswordInput{
-    openClipboard: boolean
-    setClipboardOpen: (value: boolean) => void,
-    password: string
+  openClipboard: boolean
+  setClipboardOpen: (value: boolean) => void,
+  password: string
+}
+
+export async function copyTextToClipboard(password:string, setClipboardOpen: any) {
+  if ('clipboard' in navigator) {
+    setClipboardOpen(true);
+    return await navigator.clipboard.writeText(password);
+  } else {
+    setClipboardOpen(true);
+    return document.execCommand('copy', true, password);
+  }
 }
 
 const PasswordInput: FC<IPasswordInput> = ({ openClipboard, setClipboardOpen, password }) => {
@@ -17,22 +27,23 @@ const PasswordInput: FC<IPasswordInput> = ({ openClipboard, setClipboardOpen, pa
     ref.current.select();
   };
 
-  async function copyTextToClipboard(password:string) {
-    if ('clipboard' in navigator) {
-      setClipboardOpen(true);
-      return await navigator.clipboard.writeText(password);
-    } else {
-      setClipboardOpen(true);
-      return document.execCommand('copy', true, password);
-    }
-  }
+  
 
   return (
     <>
-      <Box className='container-box'>
-        <TextField className='container-box-input' value={password} ref={ref}/>
-        <IconButton className='container-box-icon-button' onClick={() => copyTextToClipboard(password)} onFocus={(e: any) => handleClick(e)}>
-          <ContentCopyIcon/>
+      <Box className='container-box' role='container'>
+        <TextField 
+          className='container-box-input' 
+          value={password} 
+          ref={ref}
+          role='input'
+        />
+        <IconButton 
+          className='container-box-icon-button' 
+          onClick={() => copyTextToClipboard(password, setClipboardOpen)} 
+          onFocus={(e: any) => handleClick(e)}
+        >
+          <ContentCopyIcon role='copy-icon'/>
         </IconButton>
       </Box>
       <Snackbar
@@ -40,13 +51,14 @@ const PasswordInput: FC<IPasswordInput> = ({ openClipboard, setClipboardOpen, pa
         autoHideDuration={2000}
         onClose={() => setClipboardOpen(false)}
         open={openClipboard}
+        role='alert-container'
         sx={{
           '& .MuiSnackbarContent-message': {
             margin: '0 auto',
           },
         }}
       >
-        <Alert color='success'>Copied to clibboard</Alert>
+        <Alert color='success'>Copied to clipboard</Alert>
       </Snackbar>
     </>
   );
