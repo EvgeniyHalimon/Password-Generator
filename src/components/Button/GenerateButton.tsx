@@ -2,8 +2,8 @@ import { Button } from '@mui/material';
 import { FC } from 'react';
 
 interface IGenerateButton{
-    title: string,
-    onClick: any
+  title: string,
+  onClick(): void
 }
 
 const GenerateButton: FC<IGenerateButton> = ({ title, onClick }) => {
