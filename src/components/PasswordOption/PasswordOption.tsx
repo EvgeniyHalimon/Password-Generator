@@ -10,9 +10,10 @@ interface IPasswordOption{
 const PasswordOption: FC<IPasswordOption> = ({ flag, setFlag, label }) => {
   return (
     <FormControlLabel 
-      control={<Checkbox checked={flag}/>} 
+      control={<Checkbox data-testid='form-checkbox' checked={flag}/>} 
       onClick={() => setFlag(!flag)}
       label={label}
+      role='form-control-label'
     />
   );
 };
