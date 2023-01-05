@@ -33,7 +33,7 @@ const PasswordGenerator = () => {
   };
 
   return (
-    <Paper className='container'>
+    <Paper className='container' role='password-generator-paper'>
       <PasswordLengthSlider setLength={setPasswordLength} />
       <CheckboxBar
         hasEngUpperCase={hasEngUpperCase}
