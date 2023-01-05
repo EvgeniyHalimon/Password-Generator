@@ -13,15 +13,14 @@ const cyrillicLowerCaseLetters : string[] = getCharacters(32, 1040);
 
 const cyrillicUpperCaseLetters : string[] = getCharacters(32, 1072);
 
-export const generatePassword = (
-  length: number, 
+const getAvailableCharacters = (
   hasNumbers: boolean, 
   hasSymbols: boolean, 
   hasEngLowerCase: boolean, 
   hasEngUpperCase: boolean,
   hasCyrillicLowerCase: boolean, 
   hasCyrillicUpperCase: boolean,
-) : string => {
+) : (number | string)[] => {
   const availableCharacters = [
     ...(hasNumbers ? numbers : []),
     ...(hasSymbols ? specialSymbols : []),
@@ -31,11 +30,13 @@ export const generatePassword = (
     ...(hasCyrillicUpperCase ? cyrillicUpperCaseLetters : []),
   ].sort(() => Math.random() - 0.5);
 
-  if(length === 0) return 'Password length must not be 0. Set at least 16';
+  return availableCharacters;
+};
 
-  if(availableCharacters.length === 0) return 'You must choose at least 1 option';
-
+const createPassword = (length:number, availableCharacters: (number | string)[]): string => {
   let password = '';
+  if(length === 0) return 'Password length must not be 0. Set at least 16';
+  if(availableCharacters.length === 0) return 'You must choose at least 1 option';
 
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * availableCharacters.length);
@@ -43,4 +44,17 @@ export const generatePassword = (
   }
 
   return password;
+};
+
+export const generatePassword = (
+  length: number, 
+  hasNumbers: boolean, 
+  hasSymbols: boolean, 
+  hasEngLowerCase: boolean, 
+  hasEngUpperCase: boolean,
+  hasCyrillicLowerCase: boolean, 
+  hasCyrillicUpperCase: boolean,
+) : string => {
+  const availableCharacters = getAvailableCharacters(hasNumbers, hasSymbols, hasEngLowerCase, hasEngUpperCase, hasCyrillicLowerCase, hasCyrillicUpperCase);
+  return createPassword(length, availableCharacters);
 };
