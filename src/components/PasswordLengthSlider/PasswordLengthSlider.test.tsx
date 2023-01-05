@@ -7,7 +7,6 @@ describe('Password length slider', () => {
   it('check components', () => {
     render(<PasswordLengthSlider setLength={setLength}/>);
     expect(screen.getByText(/password length/i)).toBeInTheDocument();
-    screen.debug();
     expect(screen.getByRole('slider')).toBeInTheDocument();
     expect(screen.getByRole('heading')).toBeInTheDocument();
     expect(screen.getByDisplayValue(16)).toBeDefined();
@@ -17,6 +16,5 @@ describe('Password length slider', () => {
     render(<PasswordLengthSlider setLength={setLength}/>);
     fireEvent.change(screen.getByRole('slider'), { target: { value: 25 } });
     expect(screen.getByDisplayValue(25)).toBeDefined();
-    screen.debug();
   });
 });

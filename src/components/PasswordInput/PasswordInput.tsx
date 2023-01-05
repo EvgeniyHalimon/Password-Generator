@@ -27,8 +27,6 @@ const PasswordInput: FC<IPasswordInput> = ({ openClipboard, setClipboardOpen, pa
     ref.current.select();
   };
 
-  
-
   return (
     <>
       <Box className='container-box' role='container'>

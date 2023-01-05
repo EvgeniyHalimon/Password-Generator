@@ -29,12 +29,11 @@ describe('Password input tests', () => {
   it('check attributes', () => {
     render(<PasswordInput openClipboard={false} setClipboardOpen={setClipboardOpen} password='password' />);
     expect(screen.getByRole('textbox')).toHaveAttribute('value');
-    expect(screen.getByDisplayValue('password'));
+    expect(screen.getByDisplayValue('password')).toBeInTheDocument();
   });
 
   it('check Snackbar', () => {
     render(<PasswordInput openClipboard={true} setClipboardOpen={setClipboardOpen} password='password' />);
-    screen.debug();
     expect(screen.getByRole('alert-container')).toBeInTheDocument();
     expect(screen.getByRole('alert-container')).toHaveClass('MuiSnackbar-root MuiSnackbar-anchorOriginTopCenter');
     expect(screen.getByTestId('SuccessOutlinedIcon')).toBeInTheDocument();

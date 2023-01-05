@@ -4,18 +4,18 @@ import { FC, memo } from 'react';
 import PasswordOption from '../PasswordOption/PasswordOption';
 
 interface ICheckboxBar{
-    hasEngUpperCase: boolean,
-    setHasEngUpperCase: any,
-    hasEngLowerCase: boolean,
-    setHasEngLowerCase: any,
-    hasCyrUpperCase: boolean,
-    setHasCyrUpperCase: any,
-    hasCyrLowerCase: boolean,
-    setHasCyrLowerCase: any,
-    hasNumbers: boolean,
-    setHasNumbers: any,
-    hasSymbols: boolean,
-    setHasSymbols: any,
+  hasEngUpperCase: boolean,
+  setHasEngUpperCase: any,
+  hasEngLowerCase: boolean,
+  setHasEngLowerCase: any,
+  hasCyrUpperCase: boolean,
+  setHasCyrUpperCase: any,
+  hasCyrLowerCase: boolean,
+  setHasCyrLowerCase: any,
+  hasNumbers: boolean,
+  setHasNumbers: any,
+  hasSymbols: boolean,
+  setHasSymbols: any,
 }
 
 const CheckboxBar: FC<ICheckboxBar> = ({
@@ -33,9 +33,9 @@ const CheckboxBar: FC<ICheckboxBar> = ({
   setHasSymbols,
 }) => {
   return (
-    <FormGroup>
+    <FormGroup role='form-group'>
       <FormLabel component='legend'>Choose options</FormLabel>
-      <Box>
+      <>
         <Box>
           <PasswordOption
             flag={hasEngUpperCase}
@@ -70,7 +70,7 @@ const CheckboxBar: FC<ICheckboxBar> = ({
             label='Allow special symbols'
           />
         </Box>
-      </Box>
+      </>
     </FormGroup>
   );
 };
