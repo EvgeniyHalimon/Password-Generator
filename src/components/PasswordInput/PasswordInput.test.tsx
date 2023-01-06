@@ -22,7 +22,7 @@ describe('Password input tests', () => {
     expect(screen.queryByRole('alert-container')).not.toBeInTheDocument();
     expect(screen.getByRole('button')).toHaveClass('container-box-icon-button', 'MuiIconButton-root');
     expect(screen.getByRole('container')).toHaveClass('container-box', 'MuiBox-root');
-    expect(screen.getByRole('input')).toHaveClass('container-box-input');
+    expect(screen.getByRole('textfield')).toHaveClass('container-box-input');
     expect(screen.getByTestId('ContentCopyIcon')).toHaveClass('MuiSvgIcon-root');
   });
 

@@ -14,7 +14,7 @@ const PasswordGenerator = () => {
   const [openOption, setOptionOpen] = useState<boolean>(false);
   const [openLength, setLengthOpen] = useState<boolean>(false);
   
-  const [passwordLength, setPasswordLength] = useState<number>(16);
+  const [passwordLength, setPasswordLength] = useState<number>(100);
   const [hasNumbers, setHasNumbers] = useState<boolean>(false);
   const [hasSymbols, setHasSymbols] = useState<boolean>(false);
   const [hasEngLowerCase, setHasEngLowerCase] = useState<boolean>(false);
@@ -35,6 +35,11 @@ const PasswordGenerator = () => {
   return (
     <Paper className='container' role='password-generator-paper'>
       <PasswordLengthSlider setLength={setPasswordLength} />
+      <PasswordInput
+        openClipboard={openClipboard}
+        setClipboardOpen={setClipboardOpen}
+        password={password}
+      /> {/* remove */}
       <CheckboxBar
         hasEngUpperCase={hasEngUpperCase}
         setHasEngUpperCase={setHasEngUpperCase}
@@ -50,11 +55,11 @@ const PasswordGenerator = () => {
         setHasSymbols={setHasSymbols}
       />
       <GenerateButton title='Generate password' onClick={createPassword} />
-      <PasswordInput
+      {/* <PasswordInput
         openClipboard={openClipboard}
         setClipboardOpen={setClipboardOpen}
         password={password}
-      />
+      /> */}
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         autoHideDuration={2000}

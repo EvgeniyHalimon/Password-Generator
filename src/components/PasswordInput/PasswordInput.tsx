@@ -34,7 +34,7 @@ const PasswordInput: FC<IPasswordInput> = ({ openClipboard, setClipboardOpen, pa
           className='container-box-input' 
           value={password} 
           ref={ref}
-          role='input'
+          role='textfield'
         />
         <IconButton 
           className='container-box-icon-button' 
