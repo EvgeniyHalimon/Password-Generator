@@ -17,7 +17,6 @@ const CheckboxBar: FC<ICheckboxBar> = ({ passwordOption, setPasswordOption }) =>
       <Box>
         {
           Object.keys(LabelsToPasswordOptions).map((label: string) => {
-            console.log('🚀', LabelsToPasswordOptions);
             const field = LabelsToPasswordOptions[label];
             const flag = passwordOption[field as PasswordOptionsField];
             return(

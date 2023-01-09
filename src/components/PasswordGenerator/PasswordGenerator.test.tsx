@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import CheckboxBar from '../CheckboxBar/CheckboxBar';
 
+import { Labels, PasswordOptionsField } from '../enums';
 import { IPasswordOptions } from '../types';
 
 import PasswordGenerator from './PasswordGenerator';
@@ -36,22 +37,24 @@ describe('Password generator', () => {
     );
       
     const expressionArray = [
-      /Allow English upper case letters/i,
-      /Allow English lower case letters/i,
-      /Allow Cyrillic upper case letters/i,
-      /Allow Cyrillic lower case letters/i,
-      /Allow numbers/i,
-      /Allow special symbols/i,
+      { label: Labels.ENG_UPPER, key: PasswordOptionsField.HAS_ENG_UPPER },
+      { label: Labels.ENG_LOWER, key: PasswordOptionsField.HAS_ENG_LOWER },
+      { label: Labels.CYR_UPPER, key: PasswordOptionsField.HAS_CYR_UPPER },
+      { label: Labels.CYR_LOWER, key: PasswordOptionsField.HAS_CYR_LOWER },
+      { label: Labels.NUMBERS, key: PasswordOptionsField.HAS_NUMBERS },
+      { label: Labels.SYMBOLS, key: PasswordOptionsField.HAS_SYMBOLS },
     ];
       
     expressionArray.forEach(async(expression) => {
-      await userEvent.click(screen.getAllByLabelText(expression)[0]);
-      await userEvent.click(screen.getAllByLabelText(expression)[1]);
-      expect(onClick).toHaveBeenCalledWith(true);
+      await userEvent.click(screen.getAllByLabelText(expression.label)[0]);
+      await userEvent.click(screen.getAllByLabelText(expression.label)[1]);
+      expect(onClick).toHaveBeenCalledWith(expression.key, true);
     });
     await userEvent.click(screen.getByTestId('generate-button'));
+    expect(screen.getByRole('textbox')).not.toHaveValue('Password length must not be 0. Set at least 16');
+    expect(screen.getByRole('textbox')).not.toHaveValue('You must choose at least 1 option');
+    screen.debug();
     /* expect(screen.getByRole('textbox')).toHaveDisplayValue(/[\w\p]+ug\[\]~`+!@#=$%^&*()_,.<>?;:'"|-\а-яА-Я\]/i); */
     /* [\w\p{sc=Cyrillic}]+ug\[\]~`+!@#=$%^&*()_,.<>?;:'"|-\u0400-\u04FF]* */
-    screen.debug();
   });
 });

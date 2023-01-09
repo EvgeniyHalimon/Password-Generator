@@ -7,6 +7,5 @@ describe('Layout', () => {
     render(<Layout><div></div></Layout>);
     expect(screen.getByRole('layout')).toBeInTheDocument();
     expect(screen.getByRole('layout')).toHaveClass('App');
-    screen.debug();
   });
 });

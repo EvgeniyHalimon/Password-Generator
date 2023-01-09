@@ -9,15 +9,15 @@ describe('Password option', () => {
     render(<PasswordOption flag={false} setFlag={onClick} label='test label'/>);
     expect(screen.getByRole('checkbox')).toBeInTheDocument();
     expect(screen.getByRole('form-control-label')).toBeInTheDocument();
-    //check if checkbox is not checked
-    expect(screen.getByTestId('CheckBoxOutlineBlankIcon')).toBeInTheDocument();
+    //check if checkboxes is not checked
+    expect(screen.getAllByTestId('CheckBoxOutlineBlankIcon')).toHaveLength(6);
   });
 
   it('test onClick', async () => {
     const mockOnClick = jest.fn();
-    render(<PasswordOption flag={false} setFlag={mockOnClick} label='test label'/>);
+    render(<PasswordOption flag={false} setFlag={mockOnClick} label='Allow numbers'/>);
     const checkbox = screen.getByRole('checkbox');
     await userEvent.click(checkbox);
-    expect(mockOnClick).toHaveBeenCalledWith(true);
+    expect(mockOnClick).toHaveBeenCalledWith('hasNumbers',true);
   });
 });
