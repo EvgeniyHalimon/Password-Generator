@@ -7,8 +7,8 @@ import CheckboxBar from '../CheckboxBar/CheckboxBar';
 import PasswordInput from '../PasswordInput/PasswordInput';
 import PasswordLengthSlider from '../PasswordLengthSlider/PasswordLengthSlider';
 import './styles.scss';
-import { IPasswordOptions } from '../types';
 import { WarningMessages } from '../enums';
+import { IPasswordOptions } from '../types';
 
 
 const PasswordGenerator = () => {
