@@ -54,21 +54,16 @@ const PasswordGenerator = () => {
   return (
     <Paper className='container' role='password-generator-paper'>
       <PasswordLengthSlider setLength={setPasswordLength} />
-      <PasswordInput
-        openClipboard={openClipboard}
-        setClipboardOpen={setClipboardOpen}
-        password={password}
-      />
       <CheckboxBar
         passwordOption={passwordOptions}
         setPasswordOption={updatePasswordOption}
       />
       <GenerateButton title='Generate password' onClick={createPassword} />
-      {/* <PasswordInput
+      <PasswordInput
         openClipboard={openClipboard}
         setClipboardOpen={setClipboardOpen}
         password={password}
-      /> */}
+      />
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         autoHideDuration={2000}
