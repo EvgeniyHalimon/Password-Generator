@@ -1,3 +1,4 @@
+import { IPasswordOptions } from './../components/types';
 import { getCharacters } from './getCharacters';
 
 const numbers: number[] = Array(10).fill(0).map((num:number, i:number) => num + i);
@@ -14,20 +15,15 @@ const cyrillicLowerCaseLetters : string[] = getCharacters(32, 1040);
 const cyrillicUpperCaseLetters : string[] = getCharacters(32, 1072);
 
 const getAvailableCharacters = (
-  hasNumbers: boolean, 
-  hasSymbols: boolean, 
-  hasEngLowerCase: boolean, 
-  hasEngUpperCase: boolean,
-  hasCyrillicLowerCase: boolean, 
-  hasCyrillicUpperCase: boolean,
+  passwordOptions: IPasswordOptions,
 ) : (number | string)[] => {
   const availableCharacters = [
-    ...(hasNumbers ? numbers : []),
-    ...(hasSymbols ? specialSymbols : []),
-    ...(hasEngLowerCase ? engLowerCaseLetters : []),
-    ...(hasEngUpperCase ? engUpperCaseLetters : []),
-    ...(hasCyrillicLowerCase ? cyrillicLowerCaseLetters : []),
-    ...(hasCyrillicUpperCase ? cyrillicUpperCaseLetters : []),
+    ...(passwordOptions.hasNumbers ? numbers : []),
+    ...(passwordOptions.hasSymbols ? specialSymbols : []),
+    ...(passwordOptions.hasEngLowerCase ? engLowerCaseLetters : []),
+    ...(passwordOptions.hasEngUpperCase ? engUpperCaseLetters : []),
+    ...(passwordOptions.hasCyrLowerCase ? cyrillicLowerCaseLetters : []),
+    ...(passwordOptions.hasCyrUpperCase ? cyrillicUpperCaseLetters : []),
   ].sort(() => Math.random() - 0.5);
 
   return availableCharacters;
@@ -48,13 +44,8 @@ const createPassword = (length:number, availableCharacters: (number | string)[])
 
 export const generatePassword = (
   length: number, 
-  hasNumbers: boolean, 
-  hasSymbols: boolean, 
-  hasEngLowerCase: boolean, 
-  hasEngUpperCase: boolean,
-  hasCyrillicLowerCase: boolean, 
-  hasCyrillicUpperCase: boolean,
+  passwordOptions: IPasswordOptions,
 ) : string => {
-  const availableCharacters = getAvailableCharacters(hasNumbers, hasSymbols, hasEngLowerCase, hasEngUpperCase, hasCyrillicLowerCase, hasCyrillicUpperCase);
+  const availableCharacters = getAvailableCharacters(passwordOptions);
   return createPassword(length, availableCharacters);
 };

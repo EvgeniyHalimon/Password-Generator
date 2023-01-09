@@ -17,7 +17,7 @@ describe('Password input tests', () => {
     render(<PasswordInput openClipboard={false} setClipboardOpen={setClipboardOpen} password='password' />);
     expect(screen.getByRole('button')).toBeInTheDocument();
     expect(screen.getByRole('container')).toBeInTheDocument();
-    expect(screen.getByRole('input')).toBeInTheDocument();
+    expect(screen.getByRole('textfield')).toBeInTheDocument();
     expect(screen.getByTestId('ContentCopyIcon')).toBeInTheDocument();
     expect(screen.queryByRole('alert-container')).not.toBeInTheDocument();
     expect(screen.getByRole('button')).toHaveClass('container-box-icon-button', 'MuiIconButton-root');

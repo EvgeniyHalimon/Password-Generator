@@ -1,25 +1,25 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { IPasswordOptions } from '../types';
+
 import CheckboxBar from './CheckboxBar';
 
 describe('CheckboxBar', () =>{
   const onClick = jest.fn();
   it('check components', () => {
+    const options: IPasswordOptions = {
+      hasNumbers : false,
+      hasSymbols : false,
+      hasEngLowerCase : false,
+      hasEngUpperCase : false,
+      hasCyrLowerCase : false,
+      hasCyrUpperCase : false,
+    };
     render(
       <CheckboxBar 
-        hasEngUpperCase={false} 
-        setHasEngUpperCase={onClick} 
-        hasEngLowerCase={false} 
-        setHasEngLowerCase={onClick} 
-        hasCyrUpperCase={false} 
-        setHasCyrUpperCase={onClick} 
-        hasCyrLowerCase={false} 
-        setHasCyrLowerCase={onClick} 
-        hasNumbers={false} 
-        setHasNumbers={onClick} 
-        hasSymbols={false} 
-        setHasSymbols={onClick}        
+        passwordOption={options} 
+        setPasswordOption={onClick}       
       />,
     );
     expect(screen.getByText(/choose options/i)).toBeInTheDocument();
@@ -33,20 +33,18 @@ describe('CheckboxBar', () =>{
   });
 
   it('test onClick', async () => {
+    const options: IPasswordOptions = {
+      hasNumbers : false,
+      hasSymbols : false,
+      hasEngLowerCase : false,
+      hasEngUpperCase : false,
+      hasCyrLowerCase : false,
+      hasCyrUpperCase : false,
+    };
     render(
       <CheckboxBar 
-        hasEngUpperCase={false} 
-        setHasEngUpperCase={onClick} 
-        hasEngLowerCase={false} 
-        setHasEngLowerCase={onClick} 
-        hasCyrUpperCase={false} 
-        setHasCyrUpperCase={onClick} 
-        hasCyrLowerCase={false} 
-        setHasCyrLowerCase={onClick} 
-        hasNumbers={false} 
-        setHasNumbers={onClick} 
-        hasSymbols={false} 
-        setHasSymbols={onClick}        
+        passwordOption={options} 
+        setPasswordOption={onClick}       
       />,
     );
 
