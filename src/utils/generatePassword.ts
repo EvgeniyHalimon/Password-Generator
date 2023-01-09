@@ -10,9 +10,9 @@ const engLowerCaseLetters: string[] = getCharacters(26, 97);
 
 const engUpperCaseLetters: string[] = getCharacters(26, 65);
 
-const cyrillicLowerCaseLetters : string[] = getCharacters(32, 1040);
+const cyrillicUpperCaseLetters : string[] = getCharacters(32, 1040);
 
-const cyrillicUpperCaseLetters : string[] = getCharacters(32, 1072);
+const cyrillicLowerCaseLetters : string[] = getCharacters(32, 1072);
 
 const getAvailableCharacters = (
   passwordOptions: IPasswordOptions,
