@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import CheckboxBar from '../CheckboxBar/CheckboxBar';
 
-import { Labels, PasswordOptionsField } from '../enums';
+import { Labels, PasswordOptionsField, WarningMessages } from '../enums';
 import { IPasswordOptions } from '../types';
 
 import PasswordGenerator from './PasswordGenerator';
@@ -51,8 +51,8 @@ describe('Password generator', () => {
       expect(onClick).toHaveBeenCalledWith(expression.key, true);
     });
     await userEvent.click(screen.getByTestId('generate-button'));
-    expect(screen.getByRole('textbox')).not.toHaveValue('Password length must not be 0. Set at least 16');
-    expect(screen.getByRole('textbox')).not.toHaveValue('You must choose at least 1 option');
+    expect(screen.getByRole('textbox')).not.toHaveValue(WarningMessages.LENGTH);
+    expect(screen.getByRole('textbox')).not.toHaveValue(WarningMessages.OPTION);
     screen.debug();
     /* expect(screen.getByRole('textbox')).toHaveDisplayValue(/[\w\p]+ug\[\]~`+!@#=$%^&*()_,.<>?;:'"|-\а-яА-Я\]/i); */
     /* [\w\p{sc=Cyrillic}]+ug\[\]~`+!@#=$%^&*()_,.<>?;:'"|-\u0400-\u04FF]* */

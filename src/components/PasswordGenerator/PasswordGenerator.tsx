@@ -8,6 +8,7 @@ import PasswordInput from '../PasswordInput/PasswordInput';
 import PasswordLengthSlider from '../PasswordLengthSlider/PasswordLengthSlider';
 import './styles.scss';
 import { IPasswordOptions } from '../types';
+import { WarningMessages } from '../enums';
 
 
 const PasswordGenerator = () => {
@@ -70,7 +71,7 @@ const PasswordGenerator = () => {
         onClose={() => setOptionOpen(false)}
         open={openOption}
       >
-        <Alert severity='error' onClose={() => setOptionOpen(false)}>You must choose at least 1 option</Alert>
+        <Alert severity='error' onClose={() => setOptionOpen(false)}>{WarningMessages.OPTION}</Alert>
       </Snackbar>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
@@ -78,7 +79,7 @@ const PasswordGenerator = () => {
         onClose={() => setLengthOpen(false)}
         open={openLength}
       >
-        <Alert severity='warning' onClose={() => setLengthOpen(false)}>Password length must not be 0. Set at least 16</Alert>
+        <Alert severity='warning' onClose={() => setLengthOpen(false)}>{WarningMessages.LENGTH}</Alert>
       </Snackbar>
     </Paper>
   );

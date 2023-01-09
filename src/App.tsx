@@ -20,7 +20,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Layout>
-        <IconButton data-testid='switch-theme-button' onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}>
+        <IconButton data-testid='switch-theme-button' id='icon-button' onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}>
           {mode === 'light' ? <LightModeIcon sx={{ color: 'black' }} /> : <DarkModeIcon sx={{ color: 'white' }} />}
         </IconButton>
         <PasswordGenerator />

@@ -1,3 +1,4 @@
+import { WarningMessages } from './../components/enums';
 import { IPasswordOptions } from './../components/types';
 import { getCharacters } from './getCharacters';
 
@@ -31,8 +32,8 @@ const getAvailableCharacters = (
 
 const createPassword = (length:number, availableCharacters: (number | string)[]): string => {
   let password = '';
-  if(length === 0) return 'Password length must not be 0. Set at least 16';
-  if(availableCharacters.length === 0) return 'You must choose at least 1 option';
+  if(length === 0) return WarningMessages.LENGTH;
+  if(availableCharacters.length === 0) return WarningMessages.OPTION;
 
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * availableCharacters.length);

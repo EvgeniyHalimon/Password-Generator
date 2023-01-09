@@ -24,3 +24,8 @@ export const LabelsToPasswordOptions : Record<string, string> = {
   [Labels.NUMBERS] : PasswordOptionsField.HAS_NUMBERS,
   [Labels.SYMBOLS] : PasswordOptionsField.HAS_SYMBOLS,
 };
+
+export enum WarningMessages{
+  OPTION = 'You must choose at least 1 option.',
+  LENGTH = 'Password length must not be 0. Set at least 16.'
+}
