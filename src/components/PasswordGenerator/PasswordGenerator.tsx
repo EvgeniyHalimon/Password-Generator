@@ -7,47 +7,58 @@ import CheckboxBar from '../CheckboxBar/CheckboxBar';
 import PasswordInput from '../PasswordInput/PasswordInput';
 import PasswordLengthSlider from '../PasswordLengthSlider/PasswordLengthSlider';
 import './styles.scss';
+import { WarningMessages } from '../enums';
+import { IPasswordOptions } from '../types';
+
+const RECOMMENDED_PASSWORD_LENGTH = 16;
 
 const PasswordGenerator = () => {
   const [password, setPassword] = useState<string>('');
   const [openClipboard, setClipboardOpen] = useState<boolean>(false);
   const [openOption, setOptionOpen] = useState<boolean>(false);
   const [openLength, setLengthOpen] = useState<boolean>(false);
-  
-  const [passwordLength, setPasswordLength] = useState<number>(16);
-  const [hasNumbers, setHasNumbers] = useState<boolean>(false);
-  const [hasSymbols, setHasSymbols] = useState<boolean>(false);
-  const [hasEngLowerCase, setHasEngLowerCase] = useState<boolean>(false);
-  const [hasEngUpperCase, setHasEngUpperCase] = useState<boolean>(false);
-  const [hasCyrLowerCase, setHasCyrLowerCase] = useState<boolean>(false);
-  const [hasCyrUpperCase, setHasCyrUpperCase] = useState<boolean>(false);
 
-  const createPassword = () => {
-    if (!hasNumbers && !hasSymbols && !hasEngLowerCase && !hasEngUpperCase && !hasCyrLowerCase && !hasCyrUpperCase) {
-      setOptionOpen(true);
-    }
-    if (passwordLength === 0) {
+  const options: IPasswordOptions = {
+    hasNumbers : false,
+    hasSymbols : false,
+    hasEngLowerCase : false,
+    hasEngUpperCase : false,
+    hasCyrLowerCase : false,
+    hasCyrUpperCase : false,
+  };
+
+  const [passwordOptions, setPasswordOptions] = useState<any>(options);
+  
+  const [passwordLength, setPasswordLength] = useState<number>(RECOMMENDED_PASSWORD_LENGTH);
+
+  const checkPasswordLength = (passwordLength: number) : void => {
+    if (!passwordLength) {
       setLengthOpen(true);
     }
-    setPassword(generatePassword(passwordLength, hasNumbers, hasSymbols, hasEngLowerCase, hasEngUpperCase, hasCyrLowerCase, hasCyrUpperCase));
+  };
+
+  const isAtLeastOneOptionChoosen = (passwordOptions: IPasswordOptions) => {
+    return Object.values(passwordOptions).every(option => option);
+  };
+
+  const createPassword = () => {
+    if(!isAtLeastOneOptionChoosen){
+      setOptionOpen(true);
+    }
+    checkPasswordLength(passwordLength);
+    setPassword(generatePassword(passwordLength, passwordOptions));
+  };
+
+  const updatePasswordOption = (field: keyof IPasswordOptions, isChecked: boolean) => {
+    setPasswordOptions({ ...passwordOptions, [field] : !isChecked });
   };
 
   return (
-    <Paper className='container'>
+    <Paper className='container' role='password-generator-paper'>
       <PasswordLengthSlider setLength={setPasswordLength} />
       <CheckboxBar
-        hasEngUpperCase={hasEngUpperCase}
-        setHasEngUpperCase={setHasEngUpperCase}
-        hasEngLowerCase={hasEngLowerCase}
-        setHasEngLowerCase={setHasEngLowerCase}
-        hasCyrUpperCase={hasCyrUpperCase}
-        setHasCyrUpperCase={setHasCyrUpperCase}
-        hasCyrLowerCase={hasCyrLowerCase}
-        setHasCyrLowerCase={setHasCyrLowerCase}
-        hasNumbers={hasNumbers}
-        setHasNumbers={setHasNumbers}
-        hasSymbols={hasSymbols}
-        setHasSymbols={setHasSymbols}
+        passwordOptions={passwordOptions}
+        updatePasswordOption={updatePasswordOption}
       />
       <GenerateButton title='Generate password' onClick={createPassword} />
       <PasswordInput
@@ -61,7 +72,7 @@ const PasswordGenerator = () => {
         onClose={() => setOptionOpen(false)}
         open={openOption}
       >
-        <Alert severity='error' onClose={() => setOptionOpen(false)}>You must choose at least 1 option</Alert>
+        <Alert severity='error' onClose={() => setOptionOpen(false)}>{WarningMessages.OPTION}</Alert>
       </Snackbar>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
@@ -69,7 +80,7 @@ const PasswordGenerator = () => {
         onClose={() => setLengthOpen(false)}
         open={openLength}
       >
-        <Alert severity='warning' onClose={() => setLengthOpen(false)}>Password length must not be 0. Set at least 16</Alert>
+        <Alert severity='warning' onClose={() => setLengthOpen(false)}>{WarningMessages.LENGTH}</Alert>
       </Snackbar>
     </Paper>
   );

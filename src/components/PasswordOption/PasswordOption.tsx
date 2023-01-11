@@ -1,18 +1,21 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { memo, FC } from 'react';
 
+
 interface IPasswordOption{
-  flag: boolean,
-  setFlag: (value: boolean) => void,
-  label: string
+  isChecked: boolean,
+  updatePasswordOption: (field: string, flag: boolean) => void,
+  label: string,
+  updatedField: string
 }
 
-const PasswordOption: FC<IPasswordOption> = ({ flag, setFlag, label }) => {
+const PasswordOption: FC<IPasswordOption> = ({ isChecked, updatePasswordOption, label, updatedField }) => {
   return (
     <FormControlLabel 
-      control={<Checkbox checked={flag}/>} 
-      onClick={() => setFlag(!flag)}
+      control={<Checkbox data-testid='form-checkbox' checked={isChecked}/>} 
+      onClick={() => updatePasswordOption(updatedField, isChecked)}
       label={label}
+      role='form-control-label'
     />
   );
 };

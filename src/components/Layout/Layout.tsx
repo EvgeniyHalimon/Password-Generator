@@ -9,7 +9,7 @@ interface ILayout{
 
 const Layout: FC<ILayout> = ({ children }) => {
   return (
-    <Box className='App'>
+    <Box className='App' role='layout'>
       {children}
     </Box>
   );

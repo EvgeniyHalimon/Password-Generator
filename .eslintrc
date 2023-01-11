@@ -2,7 +2,8 @@
   "extends": ["react-app"],
   "plugins": [
     "react",
-    "import"
+    "import",
+    "unused-imports"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -23,6 +24,7 @@
     "max-params": ["error", 8],
     "array-bracket-spacing": ["error","never"],
     "object-curly-spacing": ["error", "always"],
+    "unused-imports/no-unused-imports": "error",
     "import/order": [
       "error",
       {        
