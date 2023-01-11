@@ -32,8 +32,8 @@ const getAvailableCharacters = (
 
 const createPassword = (length:number, availableCharacters: (number | string)[]): string => {
   let password = '';
-  if(length === 0) return WarningMessages.LENGTH;
-  if(availableCharacters.length === 0) return WarningMessages.OPTION;
+  if(!length) return WarningMessages.LENGTH;
+  if(!availableCharacters.length) return WarningMessages.OPTION;
 
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * availableCharacters.length);

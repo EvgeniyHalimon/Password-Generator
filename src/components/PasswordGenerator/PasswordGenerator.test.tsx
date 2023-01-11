@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import CheckboxBar from '../CheckboxBar/CheckboxBar';
 
-import { Labels, PasswordOptionsField, WarningMessages } from '../enums';
+import { WarningMessages, staticCheckboxPropsList } from '../enums';
 import { IPasswordOptions } from '../types';
 
 import PasswordGenerator from './PasswordGenerator';
@@ -31,29 +31,19 @@ describe('Password generator', () => {
     };
     render(
       <CheckboxBar 
-        passwordOption={options} 
-        setPasswordOption={onClick}       
+        passwordOptions={options} 
+        updatePasswordOption={onClick}       
       />,
     );
       
-    const expressionArray = [
-      { label: Labels.ENG_UPPER, key: PasswordOptionsField.HAS_ENG_UPPER },
-      { label: Labels.ENG_LOWER, key: PasswordOptionsField.HAS_ENG_LOWER },
-      { label: Labels.CYR_UPPER, key: PasswordOptionsField.HAS_CYR_UPPER },
-      { label: Labels.CYR_LOWER, key: PasswordOptionsField.HAS_CYR_LOWER },
-      { label: Labels.NUMBERS, key: PasswordOptionsField.HAS_NUMBERS },
-      { label: Labels.SYMBOLS, key: PasswordOptionsField.HAS_SYMBOLS },
-    ];
-      
-    expressionArray.forEach(async(expression) => {
+    staticCheckboxPropsList.forEach(async(expression) => {
       await userEvent.click(screen.getAllByLabelText(expression.label)[0]);
       await userEvent.click(screen.getAllByLabelText(expression.label)[1]);
-      expect(onClick).toHaveBeenCalledWith(expression.key, true);
+      expect(onClick).toHaveBeenCalledWith(expression.updatedField, true);
     });
     await userEvent.click(screen.getByTestId('generate-button'));
     expect(screen.getByRole('textbox')).not.toHaveValue(WarningMessages.LENGTH);
     expect(screen.getByRole('textbox')).not.toHaveValue(WarningMessages.OPTION);
-    screen.debug();
     /* expect(screen.getByRole('textbox')).toHaveDisplayValue(/[\w\p]+ug\[\]~`+!@#=$%^&*()_,.<>?;:'"|-\а-яА-Я\]/i); */
     /* [\w\p{sc=Cyrillic}]+ug\[\]~`+!@#=$%^&*()_,.<>?;:'"|-\u0400-\u04FF]* */
   });

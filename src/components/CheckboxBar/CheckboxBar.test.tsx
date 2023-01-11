@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { staticCheckboxPropsList } from '../enums';
 import { IPasswordOptions } from '../types';
 
 import CheckboxBar from './CheckboxBar';
@@ -18,17 +19,15 @@ describe('CheckboxBar', () =>{
     };
     render(
       <CheckboxBar 
-        passwordOption={options} 
-        setPasswordOption={onClick}       
+        passwordOptions={options} 
+        updatePasswordOption={onClick}       
       />,
     );
     expect(screen.getByText(/choose options/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Allow English upper case letters/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Allow English lower case letters/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Allow Cyrillic upper case letters/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Allow Cyrillic lower case letters/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Allow numbers/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Allow special symbols/i)).toBeInTheDocument();
+    staticCheckboxPropsList.forEach(({ label }) => {
+      expect(screen.getByLabelText(label)).toBeInTheDocument();
+    });
+
     expect(screen.getAllByRole('form-control-label')).toHaveLength(6);
   });
 
@@ -43,22 +42,13 @@ describe('CheckboxBar', () =>{
     };
     render(
       <CheckboxBar 
-        passwordOption={options} 
-        setPasswordOption={onClick}       
+        passwordOptions={options} 
+        updatePasswordOption={onClick}       
       />,
     );
 
-    const expressionArray = [
-      /Allow English upper case letters/i,
-      /Allow English lower case letters/i,
-      /Allow Cyrillic upper case letters/i,
-      /Allow Cyrillic lower case letters/i,
-      /Allow numbers/i,
-      /Allow special symbols/i,
-    ];
-
-    expressionArray.forEach(async(expression) => {
-      await userEvent.click(screen.getByLabelText(expression));
+    staticCheckboxPropsList.forEach(async({ label }) => {
+      await userEvent.click(screen.getByLabelText(label));
       expect(onClick).toHaveBeenCalledWith(true);
     });
   });

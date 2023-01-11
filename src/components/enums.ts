@@ -16,16 +16,16 @@ export enum PasswordOptionsField{
     HAS_CYR_LOWER = 'hasCyrLowerCase',
 }
 
-export const LabelsToPasswordOptions : Record<string, string> = {
-  [Labels.ENG_UPPER] : PasswordOptionsField.HAS_ENG_UPPER,
-  [Labels.ENG_LOWER] : PasswordOptionsField.HAS_ENG_LOWER,
-  [Labels.CYR_LOWER] : PasswordOptionsField.HAS_CYR_LOWER,
-  [Labels.CYR_UPPER] : PasswordOptionsField.HAS_CYR_UPPER,
-  [Labels.NUMBERS] : PasswordOptionsField.HAS_NUMBERS,
-  [Labels.SYMBOLS] : PasswordOptionsField.HAS_SYMBOLS,
-};
-
 export enum WarningMessages{
   OPTION = 'You must choose at least 1 option.',
   LENGTH = 'Password length must not be 0. Set at least 16.'
 }
+
+export const staticCheckboxPropsList = [
+  { label: Labels.ENG_UPPER, updatedField: PasswordOptionsField.HAS_ENG_UPPER },
+  { label: Labels.ENG_LOWER, updatedField: PasswordOptionsField.HAS_ENG_LOWER },
+  { label: Labels.CYR_LOWER, updatedField: PasswordOptionsField.HAS_CYR_LOWER },
+  { label: Labels.CYR_UPPER, updatedField: PasswordOptionsField.HAS_CYR_UPPER },
+  { label: Labels.NUMBERS, updatedField: PasswordOptionsField.HAS_NUMBERS },
+  { label: Labels.SYMBOLS, updatedField: PasswordOptionsField.HAS_SYMBOLS },
+];

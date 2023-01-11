@@ -2,32 +2,29 @@ import { Box, FormGroup, FormLabel } from '@mui/material';
 import { FC, memo } from 'react';
 
 import PasswordOption from '../PasswordOption/PasswordOption';
-import { PasswordOptionsField, LabelsToPasswordOptions } from '../enums';
+import { staticCheckboxPropsList } from '../enums';
 import { IPasswordOptions } from '../types';
 
 interface ICheckboxBar{
-  passwordOption: IPasswordOptions,
-  setPasswordOption: any,
+  passwordOptions: IPasswordOptions,
+  updatePasswordOption: any,
 }
 
-const CheckboxBar: FC<ICheckboxBar> = ({ passwordOption, setPasswordOption }) => {
+const CheckboxBar: FC<ICheckboxBar> = ({ passwordOptions, updatePasswordOption }) => {
   return (
     <FormGroup role='form-group'>
       <FormLabel component='legend'>Choose options</FormLabel>
       <Box>
         {
-          Object.keys(LabelsToPasswordOptions).map((label: string) => {
-            const field = LabelsToPasswordOptions[label];
-            const flag = passwordOption[field as PasswordOptionsField];
-            return(
-              <PasswordOption
-                key={label}
-                flag={flag}
-                setFlag={setPasswordOption}
-                label={label}
-              />
-            );
-          })
+          staticCheckboxPropsList.map(({ label, updatedField }) => (
+            <PasswordOption
+              key={label}
+              isChecked={passwordOptions[updatedField]}
+              updatedField={updatedField}
+              updatePasswordOption={updatePasswordOption}
+              label={label}
+            />
+          ))
         }
       </Box>
     </FormGroup>

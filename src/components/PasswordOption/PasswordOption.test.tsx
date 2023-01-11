@@ -6,16 +6,16 @@ import PasswordOption from './PasswordOption';
 describe('Password option', () => {
   const onClick = jest.fn();
   it('check existing of component', () => {
-    render(<PasswordOption flag={false} setFlag={onClick} label='test label'/>);
+    render(<PasswordOption isChecked={false} updatePasswordOption={onClick} label='Allow numbers' updatedField='hasNumbers'/>);
     expect(screen.getByRole('checkbox')).toBeInTheDocument();
     expect(screen.getByRole('form-control-label')).toBeInTheDocument();
     //check if checkboxes is not checked
-    expect(screen.getAllByTestId('CheckBoxOutlineBlankIcon')).toHaveLength(6);
+    expect(screen.getAllByTestId('CheckBoxOutlineBlankIcon')).toHaveLength(1);
   });
 
   it('test onClick', async () => {
     const mockOnClick = jest.fn();
-    render(<PasswordOption flag={false} setFlag={mockOnClick} label='Allow numbers'/>);
+    render(<PasswordOption isChecked={false} updatePasswordOption={mockOnClick} label='Allow numbers' updatedField='hasNumbers'/>);
     const checkbox = screen.getByRole('checkbox');
     await userEvent.click(checkbox);
     expect(mockOnClick).toHaveBeenCalledWith('hasNumbers',true);

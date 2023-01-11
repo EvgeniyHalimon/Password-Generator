@@ -10,6 +10,7 @@ import './styles.scss';
 import { WarningMessages } from '../enums';
 import { IPasswordOptions } from '../types';
 
+const RECOMMENDED_PASSWORD_LENGTH = 16;
 
 const PasswordGenerator = () => {
   const [password, setPassword] = useState<string>('');
@@ -28,10 +29,10 @@ const PasswordGenerator = () => {
 
   const [passwordOptions, setPasswordOptions] = useState<any>(options);
   
-  const [passwordLength, setPasswordLength] = useState<number>(16);
+  const [passwordLength, setPasswordLength] = useState<number>(RECOMMENDED_PASSWORD_LENGTH);
 
   const checkPasswordLength = (passwordLength: number) : void => {
-    if (passwordLength === 0) {
+    if (!passwordLength) {
       setLengthOpen(true);
     }
   };
@@ -56,8 +57,8 @@ const PasswordGenerator = () => {
     <Paper className='container' role='password-generator-paper'>
       <PasswordLengthSlider setLength={setPasswordLength} />
       <CheckboxBar
-        passwordOption={passwordOptions}
-        setPasswordOption={updatePasswordOption}
+        passwordOptions={passwordOptions}
+        updatePasswordOption={updatePasswordOption}
       />
       <GenerateButton title='Generate password' onClick={createPassword} />
       <PasswordInput
