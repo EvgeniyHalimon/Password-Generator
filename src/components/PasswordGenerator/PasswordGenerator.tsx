@@ -49,8 +49,8 @@ const PasswordGenerator = () => {
     setPassword(generatePassword(passwordLength, passwordOptions));
   };
 
-  const updatePasswordOption = (field: keyof IPasswordOptions, flag: boolean) => {
-    setPasswordOptions({ ...passwordOptions, [field] : flag });
+  const updatePasswordOption = (field: keyof IPasswordOptions, isChecked: boolean) => {
+    setPasswordOptions({ ...passwordOptions, [field] : !isChecked });
   };
 
   return (

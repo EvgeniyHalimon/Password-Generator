@@ -13,7 +13,7 @@ const PasswordOption: FC<IPasswordOption> = ({ isChecked, updatePasswordOption, 
   return (
     <FormControlLabel 
       control={<Checkbox data-testid='form-checkbox' checked={isChecked}/>} 
-      onClick={() => updatePasswordOption(updatedField, !isChecked)}
+      onClick={() => updatePasswordOption(updatedField, isChecked)}
       label={label}
       role='form-control-label'
     />
