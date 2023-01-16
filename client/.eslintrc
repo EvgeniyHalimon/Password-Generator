@@ -1,14 +1,14 @@
 {
+  "extends": ["react-app"],
   "plugins": [
+    "react",
     "import",
     "unused-imports"
   ],
   "parserOptions": {
-    "sourceType": "module"
-  },
-  "env": {
-    "es6": true,
-    "browser": true
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "rules": {
     "no-console": "warn",
@@ -16,6 +16,7 @@
     "no-unused-vars": "warn",
     "prefer-const": "warn",
     "quotes": ["error", "single"],
+    "jsx-quotes": ["error", "prefer-single"],
     "indent": ["warn", 2],
     "comma-dangle": ["error", "always-multiline"],
     "func-call-spacing": ["error", "never"],
