@@ -1,0 +1,18 @@
+.container-box{
+    display: flex;
+    justify-content: space-between;
+
+    &-input{
+        width: 94%;
+        text-align: center;
+        background-color: rgb(137 97 95);
+        border-radius: 5px;
+        border: none !important;
+        box-shadow: 1px 2px 7px 3px rgb(0 0 0 / 78%);
+        margin-right: 10px !important;
+    }
+
+    &-icon-button{
+        width: 56px;
+    }
+}
