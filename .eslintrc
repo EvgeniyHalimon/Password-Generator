@@ -4,8 +4,13 @@
     "unused-imports"
   ],
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaVersion": 2022,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
   },
+  "parser": "@typescript-eslint/parser",
   "env": {
     "es6": true,
     "browser": true
