@@ -1,22 +1,30 @@
+import { CustomError } from '../../shared/CustomError';
+
 const userRepository = require('./users.repository');
 
 const findOneUser = async (id) => {
-  if(!id) {
-    throw new Error('No id provided');
-  }
-  return userRepository.findOne(id);
+  const user = userRepository.findOne(id);
+  if (!user){
+    throw new CustomError({ message: `User ID ${id} not found`, status: 404 });
+  } 
+  return user;
 };
 
 const findAllUsers = async () => {
-  return userRepository.findAll();
+  const users = userRepository.findAll();
+  if (!users){
+    throw new CustomError({ message: 'No users found', status: 204 });
+  } 
+  return users;
 };
 
 const deleteOneUser = async (id) => {
-  if(!id) {
-    throw new Error('No id provided');
-  }
+  const user = await findOneUser(id);
+  if (!user){
+    throw new CustomError({ message: `User ID ${id} not found`, status: 404 });
+  } 
   return userRepository.deleteOne(id);
 };
 
-module.exports = { findOneUser,findAllUsers, deleteOneUser };
+export{ findOneUser, findAllUsers, deleteOneUser };
    

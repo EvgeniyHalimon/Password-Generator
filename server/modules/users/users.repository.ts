@@ -13,4 +13,4 @@ const deleteOne = async (id) => {
 };
 
 
-module.exports = { findOne, findAll, deleteOne };
+export{ findOne, findAll, deleteOne };
