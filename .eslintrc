@@ -5,7 +5,7 @@
   ],
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 2022,
+    "ecmaVersion": 2020,
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true
     }
@@ -15,6 +15,7 @@
     "es6": true,
     "browser": true
   },
+  "noInlineConfig": true,
   "rules": {
     "no-console": "warn",
     "semi": "warn",

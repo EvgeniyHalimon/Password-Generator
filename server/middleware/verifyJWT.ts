@@ -1,15 +1,17 @@
-const jwt = require('jsonwebtoken');
-require('dotenv');
+import { NextFunction, Response } from 'express';
 
-const verifyJWT = (req, res, next) => {
+require('dotenv');
+import jwt, { Secret } from 'jsonwebtoken';
+const ACCESS_KEY: Secret | any = process.env.ACCESS_TOKEN_SECRET;
+
+const verifyJWT = (req: any, res: Response, next: NextFunction) => {
   const authHeader = req.headers['authorization'];
   if(!authHeader) return res.sendStatus(401);
-  console.log('🚀 ~ file: verifyJWT.js:6 ~ verifyJWT ~ authHeader', authHeader);
   const token = authHeader.split(' ')[1];
   jwt.verify(
     token,
-    process.env.ACCESS_TOKEN_SECRET,
-    (err, decoded) => {
+    ACCESS_KEY,
+    (err: any, decoded: any) => {
       if(err) return res.sendStatus(403);
       req.user = decoded.username;
       next();

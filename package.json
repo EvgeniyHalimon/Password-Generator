@@ -2,6 +2,7 @@
     "name": "password-generator",
     "version": "0.1.0",
     "private": true,
+    "type": "CommonJS",
     "scripts": {
         "dev": "cd client && npm run start",
         "lint:client": "eslint \"client/**/*.{ts,tsx}\"",
@@ -24,10 +25,6 @@
         ]
     },
     "devDependencies": {
-        "@babel/core": "^7.20.12",
-        "@babel/eslint-parser": "^7.19.1",
-        "@babel/node": "^7.20.7",
-        "@babel/preset-env": "^7.20.2",
         "@typescript-eslint/parser": "^5.48.2",
         "concurrently": "^7.0.0",
         "eslint": "^8.32.0",

@@ -1,8 +1,8 @@
-import { CustomError } from '../../shared/CustomError';
+import { CustomError } from '../../shared/CustomError.js';
 
 const userRepository = require('./users.repository');
 
-const findOneUser = async (id) => {
+const findOneUser = async (id: string) => {
   const user = userRepository.findOne(id);
   if (!user){
     throw new CustomError({ message: `User ID ${id} not found`, status: 404 });
@@ -18,7 +18,7 @@ const findAllUsers = async () => {
   return users;
 };
 
-const deleteOneUser = async (id) => {
+const deleteOneUser = async (id: string) => {
   const user = await findOneUser(id);
   if (!user){
     throw new CustomError({ message: `User ID ${id} not found`, status: 404 });

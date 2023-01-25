@@ -1,6 +1,4 @@
-import { Response, Request } from 'express';
-
-import express from 'express';
+import express, { Response, Request } from 'express';
 
 const router = express.Router();
 
@@ -10,8 +8,8 @@ router.get('/users', async (req: Request, res: Response) => {
   try {
     const users = await userService.findAllUsers();
     res.json(users);
-  } catch (error) {
-    await res.status(error.status).json({ 'message': error.message });
+  } catch (error: any) {
+    res.status(error.status).json({ 'message': error.message });
   }
 });
 
@@ -19,7 +17,7 @@ router.get('/users/:id', async (req: Request, res: Response) => {
   try {
     const user = await userService.findOneUser(req.params.id);
     res.json(user);
-  } catch (error) {
+  } catch (error: any) {
     res.status(error.status).json({ 'message': error.message });
   }
 });
@@ -28,7 +26,7 @@ router.delete('/users/:id', async (req: Request, res: Response) => {
   try {
     const result = await userService.deleteOneUser(req.params.id);
     res.json(result);
-  } catch (error) {
+  } catch (error: any) {
     res.status(error.status).json({ 'message': error.message });
   }
 });

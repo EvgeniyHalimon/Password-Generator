@@ -1,6 +1,15 @@
 const User = require('./users.entity');
 
-const findOne = async (user) => {
+interface IUser{
+  username: string,
+  password: string
+}
+
+const findOne = async (id: number) => {
+  return User.findOne({ _id: id }).exec();
+};
+
+const findUser = async (user: string) => {
   return User.findOne({ username: user }).exec();
 };
 
@@ -8,9 +17,13 @@ const findAll = async () => {
   return User.find();
 };
 
-const deleteOne = async (id) => {
+const deleteOne = async (id: string) => {
   return User.deleteOne({ _id: id });
 };
 
+const createNewUser = async(userObject: IUser) => {
+  return User.create(userObject)
+}
 
-export{ findOne, findAll, deleteOne };
+
+export{ findOne, findUser, findAll, deleteOne, createNewUser };

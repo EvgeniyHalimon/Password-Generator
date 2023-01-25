@@ -41,15 +41,11 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
-app.use('/', require('./routes/root'));
-app.use('/register', require('./routes/register'));
-app.use('/auth', require('./routes/auth'));
-app.use('/refresh', require('./routes/refresh'));
-app.use('/logout', require('./routes/logout'));
+app.use('/register', require('./routes/register.ts'));
+app.use('/auth', require('./routes/auth.ts'));
+app.use('/refresh', require('./routes/refresh.ts'));
 
 app.use(verifyJWT);
-app.use('/employees', require('./routes/api/employees'));
-app.use('/users', require('./routes/api/users'));
 
 app.all('*', (req: Request, res: Response) => {
   res.status(404);
