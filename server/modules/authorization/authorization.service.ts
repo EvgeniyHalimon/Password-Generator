@@ -3,12 +3,16 @@ import bcrypt from 'bcrypt';
 import jwt, { Secret } from 'jsonwebtoken';
 
 import { CustomError } from '../../shared/CustomError.js';
-import { ILoginService } from '../../types/types.js';
+import { ILoginService, INewUserData } from '../../types/types.js';
 
 const userRepository = require('../users/users.repository');
 
 const ACCESS_KEY: Secret | any = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_KEY: Secret | any = process.env.REFRESH_TOKEN_SECRET;
+
+//как протипизировать эти сервисы правильно?
+//хотелось бы чтобы автокомплит подсказывал о наличии того или иного сервиса
+//не пойму как мне изначально давать роль, и как это сделать в модели
 
 const loginService = async (user: string, pwd: string) : Promise<ILoginService | undefined> => {
   if (!user || !pwd) {
@@ -44,8 +48,8 @@ const loginService = async (user: string, pwd: string) : Promise<ILoginService |
   }
 };
 
-const newUserService = async (user: string, pwd: string) => {
-  if (!user || !pwd) {
+const newUserService = async (user: INewUserData) => {
+  if (!user.username || !user.password) { // Как сделать обработку ошибок для остальных полей?
     throw new CustomError({ message: 'Username and password are required.', status: 400 });
   }
   const foundUser = await userRepository.findUser(user);
@@ -53,13 +57,15 @@ const newUserService = async (user: string, pwd: string) => {
     throw new CustomError({ message: 'User already exists', status: 409 });
   }
   //encrypt the password
-  const hashedPwd = await bcrypt.hash(pwd, 10);
+  const hashedPwd = await bcrypt.hash(user.password, 10);
   //create and store the new user
   await userRepository.createNewUser({
-    'username': user,
+    'username': user.username ,
     'password': hashedPwd,
+    'innerPassword': user.innerPassword,
+    'email': user.email,
   });
-}
+};
 
 const refreshTokenService = async (cookies: any, id: string) => {
   if (!cookies?.jwt){
@@ -93,6 +99,6 @@ const refreshTokenService = async (cookies: any, id: string) => {
       return { userRoles, accessToken };
     },
   );
-}
+};
 
-export { loginService, newUserService };
+export { loginService, newUserService, refreshTokenService };

@@ -22,8 +22,8 @@ const deleteOne = async (id: string) => {
 };
 
 const createNewUser = async(userObject: IUser) => {
-  return User.create(userObject)
-}
+  return User.create(userObject);
+};
 
 
 export{ findOne, findUser, findAll, deleteOne, createNewUser };

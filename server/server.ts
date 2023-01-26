@@ -1,4 +1,5 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
+import { ValidationError } from 'express-validation';
 
 require('dotenv').config();
 const app = express();
@@ -59,6 +60,14 @@ app.all('*', (req: Request, res: Response) => {
 });
 
 app.use(errorHandler);
+
+app.use((err: ValidationError, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof ValidationError) {
+    return res.status(err.statusCode).json(err);
+  }
+
+  return res.status(500).json(err);
+});
 
 mongoose.connection.once('open', () => {
   console.log('Connected to MongoDB');
