@@ -21,7 +21,7 @@ const userRepository = {
   createNewUser: async(userObject: IUser) => {
     return User.create(userObject);
   },
-}
+};
 
 
 

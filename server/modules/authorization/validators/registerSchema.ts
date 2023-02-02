@@ -15,4 +15,4 @@ const registerSchema = {
   }),
 };
 
-export { registerSchema }
+export { registerSchema };

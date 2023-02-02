@@ -100,6 +100,6 @@ const authorizationService = {
       },
     );
   },
-}
+};
 
 export { authorizationService };

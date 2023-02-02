@@ -24,7 +24,7 @@ const userService = {
     } 
     return userRepository.deleteOne(id);
   },
-}
+};
 
 export{ userService };
    

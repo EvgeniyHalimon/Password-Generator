@@ -9,4 +9,4 @@ const loginSchema = {
   }),
 };
 
-export { loginSchema }
+export { loginSchema };
