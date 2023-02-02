@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const passwordSchema = new Schema({
+  user:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
   password: {
     type: String,
     required: true,

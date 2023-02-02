@@ -1,30 +1,30 @@
 import { CustomError } from '../../shared/CustomError.js';
 
-const userRepository = require('./users.repository');
+import { userRepository } from './users.repository.js';
 
-const findOneUser = async (id: string) => {
-  const user = userRepository.findOne(id);
-  if (!user){
-    throw new CustomError({ message: `User ID ${id} not found`, status: 404 });
-  } 
-  return user;
-};
+const userService = {
+  findOneUser : async (id: string) => {
+    const user = userRepository.findOne(id);
+    if (!user){
+      throw new CustomError({ message: `User ID ${id} not found`, status: 404 });
+    } 
+    return user;
+  },
+  findAllUsers : async () => {
+    const users = userRepository.findAll();
+    if (!users){
+      throw new CustomError({ message: 'No users found', status: 204 });
+    } 
+    return users;
+  },
+  deleteOneUser : async (id: string) => {
+    const user = userRepository.findOne(id);
+    if (!user){
+      throw new CustomError({ message: `User ID ${id} not found`, status: 404 });
+    } 
+    return userRepository.deleteOne(id);
+  },
+}
 
-const findAllUsers = async () => {
-  const users = userRepository.findAll();
-  if (!users){
-    throw new CustomError({ message: 'No users found', status: 204 });
-  } 
-  return users;
-};
-
-const deleteOneUser = async (id: string) => {
-  const user = await findOneUser(id);
-  if (!user){
-    throw new CustomError({ message: `User ID ${id} not found`, status: 404 });
-  } 
-  return userRepository.deleteOne(id);
-};
-
-export{ findOneUser, findAllUsers, deleteOneUser };
+export{ userService };
    

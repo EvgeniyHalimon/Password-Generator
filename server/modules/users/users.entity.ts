@@ -20,11 +20,10 @@ const userSchema = new Schema({
     required: true,
   },
   role: {
-    User: {
-      type: Number,
-    },
-    PremiumUser: Number,
-    Admin: Number,
+    type: String,
+    required: true,
+    default: 'user',
+    enum: ['admin', 'user', 'premium'],
   },
 });
 

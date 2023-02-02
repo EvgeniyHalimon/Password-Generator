@@ -1,8 +1,8 @@
 import express, { Response, Request } from 'express';
 
-const router = express.Router();
+import { userService } from './users.service';
 
-const userService = require('./users.service');
+const router = express.Router();
 
 router.get('/users', async (req: Request, res: Response) => {
   try {
