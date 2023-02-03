@@ -14,7 +14,7 @@ const verifyJWT = (req: any, res: Response, next: NextFunction) => {
     req.route.path === '/refresh' ? REFRESH_KEY : ACCESS_KEY,
     (err: any, decoded: any) => {
       if(err) return res.sendStatus(403);
-      req.user = decoded.username;
+      req.id = decoded.id;
       next();
     },
   );

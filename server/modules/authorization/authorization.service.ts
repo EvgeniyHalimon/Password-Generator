@@ -2,103 +2,70 @@ import bcrypt from 'bcrypt';
 
 import jwt, { Secret } from 'jsonwebtoken';
 
-import { SALT_ROUNDS } from '../../constants/constants.js';
+import { SALT_ROUNDS } from '../constants/constants.js';
 
-import { CustomError } from '../../shared/CustomError.js';
-import { ILoginService } from '../../types/types.js';
+import { ILoginService } from '../types/types.js';
+import { userService } from '../users/users.service.js';
 
 const userRepository = require('../users/users.repository');
 
 const ACCESS_KEY: Secret | any = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_KEY: Secret | any = process.env.REFRESH_TOKEN_SECRET;
 
+const generateTokens = (foundUser: any) => {
+  const accessToken = jwt.sign(
+    {
+      'UserInfo': {
+        'id': foundUser._id,
+      },
+    },
+    ACCESS_KEY,
+    { expiresIn: '10s' },
+  );
+  const refreshToken = jwt.sign(
+    {
+      'UserInfo': {
+        'id': foundUser._id,
+      },
+    },
+    REFRESH_KEY,
+    { expiresIn: '1d' },
+  );
+
+  return { accessToken, refreshToken };
+};
+
 const authorizationService = {
   login: async (body: any) : Promise<ILoginService | undefined> => {
-    const foundUser = await userRepository.findUser(body.username);
-    if (!foundUser){
-      throw new CustomError({ message: 'Unauthorized', status: 401 });
-    }
+    const foundUser = await userService.findUser(body.username);
     // evaluate password 
     const match = await bcrypt.compare(body.password, foundUser.password);
     if (match) {
       // create JWTs
-      const accessToken = jwt.sign(
-        {
-          'UserInfo': {
-            'id': foundUser._id,
-          },
-        },
-        ACCESS_KEY,
-        { expiresIn: '10s' },
-      );
-      const refreshToken = jwt.sign(
-        {
-          'UserInfo': {
-            'id': foundUser._id,
-          },
-        },
-        REFRESH_KEY,
-        { expiresIn: '1d' },
-      );
-  
-      return { accessToken, refreshToken };
+      return generateTokens(foundUser);
     }
   },
   newUser: async (body: any) => {
-    const foundUser = await userRepository.findUser(body.username);
-    if (foundUser){
-      throw new CustomError({ message: 'User already exists', status: 409 });
+    const foundUser = await userService.findNewUser(body.username);
+    if(!foundUser){
+      //encrypt the password
+      const hashedPwd = await bcrypt.hash(body.password, SALT_ROUNDS);
+      const hashedInnerPwd = await bcrypt.hash(body.innerButton, SALT_ROUNDS);
+      //create and store the new user
+      await userRepository.createNewUser({
+        'username': body.username ,
+        'password': hashedPwd,
+        'innerPassword': hashedInnerPwd,
+        'email': body.email,
+      });
     }
-    //encrypt the password
-    const hashedPwd = await bcrypt.hash(body.password, SALT_ROUNDS);
-    const hashedInnerPwd = await bcrypt.hash(body.innerButton, SALT_ROUNDS);
-    //create and store the new user
-    await userRepository.createNewUser({
-      'username': body.username ,
-      'password': hashedPwd,
-      'innerPassword': hashedInnerPwd,
-      'email': body.email,
-    });
   },
-  refreshToken: async (cookies: any, id: string) => {
-    if (!cookies?.jwt){
-      throw new CustomError({ message: 'Unauthorized', status: 401 });
-    }
-    const refreshToken = cookies.jwt;
-  
-    const foundUser = await userRepository.findOne(id);
-    if (!foundUser){
-      throw new CustomError({ message: 'User not found', status: 401 });
-    }
+  refreshToken: async (id: string) => {
+    const foundUser = await userService.findOneUser(id);
     // evaluate jwt 
-    jwt.verify(
-      refreshToken,
-      REFRESH_KEY,
-      (err: any, decoded: any) => {
-        if (err || foundUser.username !== decoded.username){
-          throw new CustomError({ message: 'User not found', status: 401 });
-        }
-        const accessToken = jwt.sign(
-          {
-            'UserInfo': {
-              'id': foundUser._id,
-            },
-          },
-          ACCESS_KEY,
-          { expiresIn: '10s' },
-        );
-        const refreshToken = jwt.sign(
-          {
-            'UserInfo': {
-              'id': foundUser._id,
-            },
-          },
-          REFRESH_KEY,
-          { expiresIn: '1d' },
-        );
-        return { accessToken, refreshToken };
-      },
-    );
+    if(foundUser){
+      return generateTokens(foundUser);
+    }
   },
 };
 

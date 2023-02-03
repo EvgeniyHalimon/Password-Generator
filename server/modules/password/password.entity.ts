@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const passwordSchema = new Schema({
-  user:{
+  userId:{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },

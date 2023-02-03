@@ -12,9 +12,9 @@ import { registerSchema } from './validators/registerSchema.js';
 
 router.post('/login', validate(loginSchema, {}, {}),async (req: Request, res: Response) => {
   try {
-    const login: any = authorizationService.login(req.body);
+    const token: any = authorizationService.login(req.body);
     // Send authorization roles and access token to username
-    res.json({ token: login.accessToken });
+    res.json({ refreshToken : token.refreshToken, accessToken: token.accessToken });
   } catch (error: any) {
     res.status(error.status).json({ 'message': error.message });
   }
@@ -30,11 +30,10 @@ router.post('/register', validate(registerSchema, {}, {}), async (req: Request, 
   }
 });
 
-router.get('/refresh', async (req: Request, res: Response) => {
+router.get('/refresh', async (req: any, res: Response) => {
   try {
-    const cookies = req.cookies;
-    const refresh: any = await authorizationService.refreshToken(cookies, req.body.id);
-    res.json({ refreshToken : refresh.refreshToken, accessToken: refresh.accessToken });
+    const token: any = await authorizationService.refreshToken(req.id);
+    res.json({ refreshToken : token.refreshToken, accessToken: token.accessToken });
   } catch (error: any) {
     res.status(500).json({ 'message': error.message });
   }
