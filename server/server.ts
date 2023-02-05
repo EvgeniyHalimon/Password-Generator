@@ -1,21 +1,22 @@
+import path from 'path';
+
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import dotenv from 'dotenv';
 import express, { Request, Response, NextFunction } from 'express';
 import { ValidationError } from 'express-validation';
+import mongoose from 'mongoose';
 
-require('dotenv').config();
+import corsOptions from './config/corsOptions';
+import connectDB from './config/dbConnection';
+import credentials from './middleware/credentials';
+import errorHandler from './middleware/errorHandler';
+import { logger } from './middleware/logEvents';
+import verifyJWT from './middleware/verifyJWT';
+import authController from './modules/authorization/authorization.controller';
+
+dotenv.config();
 const app = express();
-const path = require('path');
-
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const mongoose = require('mongoose');
-
-const corsOptions = require('./config/corsOptions');
-const connectDB = require('./config/dbConnection');
-const credentials = require('./middleware/credentials');
-const errorHandler = require('./middleware/errorHandler');
-const { logger } = require('./middleware/logEvents');
-const verifyJWT = require('./middleware/verifyJWT');
-
 
 const PORT = process.env.PORT || 3210;
 
@@ -41,12 +42,19 @@ app.use(express.json());
 //middleware for cookies
 app.use(cookieParser());
 
-// routes
-app.use('/register', require('./routes/register.ts'));
-app.use('/auth', require('./routes/auth.ts'));
-app.use('/refresh', require('./routes/refresh.ts'));
+app.use(errorHandler);
+
+app.use((err: ValidationError, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof ValidationError) {
+    return res.status(err.statusCode).json(err);
+  }
+
+  return res.status(500).json(err);
+});
 
 app.use(verifyJWT);
+// routes
+app.use('/auth', authController);
 
 app.all('*', (req: Request, res: Response) => {
   res.status(404);
@@ -57,16 +65,6 @@ app.all('*', (req: Request, res: Response) => {
   } else {
     res.type('txt').send('404 Not Found');
   }
-});
-
-app.use(errorHandler);
-
-app.use((err: ValidationError, req: Request, res: Response, next: NextFunction) => {
-  if (err instanceof ValidationError) {
-    return res.status(err.statusCode).json(err);
-  }
-
-  return res.status(500).json(err);
 });
 
 mongoose.connection.once('open', () => {

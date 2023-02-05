@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt';
 
 import jwt, { Secret } from 'jsonwebtoken';
+import { ObjectId } from 'mongoose';
 
-import { SALT_ROUNDS } from '../constants/constants.js';
+import { SALT_ROUNDS } from '../constants/constants';
 
-import { ILoginService } from '../types/types.js';
-import { userService } from '../users/users.service.js';
-
-const userRepository = require('../users/users.repository');
+import { ILoginService } from '../types/types';
+import { userRepository } from '../users/users.repository';
+import { userService } from '../users/users.service';
 
 const ACCESS_KEY: Secret | any = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_KEY: Secret | any = process.env.REFRESH_TOKEN_SECRET;
@@ -15,7 +15,7 @@ const REFRESH_KEY: Secret | any = process.env.REFRESH_TOKEN_SECRET;
 const generateTokens = (foundUser: any) => {
   const accessToken = jwt.sign(
     {
-      'UserInfo': {
+      'userInfo': {
         'id': foundUser._id,
       },
     },
@@ -24,7 +24,7 @@ const generateTokens = (foundUser: any) => {
   );
   const refreshToken = jwt.sign(
     {
-      'UserInfo': {
+      'userInfo': {
         'id': foundUser._id,
       },
     },
@@ -50,7 +50,7 @@ const authorizationService = {
     if(!foundUser){
       //encrypt the password
       const hashedPwd = await bcrypt.hash(body.password, SALT_ROUNDS);
-      const hashedInnerPwd = await bcrypt.hash(body.innerButton, SALT_ROUNDS);
+      const hashedInnerPwd = await bcrypt.hash(body.innerPassword, SALT_ROUNDS);
       //create and store the new user
       await userRepository.createNewUser({
         'username': body.username ,
@@ -60,7 +60,7 @@ const authorizationService = {
       });
     }
   },
-  refreshToken: async (id: string) => {
+  refreshToken: async (id: ObjectId) => {
     const foundUser = await userService.findOneUser(id);
     // evaluate jwt 
     if(foundUser){

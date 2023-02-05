@@ -1,25 +1,29 @@
-const User = require('./users.entity');
+import { ObjectId } from 'mongoose';
+
+import { User } from './users.entity';
 
 interface IUser{
   username: string,
-  password: string
+  password: string,
+  innerPassword: string,
+  email: string,
 }
 
 const userRepository = {
-  findOne: async (id: string) => {
-    return User.findOne({ _id: id }).exec();
+  findOne: async (id: ObjectId) => {
+    return await User.findById(id).exec();
   },
   findUser: async (user: string) => {
-    return User.findOne({ username: user }).exec();
+    return await User.findOne({ username: user }).exec();
   },
   findAll: async () => {
-    return User.find();
+    return await User.find();
   },
-  deleteOne: async (id: string) => {
-    return User.deleteOne({ _id: id });
+  deleteOne: async (id: ObjectId) => {
+    return await User.findByIdAndDelete(id);
   },
   createNewUser: async(userObject: IUser) => {
-    return User.create(userObject);
+    return await User.create(userObject);
   },
 };
 

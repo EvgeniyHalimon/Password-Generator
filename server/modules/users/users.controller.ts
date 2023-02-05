@@ -4,7 +4,7 @@ import { userService } from './users.service';
 
 const router = express.Router();
 
-router.get('/users', async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
     const users = await userService.findAllUsers();
     res.json(users);
@@ -13,7 +13,7 @@ router.get('/users', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/users/:id', async (req: Request, res: Response) => {
+router.get('/:id', async (req: Request, res: Response) => {
   try {
     const user = await userService.findOneUser(req.params.id);
     res.json(user);
@@ -22,9 +22,9 @@ router.get('/users/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/users/:id', async (req: Request, res: Response) => {
+router.delete('/:id', async (req: Request, res: Response) => {
   try {
-    const result = await userService.deleteOneUser(req.params.id);
+    const result = await userService.deleteUser(req.params.id);
     res.json(result);
   } catch (error: any) {
     res.status(error.status).json({ 'message': error.message });

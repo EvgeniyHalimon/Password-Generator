@@ -16,4 +16,4 @@ const passwordSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model('Password', passwordSchema);
+export const Password = mongoose.model('Password', passwordSchema);

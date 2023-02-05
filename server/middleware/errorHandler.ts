@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-const logEvents = require('./logEvents');
+import { logEvents } from './logEvents';
 
 const errorHandler = (err: any, req: Request, res:Response, next: NextFunction) => {
   logEvents(`${err.name}: ${err.message}`, 'errLog.txt');
@@ -9,4 +9,4 @@ const errorHandler = (err: any, req: Request, res:Response, next: NextFunction) 
   next();
 };
 
-module.exports = errorHandler;
+export default errorHandler;
