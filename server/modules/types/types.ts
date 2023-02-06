@@ -7,5 +7,5 @@ export interface ILoginService{
 }
 
 export interface CustomRequest extends Request{
-    id: ObjectId
+    id: ObjectId | string
 }

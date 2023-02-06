@@ -60,7 +60,7 @@ const authorizationService = {
       });
     }
   },
-  refreshToken: async (id: ObjectId) => {
+  refreshToken: async (id: ObjectId | string) => {
     const foundUser = await userService.findOneUser(id);
     // evaluate jwt 
     if(foundUser){

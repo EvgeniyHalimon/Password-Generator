@@ -7,11 +7,14 @@ const registerSchema = {
       .regex(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
       .required(),
     password: Joi.string()
-      .required(),
+      .required()
+      .min(8),
     innerPassword: Joi.string()
       .required(),
     username: Joi.string()
-      .required(),
+      .required()
+      .min(2)
+      .max(30),
   }),
 };
 
