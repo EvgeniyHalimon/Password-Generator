@@ -20,7 +20,7 @@ const generateTokens = (foundUser: any) => {
       },
     },
     ACCESS_KEY,
-    { expiresIn: '30s' },
+    { expiresIn: '1h' },
   );
   const refreshToken = jwt.sign(
     {

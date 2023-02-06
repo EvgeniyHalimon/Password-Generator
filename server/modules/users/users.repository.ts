@@ -17,7 +17,6 @@ const userRepository = {
     return await User.findOne({ username: user }).exec();
   },
   findAll: async () => {
-    console.log('1234', await User.find())
     return await User.find();
   },
   deleteOne: async (id: ObjectId | string) => {

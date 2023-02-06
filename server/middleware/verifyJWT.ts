@@ -12,12 +12,10 @@ const ACCESS_KEY: Secret | any = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_KEY: Secret | any = process.env.REFRESH_TOKEN_SECRET;
 
 const verifyJWT = (req: CustomRequest, res: Response, next: NextFunction) => {
-  console.log('🚀 ~ file: verifyJWT.ts:14 ~ verifyJWT ~ req', req.url)
   if(req.url == '/auth/register' || req.url == '/auth/login'){
     return next();
   }
   const authHeader = req.headers['authorization'];
-  console.log('🚀 ~ file: verifyJWT.ts:19 ~ verifyJWT ~ authHeader', authHeader)
   if(!authHeader) throw new CustomError({ message: 'Unauthorized', status: 401 });
   const token = authHeader.split(' ')[1];
   jwt.verify(
@@ -29,7 +27,6 @@ const verifyJWT = (req: CustomRequest, res: Response, next: NextFunction) => {
       next();
     },
   );
-  return next();
 };
 
 export default verifyJWT;

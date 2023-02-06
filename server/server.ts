@@ -1,5 +1,3 @@
-/* import path from 'path'; */
-
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -57,17 +55,6 @@ app.use((err: ValidationError, req: Request, res: Response, next: NextFunction) 
 app.use(verifyJWT);
 app.use('/auth', authController);
 app.use('/users', userController);
-
-/* app.all('*', (req: Request, res: Response) => {
-  res.status(404);
-  if (req.accepts('html')) {
-    res.sendFile(path.join(__dirname, 'views', '404.html'));
-  } else if (req.accepts('json')) {
-    res.json({ 'error': '404 Not Found' });
-  } else {
-    res.type('txt').send('404 Not Found');
-  }
-}); */
 
 mongoose.connection.once('open', () => {
   console.log('Connected to MongoDB');

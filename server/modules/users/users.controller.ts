@@ -7,10 +7,8 @@ const router = express.Router();
 router.get('/', async (req: Request, res: Response) => {
   try {
     const users = await userService.findAllUsers();
-    console.log('🚀 ~ file: users.controller.ts:10 ~ router.get ~ users', users)
     res.json(users);
   } catch (error: any) {
-    console.trace('ERROR')
     res.status(error.status).json({ 'message': error.message });
   }
 });
@@ -26,8 +24,8 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
-    const result = await userService.deleteUser(req.params.id);
-    res.json(result);
+    await userService.deleteUser(req.params.id);
+    res.send({ message: 'User was deleted' });
   } catch (error: any) {
     res.status(error.status).json({ 'message': error.message });
   }
