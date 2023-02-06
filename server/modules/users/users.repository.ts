@@ -10,7 +10,7 @@ interface IUser{
 }
 
 const userRepository = {
-  findOne: async (id: ObjectId) => {
+  findOne: async (id: ObjectId | string) => {
     return await User.findById(id).exec();
   },
   findUser: async (user: string) => {
@@ -19,7 +19,7 @@ const userRepository = {
   findAll: async () => {
     return await User.find();
   },
-  deleteOne: async (id: ObjectId) => {
+  deleteOne: async (id: ObjectId | string) => {
     return await User.findByIdAndDelete(id);
   },
   createNewUser: async(userObject: IUser) => {

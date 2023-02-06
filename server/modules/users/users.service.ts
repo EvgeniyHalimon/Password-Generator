@@ -5,7 +5,7 @@ import { CustomError } from '../../shared/CustomError';
 import { userRepository } from './users.repository';
 
 const userService = {
-  findOneUser : async (id: ObjectId) => {
+  findOneUser : async (id: ObjectId | string) => {
     const user = await userRepository.findOne(id);
     if (!user){
       throw new CustomError({ message: `User ID ${id} not found`, status: 404 });
@@ -33,7 +33,7 @@ const userService = {
     } 
     return users;
   },
-  deleteUser : async (id: ObjectId) => {
+  deleteUser : async (id: ObjectId | string) => {
     const user = await userRepository.findOne(id);
     if (!user){
       throw new CustomError({ message: `User ID ${id} not found`, status: 404 });
