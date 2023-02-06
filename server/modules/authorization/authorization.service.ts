@@ -31,7 +31,6 @@ const generateTokens = (foundUser: any) => {
     REFRESH_KEY,
     { expiresIn: '1d' },
   );
-
   return { accessToken, refreshToken };
 };
 
