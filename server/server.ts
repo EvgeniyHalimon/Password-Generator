@@ -1,4 +1,4 @@
-import path from 'path';
+/* import path from 'path'; */
 
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -53,12 +53,12 @@ app.use((err: ValidationError, req: Request, res: Response, next: NextFunction) 
   return res.status(500).json(err);
 });
 
-app.use(verifyJWT);
 // routes
+app.use(verifyJWT);
 app.use('/auth', authController);
 app.use('/users', userController);
 
-app.all('*', (req: Request, res: Response) => {
+/* app.all('*', (req: Request, res: Response) => {
   res.status(404);
   if (req.accepts('html')) {
     res.sendFile(path.join(__dirname, 'views', '404.html'));
@@ -67,7 +67,7 @@ app.all('*', (req: Request, res: Response) => {
   } else {
     res.type('txt').send('404 Not Found');
   }
-});
+}); */
 
 mongoose.connection.once('open', () => {
   console.log('Connected to MongoDB');
