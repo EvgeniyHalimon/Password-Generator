@@ -10,24 +10,21 @@ interface IUser{
 }
 
 const userRepository = {
-  findOne: async (id: ObjectId | string) => {
+  findUserById: async (id: ObjectId | string) => {
     return await User.findById(id).exec();
   },
-  findUser: async (user: string) => {
-    return await User.findOne({ username: user }).exec();
+  findUser: async (email: string) => {
+    return await User.findOne({ email: email }).select('+password').exec();
   },
-  findAll: async () => {
+  findAllUsers: async () => {
     return await User.find();
   },
-  deleteOne: async (id: ObjectId | string) => {
+  deleteUser: async (id: ObjectId | string) => {
     return await User.findByIdAndDelete(id);
   },
   createNewUser: async(userObject: IUser) => {
     return await User.create(userObject);
   },
 };
-
-
-
 
 export{ userRepository };

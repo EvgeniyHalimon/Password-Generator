@@ -37,7 +37,7 @@ const generateTokens = (foundUser: any) => {
 
 const authorizationService = {
   login: async (body: any) : Promise<ILoginService | undefined> => {
-    const foundUser = await userService.findUser(body.username);
+    const foundUser: any = await userService.findUser(body.email);
     // evaluate password 
     const match = await bcrypt.compare(body.password, foundUser.password);
     if (match) {
@@ -46,7 +46,7 @@ const authorizationService = {
     }
   },
   newUser: async (body: any) => {
-    const foundUser = await userService.findNewUser(body.username);
+    const foundUser = await userService.checkIfUserExist(body.email);
     if(!foundUser){
       //encrypt the password
       const hashedPwd = await bcrypt.hash(body.password, SALT_ROUNDS);
