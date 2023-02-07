@@ -18,7 +18,7 @@ const CheckboxBar: FC<ICheckboxBar> = ({ passwordOptions, updatePasswordOption }
         {
           staticCheckboxPropsList.map(({ label, updatedField }) => (
             <PasswordOption
-              key={label}
+              key={crypto.randomUUID()}
               isChecked={passwordOptions[updatedField]}
               updatedField={updatedField}
               updatePasswordOption={updatePasswordOption}

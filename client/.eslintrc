@@ -1,28 +1,22 @@
 {
+  "extends": ["react-app"],
   "plugins": [
     "react",
     "import",
     "unused-imports"
   ],
   "parserOptions": {
-    "sourceType": "module",
-    "ecmaVersion": 2020,
     "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
+      "jsx": true
     }
   },
-  "parser": "@typescript-eslint/parser",
-  "env": {
-    "es6": true,
-    "browser": true
-  },
-  "noInlineConfig": true,
   "rules": {
     "no-console": "warn",
     "semi": "warn",
     "no-unused-vars": "warn",
     "prefer-const": "warn",
     "quotes": ["error", "single"],
+    "jsx-quotes": ["error", "prefer-single"],
     "indent": ["warn", 2],
     "comma-dangle": ["error", "always-multiline"],
     "func-call-spacing": ["error", "never"],
