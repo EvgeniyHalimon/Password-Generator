@@ -1,14 +1,14 @@
 import { Snackbar, Alert, Paper } from '@mui/material';
 import { useState, memo } from 'react';
 
+import { GenerateButton } from '../../components/Button';
+import CheckboxBar from '../../components/CheckboxBar/CheckboxBar';
+import PasswordInput from '../../components/PasswordInput/PasswordInput';
+import PasswordLengthSlider from '../../components/PasswordLengthSlider/PasswordLengthSlider';
+import { WarningMessages } from '../../components/enums';
+import { IPasswordOptions } from '../../components/types';
 import { generatePassword } from '../../utils/generatePassword';
-import { GenerateButton } from '../Button';
-import CheckboxBar from '../CheckboxBar/CheckboxBar';
-import PasswordInput from '../PasswordInput/PasswordInput';
-import PasswordLengthSlider from '../PasswordLengthSlider/PasswordLengthSlider';
 import './styles.scss';
-import { WarningMessages } from '../enums';
-import { IPasswordOptions } from '../types';
 
 const RECOMMENDED_PASSWORD_LENGTH = 16;
 

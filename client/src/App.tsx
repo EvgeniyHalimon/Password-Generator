@@ -6,9 +6,9 @@ import {
 import { useState, useMemo } from 'react';
 
 import { Layout } from './components/Layout';
-import PasswordGenerator from './components/PasswordGenerator/PasswordGenerator';
 import { darkTheme } from './components/Theme/darkTheme';
 import { lightTheme } from './components/Theme/lightTheme';
+import PasswordGenerator from './pages/PasswordGenerator/PasswordGenerator';
 import './App.scss';
 
 function App() {

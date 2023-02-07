@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import CheckboxBar from '../CheckboxBar/CheckboxBar';
+import CheckboxBar from '../../components/CheckboxBar/CheckboxBar';
 
-import { WarningMessages, staticCheckboxPropsList } from '../enums';
-import { IPasswordOptions } from '../types';
+import { WarningMessages, staticCheckboxPropsList } from '../../components/enums';
+import { IPasswordOptions } from '../../components/types';
 
 import PasswordGenerator from './PasswordGenerator';
 
