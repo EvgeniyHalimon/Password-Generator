@@ -4,7 +4,7 @@ import { Layout } from './Layout';
 
 describe('Layout', () => {
   it('Check existing', () => {
-    render(<Layout><div></div></Layout>);
+    render(<Layout></Layout>);
     expect(screen.getByRole('layout')).toBeInTheDocument();
     expect(screen.getByRole('layout')).toHaveClass('App');
   });
