@@ -6,3 +6,14 @@ export interface IPasswordOptions {
     hasCyrLowerCase : boolean,
     hasCyrUpperCase : boolean,
 }
+
+export interface IFormInput{
+    id: string,
+    name: string,
+    label: string,
+    type: 'text' | 'password' | 'email',
+    value: string,
+    onChange: any,
+    error: undefined | boolean,
+    helperText: string | undefined | boolean,
+}

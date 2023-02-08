@@ -1,8 +1,12 @@
-import { Box, Button, TextField } from '@mui/material';
+import { Box } from '@mui/material';
 import { useFormik } from 'formik';
+import { memo } from 'react';
 import * as yup from 'yup';
 
-import './style.scss';
+import FormInput from '../../components/FormInput/FormInput';
+import { SubmitButton } from '../../components/SubmitButton/SubmitButton';
+import { IFormInput } from '../../components/types';
+import { uid } from '../../utils/uniqueId';
 
 const validationSchema = yup.object({
   email: yup
@@ -17,7 +21,7 @@ const validationSchema = yup.object({
     .required('Password is required'),
 });
 
-const Login = () => {
+const LoginForm = () => {
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -28,56 +32,50 @@ const Login = () => {
       alert(JSON.stringify(values, null, 2));
     },
   });
+
+  const inputData: IFormInput[] = [
+    {
+      id: 'email', 
+      name: 'email' ,
+      label: 'Email', 
+      type: 'email' ,
+      value: formik.values.email, 
+      onChange: formik.handleChange,
+      error: formik.touched.email && Boolean(formik.errors.email),
+      helperText: formik.touched.email && formik.errors.email,
+    },
+    {
+      id: 'password', 
+      name: 'password' ,
+      label: 'Password', 
+      type: 'password' ,
+      value: formik.values.password, 
+      onChange: formik.handleChange,
+      error: formik.touched.password && Boolean(formik.errors.password),
+      helperText: formik.touched.password && formik.errors.password,
+    },
+  ];
+
   return(
     <Box component='form' onSubmit={formik.handleSubmit}>
-      <TextField
-        fullWidth
-        id='email'
-        name='email'
-        label='Email'
-        value={formik.values.email}
-        onChange={formik.handleChange}
-        error={formik.touched.email && Boolean(formik.errors.email)}
-        helperText={formik.touched.email && formik.errors.email}
-        className='textfield'
-        sx={{
-          '& label': {
-            '&.Mui-focused': {
-              top: '-6px',
-            },
-          },
-        }}
-      />
-      <TextField
-        fullWidth
-        id='password'
-        name='password'
-        label='Password'
-        type='password'
-        value={formik.values.password}
-        onChange={formik.handleChange}
-        error={formik.touched.password && Boolean(formik.errors.password)}
-        helperText={formik.touched.password && formik.errors.password}
-        className='textfield'
-        sx={{
-          '& label': {
-            '&.Mui-focused': {
-              top: '-6px',
-            },
-          },
-        }}
-      />
-      <Button 
-        color='primary' 
-        variant='contained' 
-        fullWidth 
-        type='submit' 
-        className='button'
-      >
-          Submit
-      </Button>
+      {inputData.map((formInput) => 
+        <FormInput
+          key={uid()} 
+          id={formInput.id} 
+          name={formInput.name} 
+          label={formInput.label} 
+          type={formInput.type} 
+          value={formInput.value} 
+          onChange={formInput.onChange}
+          error={formInput.error} 
+          helperText={formInput.helperText}        
+        />,
+      )}
+      <SubmitButton />
     </Box>
   );
 };
+
+const Login = memo(LoginForm);
 
 export { Login };
