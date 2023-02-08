@@ -38,5 +38,13 @@ export const darkTheme: ThemeOptions = {
         },
       },
     },
+    MuiFormHelperText:{
+      styleOverrides:{
+        root: {
+          margin: 0,
+          backgroundColor: '#734d4d',
+        },
+      },
+    },
   },
 };

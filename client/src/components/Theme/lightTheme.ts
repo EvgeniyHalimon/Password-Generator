@@ -41,5 +41,13 @@ export const lightTheme: ThemeOptions = {
         },
       },
     },
+    MuiFormHelperText:{
+      styleOverrides:{
+        root: {
+          margin: 0,
+          backgroundColor: '#eccdcc',
+        },
+      },
+    },
   },
 };
