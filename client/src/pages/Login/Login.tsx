@@ -1,12 +1,14 @@
 import { Box } from '@mui/material';
 import { useFormik } from 'formik';
 import { memo } from 'react';
+import { useNavigate } from 'react-router';
 import * as yup from 'yup';
 
 import FormInput from '../../components/FormInput/FormInput';
 import { SubmitButton } from '../../components/SubmitButton/SubmitButton';
-import { IFormInput } from '../../components/types';
-import { uid } from '../../utils/uniqueId';
+import { LOGIN } from '../../constants/backendConstants';
+import { postDataToBackend } from '../../utils/axios';
+import { saveTokens } from '../../utils/tokensWorkshop';
 
 const validationSchema = yup.object({
   email: yup
@@ -22,55 +24,45 @@ const validationSchema = yup.object({
 });
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+  
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      const data = await postDataToBackend(LOGIN, values);
+      if(data.data){
+        navigate('/');
+        saveTokens(data.data);
+      }
     },
   });
 
-  const inputData: IFormInput[] = [
-    {
-      id: 'email', 
-      name: 'email' ,
-      label: 'Email', 
-      type: 'email' ,
-      value: formik.values.email, 
-      onChange: formik.handleChange,
-      error: formik.touched.email && Boolean(formik.errors.email),
-      helperText: formik.touched.email && formik.errors.email,
-    },
-    {
-      id: 'password', 
-      name: 'password' ,
-      label: 'Password', 
-      type: 'password' ,
-      value: formik.values.password, 
-      onChange: formik.handleChange,
-      error: formik.touched.password && Boolean(formik.errors.password),
-      helperText: formik.touched.password && formik.errors.password,
-    },
-  ];
-
   return(
     <Box component='form' onSubmit={formik.handleSubmit}>
-      {inputData.map((formInput) => 
-        <FormInput
-          key={uid()} 
-          id={formInput.id} 
-          name={formInput.name} 
-          label={formInput.label} 
-          type={formInput.type} 
-          value={formInput.value} 
-          onChange={formInput.onChange}
-          error={formInput.error} 
-          helperText={formInput.helperText}        
-        />,
-      )}
+      <FormInput
+        id='email' 
+        name='email' 
+        label='Email' 
+        type='email' 
+        value={formik.values.email} 
+        onChange={formik.handleChange}
+        error={formik.touched.email && Boolean(formik.errors.email)} 
+        helperText={formik.touched.email && formik.errors.email}  
+      />
+      <FormInput
+        id='password' 
+        name='password' 
+        label='Password' 
+        type='password' 
+        value={formik.values.password} 
+        onChange={formik.handleChange}
+        error={formik.touched.password && Boolean(formik.errors.password)} 
+        helperText={formik.touched.password && formik.errors.password}  
+      />
       <SubmitButton />
     </Box>
   );

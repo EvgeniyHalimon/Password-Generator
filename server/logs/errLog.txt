@@ -7,3 +7,4 @@
 20230205	17:06:18	f10c24fb-1b3d-49db-9439-b31391da5212	SyntaxError: Unexpected token e in JSON at position 0
 20230205	18:06:31	f611fed2-633a-4c09-a2e5-23019c6d1217	TypeError: Cannot read properties of undefined (reading 'id')
 20230205	18:06:34	3e15bafe-fa90-4d95-8ac5-c2a25f54c751	TypeError: Cannot read properties of undefined (reading 'id')
+20230209	12:07:07	ad6482ab-c76f-435a-8584-c9f6e818407f	Error: Not allowed by CORS

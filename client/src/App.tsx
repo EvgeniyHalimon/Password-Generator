@@ -6,13 +6,15 @@ import { Login } from './pages/Login/Login';
 import PasswordGenerator from './pages/PasswordGenerator/PasswordGenerator';
 import { PasswordList } from './pages/PasswordList/PasswordList';
 import { Register } from './pages/Register/Register';
+import { Welcome } from './pages/Welcome/Welcome';
 import './App.scss';
 
 function App() {
   return (
     <Routes>
       <Route element={<Layout/>}>
-        <Route path='/' element={<Dashboard />}/>
+        <Route path='/' element={<Welcome />}/>
+        <Route path='/dashboard' element={<Dashboard />}/>
         <Route path='/password-generator' element={<PasswordGenerator />}/>
         <Route path='/login' element={<Login />}/>
         <Route path='/register' element={<Register />}/>

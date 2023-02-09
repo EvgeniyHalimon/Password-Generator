@@ -17,3 +17,8 @@ export interface IFormInput{
     error: undefined | boolean,
     helperText: string | undefined | boolean,
 }
+
+export interface ITokens{
+    accessToken: string,
+    refreshToken: string,
+}
