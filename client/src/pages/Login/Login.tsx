@@ -35,7 +35,7 @@ const LoginForm = () => {
     onSubmit: async (values) => {
       const data = await postDataToBackend(LOGIN, values);
       if(data.data){
-        navigate('/');
+        navigate('/dashboard');
         saveTokens(data.data);
       }
     },

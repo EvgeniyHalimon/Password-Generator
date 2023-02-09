@@ -338,3 +338,5 @@
 20230209	17:38:36	85e6167a-7cf5-4a34-84e0-54b14df566ae	POST	http://localhost:3000	/auth/login
 20230209	19:49:47	592981af-3c13-4b15-8d32-b0bf8db74adf	OPTIONS	http://localhost:3000	/auth/login
 20230209	19:49:47	88f85d9d-7a75-4839-9a7b-b03cdbc5e788	POST	http://localhost:3000	/auth/login
+20230209	23:02:13	36bd9a0c-fa16-4e07-8f94-15e6f163cf4f	OPTIONS	http://localhost:3000	/auth/login
+20230209	23:02:13	3c53c4fe-d2e4-4d67-b5be-068044518d98	POST	http://localhost:3000	/auth/login

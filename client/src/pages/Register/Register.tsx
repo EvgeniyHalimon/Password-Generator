@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
 import FormInput from '../../components/FormInput/FormInput';
+import { SignInReminderText } from '../../components/SignInReminderText/SignInReminderText';
 import { SubmitButton } from '../../components/SubmitButton/SubmitButton';
 import { REGISTER } from '../../constants/backendConstants';
 import { postDataToBackend } from '../../utils/axios';
@@ -95,6 +96,7 @@ const RegisterForm = () => {
         helperText={formik.touched.innerPassword && formik.errors.innerPassword}  
       />
       <SubmitButton />
+      <SignInReminderText/>
     </Box>
   );
 };

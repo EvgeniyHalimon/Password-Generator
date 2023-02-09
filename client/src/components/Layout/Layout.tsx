@@ -25,8 +25,8 @@ const Layout: FC = () => {
     setMode(String(localStorage.getItem('theme')));
   },[mode]);
 
-  const login = () => {
-    navigate('/login');
+  const register = () => {
+    navigate('/register');
   };
 
   const logout = () => {
@@ -46,7 +46,7 @@ const Layout: FC = () => {
           <IconButton data-testid='auth-button'>
             {
               localStorage.getItem('accessToken') === null ? 
-                <LoginOutlinedIcon sx={{ color: setColor() }} onClick={login}/> : 
+                <LoginOutlinedIcon sx={{ color: setColor() }} onClick={register}/> : 
                 <LogoutOutlinedIcon sx={{ color: setColor() }} onClick={logout}/>
             }
           </IconButton>
