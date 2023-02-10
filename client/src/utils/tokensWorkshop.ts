@@ -10,3 +10,10 @@ export const removeTokens = () => {
   localStorage.removeItem('refreshToken');
 };
 
+export const getRefreshToken = () => {
+  return localStorage.getItem('refreshToken');
+};
+
+export const getAccessToken = () => {
+  return localStorage.getItem('accessToken');
+};
