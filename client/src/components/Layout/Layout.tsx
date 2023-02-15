@@ -13,7 +13,7 @@ import './style.scss';
 
 const Layout: FC = () => {
   const navigate = useNavigate();
-  const [mode, setMode] = useState('light');
+  const [mode, setMode] = useState(() => localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light');
   const theme = useMemo(() => createTheme(mode === 'light' ? lightTheme : darkTheme), [mode]);
 
   const setTheme = () => {
@@ -22,7 +22,6 @@ const Layout: FC = () => {
   };
 
   useEffect(() => {
-    setMode(String(localStorage.getItem('theme')));
   },[mode]);
 
   const register = () => {

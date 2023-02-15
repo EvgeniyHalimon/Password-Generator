@@ -11,9 +11,9 @@ export const removeTokens = () => {
 };
 
 export const getRefreshToken = () => {
-  return localStorage.getItem('refreshToken');
+  return localStorage.getItem('refreshToken') ?? 'token';
 };
 
 export const getAccessToken = () => {
-  return localStorage.getItem('accessToken');
+  return localStorage.getItem('accessToken') ?? 'token';
 };

@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import FormInput from '../../components/FormInput/FormInput';
 import { SubmitButton } from '../../components/SubmitButton/SubmitButton';
 import { LOGIN } from '../../constants/backendConstants';
-import { postDataToBackend } from '../../utils/axios';
+import useAxios from '../../hooks/useAxios';
 import { saveTokens } from '../../utils/tokensWorkshop';
 
 const validationSchema = yup.object({
@@ -25,6 +25,7 @@ const validationSchema = yup.object({
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const { postDataToBackend } = useAxios();
   
   const formik = useFormik({
     initialValues: {
@@ -34,6 +35,7 @@ const LoginForm = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const data = await postDataToBackend(LOGIN, values);
+      console.log('🚀 ~ file: Login.tsx:38 ~ onSubmit: ~ data', data);
       if(data.data){
         navigate('/dashboard');
         saveTokens(data.data);

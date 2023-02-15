@@ -1,69 +1,40 @@
 import axios from 'axios';
+import dayjs from 'dayjs';
+import jwt_decode from 'jwt-decode';
 
-import { getAccessToken, getRefreshToken } from './tokensWorkshop';
+import { BASE_URL, REFRESH } from '../constants/backendConstants';
+
+import { getAccessToken, /* getRefreshToken, */ saveTokens } from './tokensWorkshop';
+
+let accessToken = getAccessToken() ? getAccessToken() : null;
+console.log('🚀 ~ file: axios.ts:10 ~ accessToken', accessToken);
 
 const axiosAbstraction = axios.create({
-  baseURL: 'http://localhost:3210',
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
+    Authorization: `Bearer ${accessToken}`, 
   },
+},
+);
+
+axiosAbstraction.interceptors.request.use(async req => {
+  if(!accessToken){
+    console.log('🚀 ~ file: axios.ts:39 ~ accessToken', accessToken);
+    accessToken = getAccessToken() !== null ? getAccessToken() : null;
+    console.log('🚀 ~ file: axios.ts:41 ~ accessToken', accessToken);
+    req.headers.Authorization = `Bearer ${accessToken}`;
+  }
+
+  const user: any = jwt_decode(String(accessToken));
+  console.log('🚀 ~ file: axios.ts:43 ~ user', user);
+  const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 1;
+
+  if(!isExpired) return req;
+
+  const response = await axios.get(REFRESH);
+
+  saveTokens(response.data);
+  req.headers.Authorization = `Bearer ${response.data.accessToken}`;
+  return req;
 });
-  
-export const getDataFromBackend = (url: string): Promise<any> => {
-  return axiosAbstraction.get(`${url}`);
-};
-  
-export const postDataToBackend = (url: string, data: any): Promise<any> => {
-  return axiosAbstraction.post(`${url}`, data);
-};
-  
-export const putDataToBackend = (url: string, data: any): Promise<any> => {
-  return axiosAbstraction.put(`${url}`, data);
-};
-  
-export const deleteDataFromBackend = (url: string): Promise<any> => {
-  return axiosAbstraction.delete(`${url}`);
-};
-
-axiosAbstraction.interceptors.request.use(
-  (config) => {
-    const token = getAccessToken();
-    if (token) {
-      config.headers['x-access-token'] = token;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
-
-axiosAbstraction.interceptors.response.use(
-  (res) => {
-    return res;
-  },
-  async (err) => {
-    const originalConfig = err.config;
-    if (err.response) {
-      // Access Token was expired
-      if (err.response.status === 401 && !originalConfig._retry) {
-        originalConfig._retry = true;
-        try {
-          const accessToken = await getRefreshToken();
-          localStorage.setItem('accessToken', String(accessToken));
-          axiosAbstraction.defaults.headers.common['x-access-token'] = accessToken;
-          return axiosAbstraction(originalConfig);
-        } catch (error: any) {
-          if (error.response && error.response.data) {
-            return Promise.reject(error.response.data);
-          }
-          return Promise.reject(error);
-        }
-      }
-      if (err.response.status === 403 && err.response.data) {
-        return Promise.reject(err.response.data);
-      }
-    }
-    return Promise.reject(err);
-  },
-);

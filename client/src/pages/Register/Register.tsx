@@ -8,7 +8,7 @@ import FormInput from '../../components/FormInput/FormInput';
 import { SignInReminderText } from '../../components/SignInReminderText/SignInReminderText';
 import { SubmitButton } from '../../components/SubmitButton/SubmitButton';
 import { REGISTER } from '../../constants/backendConstants';
-import { postDataToBackend } from '../../utils/axios';
+import useAxios from '../../hooks/useAxios';
 import { saveTokens } from '../../utils/tokensWorkshop';
 
 const validationSchema = yup.object({
@@ -36,6 +36,8 @@ const validationSchema = yup.object({
 
 const RegisterForm = () => {
   const navigate = useNavigate();
+  const { postDataToBackend } = useAxios();
+  
   const formik = useFormik({
     initialValues: {
       username: '',

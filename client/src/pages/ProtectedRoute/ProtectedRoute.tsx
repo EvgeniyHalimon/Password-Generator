@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 interface IProtecedRoute{
-    user: any,
+  user: any,
 }
 
 const ProtectedRoute: FC<IProtecedRoute> = ({ user }) => {
