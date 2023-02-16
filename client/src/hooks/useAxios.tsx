@@ -1,9 +1,7 @@
 import axios from 'axios';
-import dayjs from 'dayjs';
-import jwt_decode from 'jwt-decode';
 
 import { BASE_URL, REFRESH } from '../constants/backendConstants';
-import { getAccessToken, saveTokens, getRefreshToken } from '../utils/tokensWorkshop';
+import { getAccessToken, saveTokens, getRefreshToken, removeTokens } from '../utils/tokensWorkshop';
 
 const useAxios = () => {
   const accessToken = getAccessToken();
@@ -31,27 +29,34 @@ const useAxios = () => {
   const deleteDataFromBackend = (url: string): Promise<any> => {
     return axiosInstance.delete(`${url}`);
   };
-  
-  axiosInstance.interceptors.request.use(async req => {
-    const user: any = jwt_decode(accessToken);
-    console.log('🚀 ~ file: useAxios.tsx:37 ~ useAxios ~ user', user);
-    const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 1;
-    
-    if(!isExpired) return req;
-    
-    const response = await axios({
-      method: 'GET',
-      url: REFRESH,
-      headers: {
-        Authorization: `Bearer ${refreshToken}`, 
-      },
-    });
-        
-    saveTokens(response.data);
-        
-    req.headers.Authorization = `Bearer ${response.data.accessToken}`;
-    return req;
-  });
+
+  axiosInstance.interceptors.response.use(
+    (res) => {
+      return res;
+    },
+    async (err) => {
+      const originalRequest = err.config;
+      axiosInstance.defaults.headers['Authorization'] =  `Bearer ${refreshToken}`;
+      if (err.response.status === 403 && err.response) {
+        try {
+          const response = await getDataFromBackend(REFRESH);
+          if (response?.status === 200) {
+            saveTokens(response.data);
+            return axiosInstance({
+              ...originalRequest,
+              headers: { ...originalRequest.headers, Authorization: `Bearer ${response.data.accessToken}` },
+            });
+          }
+        } catch (error: any) {
+          if (error.response && error.response.data) {
+            removeTokens();
+            return Promise.reject(error.response.data);
+          }
+          return Promise.reject(error);
+        }
+      }
+    },
+  );
     
   return { getDataFromBackend, postDataToBackend, putDataToBackend, deleteDataFromBackend };
 };

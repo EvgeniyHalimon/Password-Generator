@@ -10,7 +10,6 @@ const Dashboard = () => {
 
   const getUsers = async () => {
     const data = await getDataFromBackend(GET_ALL_USERS);
-    console.log('🚀 ~ file: Dashboard.tsx:12 ~ getUsers ~ data', data.data);
     setUsers(data.data);
   };
 
@@ -21,7 +20,6 @@ const Dashboard = () => {
   return(
     <>
       <h1>Dashboard</h1>
-      {/* <button onClick={getUsers}>Get all users</button> */}
       {users.map((user:any) => 
         <p key={uid()}>{user.username}</p>,
       )}
