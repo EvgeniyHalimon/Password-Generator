@@ -3,18 +3,21 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { Box, IconButton, AppBar, Toolbar, Typography } from '@mui/material';
-import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FC, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { AuthContext } from '../../context/AuthContext';
 
 import { removeTokens } from '../../utils/tokensWorkshop';
+import './Navigation.scss';
 
 interface INavigation{
     mode: string | null,
-    getThemeColor: any,
     setTheme: any
 }
 
-const Navigation: FC<INavigation> = ({ mode, getThemeColor, setTheme }) => {
+const Navigation: FC<INavigation> = ({ mode, setTheme }) => {
+  const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const register = () => {
@@ -22,29 +25,39 @@ const Navigation: FC<INavigation> = ({ mode, getThemeColor, setTheme }) => {
   };
 
   const logout = () => {
+    setUser(null);
     removeTokens();
     navigate('/login');
   };
 
   return (
-    <AppBar position='sticky' color='secondary'>
-      <Toolbar>
-        <Box display='flex' alignItems='center'>
-          <IconButton>
-            &#128031;
-          </IconButton>
-          <Typography variant='h1'>Carasique</Typography>
+    <AppBar position='sticky' color='primary'>
+      <Toolbar className='toolbar'>
+        <Box display='flex' alignItems='center' gap={3}>
+          <Box display='flex' alignItems='center' gap={1}>
+            <IconButton color='inherit'>
+              &#128031;
+            </IconButton>
+            <Typography variant='h1'>Carasique</Typography>
+          </Box>
+          {user &&
+            (<>
+              <Typography variant='h6'><Link to='/dashboard'>Dashboard</Link></Typography>
+              <Typography variant='h6'><Link to='/password-generator'>Password Generator</Link></Typography>
+              <Typography variant='h6'><Link to='/password-list'>Password List</Link></Typography>
+            </>)
+          }
         </Box>
-        <Box id='icon-buttons'>
+        <Box>
           <IconButton data-testid='auth-button'>
             {
               localStorage.getItem('accessToken') === null ? 
-                <LoginOutlinedIcon sx={{ color: getThemeColor() }} onClick={register}/> : 
-                <LogoutOutlinedIcon sx={{ color: getThemeColor() }} onClick={logout}/>
+                <LoginOutlinedIcon sx={{ color: 'white' }} onClick={register}/> : 
+                <LogoutOutlinedIcon sx={{ color: 'white' }} onClick={logout}/>
             }
           </IconButton>
           <IconButton data-testid='switch-theme-button' onClick={() => setTheme()}>
-            {mode === 'light' ? <LightModeIcon sx={{ color: getThemeColor() }} /> : <DarkModeIcon sx={{ color: getThemeColor() }} />}
+            {mode === 'light' ? <LightModeIcon sx={{ color: 'white' }} /> : <DarkModeIcon sx={{  color: 'white' }} />}
           </IconButton>
         </Box>
       </Toolbar>
