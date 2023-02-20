@@ -1,15 +1,16 @@
 import { Box } from '@mui/material';
 import { useFormik } from 'formik';
-import { memo } from 'react';
+import { memo, useContext } from 'react';
 import { useNavigate } from 'react-router';
 import * as yup from 'yup';
 
 import FormInput from '../../components/FormInput/FormInput';
 import { SubmitButton } from '../../components/SubmitButton/SubmitButton';
 import { LOGIN } from '../../constants/backendConstants';
+import { AuthContext } from '../../context/AuthContext';
 import useAxios from '../../hooks/useAxios';
 
-import { saveTokens } from '../../utils/tokensWorkshop';
+import { getAccessToken, saveTokens } from '../../utils/tokensWorkshop';
 
 const validationSchema = yup.object({
   email: yup
@@ -27,6 +28,7 @@ const validationSchema = yup.object({
 const LoginForm = () => {
   const navigate = useNavigate();
   const { postDataToBackend } = useAxios();
+  const { setUser } = useContext(AuthContext);
   
   const formik = useFormik({
     initialValues: {
@@ -38,6 +40,7 @@ const LoginForm = () => {
       const data = await postDataToBackend(LOGIN, values);
       if(data.data){
         saveTokens(data.data);
+        setUser(getAccessToken());
         navigate('/dashboard');
       }
     },

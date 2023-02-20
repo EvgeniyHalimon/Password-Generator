@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useContext } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { Layout } from './components/Layout';
+import { AuthContext } from './context/AuthContext';
 import { Dashboard } from './pages/Dashboard/Dashboard';
 import { Login } from './pages/Login/Login';
 import PasswordGenerator from './pages/PasswordGenerator/PasswordGenerator';
@@ -12,10 +13,7 @@ import { Welcome } from './pages/Welcome/Welcome';
 import './App.scss';
 
 function App() {
-  const [accessToken, setAccessToken] = useState<string | null>(() => localStorage.getItem('accessToken') ? localStorage.getItem('accessToken') : null);
-  
-  useEffect(() => {
-  },[accessToken]);
+  const { user } = useContext(AuthContext);
 
   return (
     <Routes>
@@ -23,7 +21,7 @@ function App() {
         <Route path='/' element={<Welcome />}/>
         <Route path='/login' element={<Login />}/>
         <Route path='/register' element={<Register />}/>
-        <Route element={<ProtectedRoute user={accessToken}/>}>
+        <Route element={<ProtectedRoute user={user}/>}>
           <Route path='/dashboard' element={<Dashboard />}/>
           <Route path='/password-generator' element={<PasswordGenerator />}/>
           <Route path='/password-list' element={<PasswordList />}/>
