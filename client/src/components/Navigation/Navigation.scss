@@ -2,3 +2,21 @@
     display: flex;
     justify-content: space-between;
 }
+
+.page-link{
+    transition: all .3s ease;
+}
+
+.page-link-active{
+    transform: scale(1.05);
+    border: 1px solid salmon;
+    border-radius: 5px;
+    padding: 1px 3px;
+}
+
+.page-link:hover{
+    transform: scale(1.05);
+    border: 1px solid salmon;
+    border-radius: 5px;
+    padding: 1px 3px;
+}
