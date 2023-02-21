@@ -1,11 +1,10 @@
 import bcrypt from 'bcrypt';
 
 import jwt, { Secret } from 'jsonwebtoken';
-import { ObjectId } from 'mongoose';
 
 import { SALT_ROUNDS } from '../constants/constants';
 
-import { ILoginService } from '../types/types';
+import { IDType, ILoginService } from '../types/types';
 import { userRepository } from '../users/users.repository';
 import { userService } from '../users/users.service';
 
@@ -59,7 +58,7 @@ const authorizationService = {
       });
     }
   },
-  refreshToken: async (id: ObjectId | string) => {
+  refreshToken: async (id: IDType) => {
     const foundUser = await userService.findOneUser(id);
     // evaluate jwt 
     if(foundUser){

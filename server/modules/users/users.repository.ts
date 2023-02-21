@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongoose';
+import { IDType } from '../types/types';
 
 import { User } from './users.entity';
 
@@ -10,7 +10,7 @@ interface IUser{
 }
 
 const userRepository = {
-  findUserById: async (id: ObjectId | string) => {
+  findUserById: async (id: IDType) => {
     return await User.findById(id).exec();
   },
   findUser: async (email: string) => {
@@ -19,7 +19,7 @@ const userRepository = {
   findAllUsers: async () => {
     return await User.find();
   },
-  deleteUser: async (id: ObjectId | string) => {
+  deleteUser: async (id: IDType) => {
     return await User.findByIdAndDelete(id);
   },
   createNewUser: async(userObject: IUser) => {

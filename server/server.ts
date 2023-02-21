@@ -12,6 +12,7 @@ import errorHandler from './middleware/errorHandler';
 import { logger } from './middleware/logEvents';
 import verifyJWT from './middleware/verifyJWT';
 import authController from './modules/authorization/authorization.controller';
+import passwordController from './modules/password/password.controller';
 import userController from './modules/users/users.controller';
 
 dotenv.config();
@@ -55,6 +56,7 @@ app.use((err: ValidationError, req: Request, res: Response, next: NextFunction) 
 app.use(verifyJWT);
 app.use('/auth', authController);
 app.use('/users', userController);
+app.use('/password', passwordController);
 
 mongoose.connection.once('open', () => {
   console.log('Connected to MongoDB');

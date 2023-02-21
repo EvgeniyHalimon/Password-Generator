@@ -1,11 +1,10 @@
-import { ObjectId } from 'mongoose';
-
 import { CustomError } from '../../shared/CustomError';
+import { IDType } from '../types/types';
 
 import { userRepository } from './users.repository';
 
 const userService = {
-  findOneUser : async (id: ObjectId | string) => {
+  findOneUser : async (id: IDType) => {
     const user = await userRepository.findUserById(id);
     if (!user){
       throw new CustomError({ message: `User ID ${id} not found`, status: 404 });
@@ -33,7 +32,7 @@ const userService = {
     } 
     return users;
   },
-  deleteUser : async (id: ObjectId | string) => {
+  deleteUser : async (id: IDType) => {
     const user = await userRepository.findUserById(id);
     if (!user){
       throw new CustomError({ message: `User ID ${id} not found`, status: 404 });
@@ -42,5 +41,5 @@ const userService = {
   },
 };
 
-export{ userService };
+export { userService };
    

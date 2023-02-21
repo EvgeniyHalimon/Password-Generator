@@ -10,8 +10,6 @@ import { authorizationService } from './authorization.service';
 import { loginSchema } from './validators/loginSchema';
 import { registerSchema } from './validators/registerSchema';
 
-//каким образом все эти роуты я могу использовать далее? (точнее как их правильно заимпортить)
-
 router.post('/login', validate(loginSchema, {}, {}), async (req: Request, res: Response) => {
   try {
     const token: any = await authorizationService.login(req.body);
