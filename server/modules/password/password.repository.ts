@@ -1,16 +1,13 @@
-import { IDType } from '../types/types';
+import { IDType, IPasswordObject } from '../types/types';
 
 import { Password } from './password.entity';
 
-interface IPasswordObject{
-    userId: IDType,
-    password: string,
-    applicationName: string
-}
-
 const passwordRepository = {
-  findByID: async (id: IDType) => {
-    return await Password.find({ userId: id }).exec();
+  findByUserID: async (id: IDType) => {
+    return await Password.find({ userId: id });
+  },
+  findByPasswordID: async (id: IDType) => {
+    return await Password.find({ _id: id }).exec();
   },
   deletePassword: async (id: IDType) => {
     return await Password.findByIdAndDelete(id);

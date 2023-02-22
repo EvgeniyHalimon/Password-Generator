@@ -11,3 +11,12 @@ export interface ILoginService{
 export interface CustomRequest extends Request{
     id: IDType
 }
+
+export interface IPasswordObject{
+    userId: IDType,
+    password: {
+      iv: string,
+      password: string,
+    },
+    applicationName: string
+}

@@ -7,7 +7,10 @@ const passwordSchema = new Schema({
     ref: 'User',
   },
   password: {
-    type: String,
+    type: {
+      iv: String,
+      password: String,
+    },
     required: true,
   },
   applicationName: {

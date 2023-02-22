@@ -25,6 +25,9 @@ const userRepository = {
   createNewUser: async(userObject: IUser) => {
     return await User.create(userObject);
   },
+  findInnerPassword: async (id: IDType) => {
+    return await User.findById(id).select('+innerPassword').exec();
+  },
 };
 
 export{ userRepository };
