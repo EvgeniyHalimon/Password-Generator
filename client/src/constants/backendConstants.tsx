@@ -2,7 +2,8 @@ export const BASE_URL = 'http://localhost:3210';
 
 enum Routes {
     auth = '/auth',
-    users = '/users'
+    users = '/users',
+    password = '/password'
 }
 
 //auth

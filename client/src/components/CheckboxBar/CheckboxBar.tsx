@@ -7,7 +7,7 @@ import { IPasswordOptions } from '../types';
 
 interface ICheckboxBar{
   passwordOptions: IPasswordOptions,
-  updatePasswordOption: any,
+  updatePasswordOption(field: keyof IPasswordOptions, isChecked: boolean): void,
 }
 
 const CheckboxBar: FC<ICheckboxBar> = ({ passwordOptions, updatePasswordOption }) => {

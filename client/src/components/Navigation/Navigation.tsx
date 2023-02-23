@@ -16,7 +16,7 @@ import { RegisterButton } from './RegisterButton';
 
 interface INavigation{
     mode: string | null,
-    setTheme: any
+    setTheme() : void
 }
 
 const routes = [{ route:'/dashboard', title: 'Dashboard' },{ route:'/password-generator', title: 'Password Generator' },{ route:'/password-list', title: 'Password List' }];

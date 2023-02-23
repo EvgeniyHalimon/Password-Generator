@@ -2,6 +2,8 @@ import crypto from 'crypto';
 
 import dotenv from 'dotenv';
 
+import { IEncryptedPassword } from '../modules/types/types';
+
 dotenv.config();
 
 const key = process.env.SECRET_KEY;
@@ -21,7 +23,7 @@ export const encrypt = (password: string) => {
   };
 };
 
-export const decrypt = (encryption: any) => {
+export const decrypt = (encryption: IEncryptedPassword) => {
   const decipher = crypto.createDecipheriv(
     'aes-256-ctr',
     Buffer.from(key),
