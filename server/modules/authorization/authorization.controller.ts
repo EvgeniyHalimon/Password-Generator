@@ -1,7 +1,7 @@
 import express, { Response, Request } from 'express';
 import { validate } from 'express-validation';
 
-import { CustomRequest } from '../types/types';
+import { CustomRequest, ITokens } from '../types/types';
 
 const router = express.Router();
 
@@ -12,7 +12,7 @@ import { registerSchema } from './validators/registerSchema';
 
 router.post('/login', validate(loginSchema, {}, {}), async (req: Request, res: Response) => {
   try {
-    const token: any = await authorizationService.login(req.body);
+    const token: ITokens = await authorizationService.login(req.body);
     // Send authorization roles and access token to username
     res.json({ refreshToken : token.refreshToken, accessToken: token.accessToken });
   } catch (error: any) {
@@ -31,7 +31,7 @@ router.post('/register', validate(registerSchema, {}, {}), async (req: Request, 
 
 router.get('/refresh', async (req: CustomRequest, res: Response) => {
   try {
-    const token: any = await authorizationService.refreshToken(req.id);
+    const token: ITokens = await authorizationService.refreshToken(req.id);
     res.json({ refreshToken : token.refreshToken, accessToken: token.accessToken });
   } catch (error: any) {
     res.status(500).json({ 'message': error.message });

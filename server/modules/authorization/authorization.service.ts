@@ -4,14 +4,15 @@ import jwt, { Secret } from 'jsonwebtoken';
 
 import { SALT_ROUNDS } from '../constants/constants';
 
-import { IDType, ILoginService } from '../types/types';
+import { IDType, ITokens, IUser } from '../types/types';
 import { userRepository } from '../users/users.repository';
 import { userService } from '../users/users.service';
 
 const ACCESS_KEY: Secret | any = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_KEY: Secret | any = process.env.REFRESH_TOKEN_SECRET;
 
-const generateTokens = (foundUser: any) => {
+//! TODO: remove any
+const generateTokens = (foundUser: IUser | any) => {
   const accessToken = jwt.sign(
     {
       'userInfo': {
@@ -34,8 +35,8 @@ const generateTokens = (foundUser: any) => {
 };
 
 const authorizationService = {
-  login: async (body: any) : Promise<ILoginService | undefined> => {
-    const foundUser: any = await userService.findUser(body.email);
+  login: async (body: IUser) : Promise<ITokens | undefined> => {
+    const foundUser = await userService.findUser(body.email);
     // evaluate password 
     const match = await bcrypt.compare(body.password, foundUser.password);
     if (match) {
@@ -43,7 +44,7 @@ const authorizationService = {
       return generateTokens(foundUser);
     }
   },
-  newUser: async (body: any) => {
+  newUser: async (body: IUser) => {
     const foundUser = await userService.checkIfUserExist(body.email);
     if(!foundUser){
       //encrypt the password
@@ -58,7 +59,7 @@ const authorizationService = {
       });
     }
   },
-  refreshToken: async (id: IDType) => {
+  refreshToken: async (id: IDType): Promise<ITokens | undefined> => {
     const foundUser = await userService.findOneUser(id);
     // evaluate jwt 
     if(foundUser){

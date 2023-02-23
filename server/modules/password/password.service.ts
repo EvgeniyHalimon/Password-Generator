@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 
 import { CustomError } from '../../shared/CustomError';
 import { decrypt, encrypt } from '../../shared/cipherMachine';
-import { IDType, IPasswordObject } from '../types/types';
+import { IDType, IPasswordBody, IPasswordObject, IUser } from '../types/types';
 
 import { userRepository } from '../users/users.repository';
 
@@ -10,16 +10,15 @@ import { passwordRepository } from './password.repository';
 
 
 const passwordService = {
-  createPassword: async (id: IDType, body: any) => {
+  createPassword: async (id: IDType, body: IPasswordBody) => {
     const encryptedPassword = encrypt(body.password);
-    console.log('🚀 ~ file: password.service.ts:10 ~ createPassword: ~ encryptedPassword:', encryptedPassword);
     await passwordRepository.createNewPassword({
       password: encryptedPassword,
       applicationName: body.applicationName,
       userId: id,
     });
   },
-  updatePassword: async (body: any) => {
+  updatePassword: async (body: IPasswordObject) => {
     const password = await passwordRepository.findAndUpdate(body.id, body);
     if (!password){
       throw new CustomError({ message: 'Password not found', status: 404 });
@@ -40,19 +39,20 @@ const passwordService = {
     }
     return passwords;
   },
-  findPasswordByApplicationName: async (id: IDType, applicationName: string) => {
-    const passwords: any = await passwordRepository.findByUserID(id);
+  getPasswords: async (id: IDType, search: string, limit: number, page: number) => {
+    const passwords = await passwordRepository.findByIDAndPaginate(id, search, limit, page);
     if (!passwords){
       throw new CustomError({ message: 'Passwords not found not found', status: 404 });
     }
-    return passwords.filter((password) => password.applicationName === applicationName);
+    return passwords;
   },
-  getPassword: async (id: IDType, body: any) => {
+  decryptPasswords: async (id: IDType, body: IUser) => {
     const foundUser = await userRepository.findInnerPassword(id);
     // evaluate password 
     const match = await bcrypt.compare(body.innerPassword, foundUser.innerPassword);
     if(match){
       const passwords = await passwordRepository.findByUserID(id);
+      //! TODO: remove any
       const result = passwords.map((password: IPasswordObject | any) => {
         return { ...password.toJSON(), password: decrypt(password.password) };
       });

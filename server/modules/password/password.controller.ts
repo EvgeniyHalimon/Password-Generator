@@ -15,19 +15,21 @@ router.get('/all-passwords', async (req: CustomRequest, res: Response) => {
   }
 });
 
-router.get('/', async (req: CustomRequest, res: Response) => {
+router.get('/get-passwords', async (req: CustomRequest, res: Response) => {
   try {
-    const password = await passwordService.getPassword(req.id, req.body);
+    const password = await passwordService.decryptPasswords(req.id, req.body);
     res.status(200).json(password);
   } catch (error) {
     res.status(error.status).json({ 'message': error.message });    
   }
 });
 
-router.get('/?:applicationName', async (req: CustomRequest, res: Response) => {
+router.get('/', async (req: CustomRequest, res: Response) => {
   try {
-    const applicationName = req.params.applicationName;
-    const passwords = await passwordService.findPasswordByApplicationName(req.id, applicationName);
+    const page = Number(req.query.page) - 1 || 0;
+    const limit = Number(req.query.limit) || 5;
+    const search = req.query.search.toString() || '';
+    const passwords = await passwordService.getPasswords(req.id, search, limit, page);
     res.status(200).json(passwords);
   } catch (error) {
     res.status(error.status).json({ 'message': error.message });    
