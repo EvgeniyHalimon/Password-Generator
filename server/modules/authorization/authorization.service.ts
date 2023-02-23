@@ -17,6 +17,7 @@ const generateTokens = (foundUser: IUser | any) => {
     {
       'userInfo': {
         'id': foundUser._id,
+        'role': foundUser.role,
       },
     },
     ACCESS_KEY,
@@ -26,6 +27,7 @@ const generateTokens = (foundUser: IUser | any) => {
     {
       'userInfo': {
         'id': foundUser._id,
+        'role': foundUser.role,
       },
     },
     REFRESH_KEY,

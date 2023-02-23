@@ -3,18 +3,22 @@ import { ObjectId } from 'mongoose';
 
 export type IDType = ObjectId | string
 
+export type Roles = 'admin' | 'user' | 'premium'
+
 export interface ITokens{
     accessToken: string,
     refreshToken: string
 }
 
 export interface CustomRequest extends Request{
-    id: IDType
+    id: IDType,
+    role: Roles
 }
 
 export interface IEncryptedPassword{
     iv: string,
     password: string,
+    _id?: IDType
 }
 
 export interface IPasswordObject{
@@ -34,7 +38,21 @@ export interface IUser{
     password: string,
     innerPassword: string,
     username: string,
-    role?: 'admin' | 'user' | 'premium',
+    role?: Roles,
     id?: IDType,
     _id?: IDType,
+}
+
+export interface IQueries{
+    page: number,
+    limit: number,
+    search: string,
+    sortBy: string | any,
+    sort: 'asc' | 'desc' | any,
+}
+
+export interface IDecoded{
+  userInfo: { id: IDType, role: Roles, },
+  iat: number,
+  exp: number
 }

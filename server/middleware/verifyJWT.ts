@@ -24,6 +24,7 @@ const verifyJWT = (req: CustomRequest, res: Response, next: NextFunction) => {
     (err: any, decoded: any) => {
       if(err) throw new CustomError({ message: 'Forbidden', status: 403 });
       req.id = decoded.userInfo.id;
+      req.role = decoded.userInfo.role;
       next();
     },
   );
