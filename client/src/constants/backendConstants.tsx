@@ -28,6 +28,9 @@ export const PASSWORDS = `${Routes.password}`;
 
 export const PASSWORD = `${PASSWORDS}/`;
 
+
+export const DELETE_PASSWORDS = `${PASSWORDS}/delete`;
+
 export const GET_PASSWORDS = (queries : IQueries): string => {
   return `${PASSWORDS}?search=${queries.search}&page=${queries.page}&limit=${queries.limit}&sortBy=${queries.sortBy}&sort=${queries.sort}`;
 };

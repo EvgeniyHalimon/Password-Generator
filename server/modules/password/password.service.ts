@@ -30,12 +30,15 @@ const passwordService = {
     } 
     return password;
   },
-  deletePassword: async (id: IDType) => {
-    const password = await passwordRepository.findByUserID(id);
-    if (!password){
-      throw new CustomError({ message: 'Password not found', status: 404 });
-    } 
-    return passwordRepository.deletePassword(id);
+  deletePassword: (ids: IDType[]) => {
+    console.log('🚀 ~ file: password.service.ts:34 ~ ids:', ids);
+    ids.forEach(async (id: string) => {
+      const password = await passwordRepository.findByUserID(id);
+      if (!password){
+        throw new CustomError({ message: 'Password not found', status: 404 });
+      } 
+      return passwordRepository.deletePassword(id);
+    });
   },
   getPasswords: async (id: IDType, queries: IQueries) => {
     const passwords = await passwordRepository.findByIDAndPaginate(id, queries);

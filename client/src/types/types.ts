@@ -39,12 +39,14 @@ export interface ITablehead {
 }
 
 export interface HeadCells {
-  id: keyof ITablehead;
-  label: string;
+  id: keyof ITablehead,
+  label: string
 }
 
 export interface ITableToolbar {
-  numSelected: number;
+  numSelected: number,
+  passwords: string[],
+  setSelected(value: string[]): void
 }
 
 export interface IEncryptedPassword{
@@ -54,7 +56,7 @@ export interface IEncryptedPassword{
 }
 
 export interface IPasswordObject{
-    id?: string,
+    _id: string,
     userId: string,
     password: IEncryptedPassword | string,
     applicationName: string

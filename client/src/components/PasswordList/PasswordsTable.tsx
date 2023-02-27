@@ -12,16 +12,12 @@ import { StyledPagination } from '../StyledComponents/StyledPagination';
 import TableToolbar from './TableToolbar';
 import Tablehead from './Tablehead';
 
-
-const rows: any[] = [
-];
-
 const PasswordsTable = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<OrderOption>('asc');
   const [sortBy, setSortBy] = useState<keyof ITablehead>('applicationName');
-  const [selected, setSelected] = useState<readonly string[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
   const [passwords, setPasswords] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const LIMIT_PER_PAGE = 10;
@@ -47,19 +43,19 @@ const PasswordsTable = () => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = passwords.map((n: any) => n.applicationName);
+      const newSelected = passwords.map((n: any) => n._id);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: readonly string[] = [];
+  const handleClick = (event: React.MouseEvent<unknown>, id: string) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected: string[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -78,7 +74,7 @@ const PasswordsTable = () => {
     setPage(Number(newPage));
   };
 
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
+  const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
   let isPasswordsFetching = false;
   const getPasswords = async() => {
@@ -93,17 +89,19 @@ const PasswordsTable = () => {
     }
   };
 
+  console.log('$$$$', selected)
+
   useEffect(() => {
     getPasswords();
     return () => {
       isPasswordsFetching = true;
     };
-  },[page, search, sort, sortBy]);
+  },[page, search, sort, sortBy, selected]);
 
   return (
     <Box sx={{ width: '75%', margin: '0 auto' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <TableToolbar numSelected={selected.length} />
+        <TableToolbar numSelected={selected.length} passwords={selected} setSelected={setSelected}/>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -119,17 +117,17 @@ const PasswordsTable = () => {
             />
             <TableBody>
               {passwords.map((row: IPasswordObject) => {
-                const isItemSelected = isSelected(row.applicationName);
-                const labelId = `enhanced-table-checkbox-${row.id}`;
+                const isItemSelected = isSelected(row._id);
+                const labelId = `enhanced-table-checkbox-${row._id}`;
 
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.applicationName)}
+                    onClick={(event) => handleClick(event, row._id)}
                     role='checkbox'
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.id}
+                    key={row._id}
                     selected={isItemSelected}
                   >
                     <TableCell padding='checkbox' sx={{ pl: 1 }}>
@@ -150,7 +148,7 @@ const PasswordsTable = () => {
                     >
                       {row.applicationName}
                     </TableCell>
-                    <TableCell align='center'>{typeof row.password === 'object' ? '******' : row.password}</TableCell>
+                    <TableCell align='center'>{typeof row.password === 'object' ? '********' : row.password}</TableCell>
                   </TableRow>
                 );
               })}

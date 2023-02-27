@@ -26,8 +26,8 @@ const useAxios = () => {
     return axiosInstance.put(`${url}`, data);
   };
     
-  const deleteDataFromBackend = (url: string): Promise<any> => {
-    return axiosInstance.delete(`${url}`);
+  const deleteDataFromBackend = (url: string, data?: any): Promise<any> => {
+    return axiosInstance.delete(`${url}`, data);
   };
 
   axiosInstance.interceptors.response.use(

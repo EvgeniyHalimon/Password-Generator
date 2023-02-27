@@ -1,14 +1,21 @@
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Toolbar, Typography, IconButton, Box } from '@mui/material';
-import { memo } from 'react';
+import { memo, FC } from 'react';
 
+import { DELETE_PASSWORDS } from '../../constants/backendConstants';
+import useAxios from '../../hooks/useAxios';
 import { ITableToolbar } from '../../types/types';
 import { StyledTextField } from '../StyledComponents/StyledTextField';
 
-const TableToolbar = (props: ITableToolbar) => {
-  const { numSelected } = props;
-  
+const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, setSelected }) => {
+  const { postDataToBackend } = useAxios();
+
+  const deletePasswords = async () => {
+    await postDataToBackend(DELETE_PASSWORDS, { ids: passwords });
+    setSelected([]);
+  };
+
   return (
     <Toolbar
       sx={{
@@ -40,7 +47,7 @@ const TableToolbar = (props: ITableToolbar) => {
                 component='div'
               >
                 {numSelected} selected
-                <IconButton>
+                <IconButton onClick={() => deletePasswords()}>
                   <DeleteIcon sx={{  color: 'black' }}/>
                 </IconButton>
               </Typography> : 
