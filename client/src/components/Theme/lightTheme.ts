@@ -12,7 +12,7 @@ export const lightTheme: ThemeOptions = {
       main: '#f50057',
     },
     background: {
-      paper: '#ffc0cb',
+      paper: '#f1aab7',
       default: '#eccdcc',
     },
     divider: 'rgba(0,0,0,0.68)',

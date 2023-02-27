@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 
 import CheckboxBar from '../../components/CheckboxBar/CheckboxBar';
 
-import { WarningMessages, staticCheckboxPropsList } from '../../components/enums';
 import { IPasswordOptions } from '../../components/types';
+import { WarningMessages, staticCheckboxPropsList } from '../../types/enums';
 
 import PasswordGenerator from './PasswordGenerator';
 

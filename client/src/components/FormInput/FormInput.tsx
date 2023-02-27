@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
 import { FC, memo } from 'react';
 
-import { IFormInput } from '../types';
+import { IFormInput } from '../../types/types';
 import './style.scss';
 
 const FormInput: FC<IFormInput> = ({ 
@@ -19,6 +19,7 @@ const FormInput: FC<IFormInput> = ({
       error={error}
       helperText={helperText}
       className='textfield'
+      autoComplete='off'
       sx={{
         '& label': {
           '&.Mui-focused': {

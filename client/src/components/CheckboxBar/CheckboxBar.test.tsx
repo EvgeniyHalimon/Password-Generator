@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { staticCheckboxPropsList } from '../enums';
+import { staticCheckboxPropsList } from '../../types/enums';
 import { IPasswordOptions } from '../types';
 
 import CheckboxBar from './CheckboxBar';

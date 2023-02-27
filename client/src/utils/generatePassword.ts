@@ -1,4 +1,5 @@
-import { WarningMessages } from './../components/enums';
+import { WarningMessages } from '../types/enums';
+
 import { IPasswordOptions } from './../components/types';
 import { getCharacters } from './getCharacters';
 

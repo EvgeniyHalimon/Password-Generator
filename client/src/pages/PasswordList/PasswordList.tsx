@@ -1,6 +1,11 @@
+import PasswordsTable from '../../components/PasswordList/PasswordsTable';
+
 const PasswordList = () => {
   return(
-    <h1>PasswordList</h1>
+    <>
+      <h1>Search bar</h1>
+      <PasswordsTable/>
+    </>
   );
 };
   
