@@ -46,7 +46,10 @@ export interface HeadCells {
 export interface ITableToolbar {
   numSelected: number,
   passwords: string[],
+  search: string,
   setSelected(value: string[]): void
+  setSearch(value: string): void
+  fetchFunc: any
 }
 
 export interface IEncryptedPassword{

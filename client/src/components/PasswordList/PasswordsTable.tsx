@@ -89,19 +89,24 @@ const PasswordsTable = () => {
     }
   };
 
-  console.log('$$$$', selected)
-
   useEffect(() => {
     getPasswords();
     return () => {
       isPasswordsFetching = true;
     };
-  },[page, search, sort, sortBy, selected]);
+  },[page, search, sort, sortBy]);
 
   return (
     <Box sx={{ width: '75%', margin: '0 auto' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <TableToolbar numSelected={selected.length} passwords={selected} setSelected={setSelected}/>
+        <TableToolbar 
+          numSelected={selected.length} 
+          passwords={selected} 
+          search={search}
+          fetchFunc={getPasswords}
+          setSelected={setSelected}
+          setSearch={setSearch}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

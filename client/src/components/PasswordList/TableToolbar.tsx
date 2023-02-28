@@ -1,20 +1,37 @@
-import AddBoxIcon from '@mui/icons-material/AddBox';
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Toolbar, Typography, IconButton, Box } from '@mui/material';
+/* import debounce from 'lodash.debounce'; */
 import { memo, FC } from 'react';
 
 import { DELETE_PASSWORDS } from '../../constants/backendConstants';
 import useAxios from '../../hooks/useAxios';
 import { ITableToolbar } from '../../types/types';
+import AddPasswordForm from '../AddPasswordForm/AddPasswordForm';
 import { StyledTextField } from '../StyledComponents/StyledTextField';
 
-const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, setSelected }) => {
+const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, search, setSelected, fetchFunc, setSearch }) => {
   const { postDataToBackend } = useAxios();
 
   const deletePasswords = async () => {
     await postDataToBackend(DELETE_PASSWORDS, { ids: passwords });
+    await fetchFunc();
     setSelected([]);
   };
+
+  const handleSearchPassword = (e: any) => {
+    setSearch(e.target.value);
+  };
+
+  /* const debouncedResults = useMemo(() => {
+    return debounce(handleSearchPassword, 1000);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      debouncedResults.cancel();
+    };
+  }); */
 
   return (
     <Toolbar
@@ -37,6 +54,8 @@ const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, setSelected }
             placeholder='Password' 
             variant='outlined' 
             autoComplete='off' 
+            value={search}
+            onChange={(e) => handleSearchPassword(e)}
           />
           <Box display='flex' alignItems='center'>
             {numSelected > 0 ?
@@ -53,9 +72,7 @@ const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, setSelected }
               </Typography> : 
               null
             }
-            <IconButton>
-              <AddBoxIcon sx={{  color: 'black' }}/>
-            </IconButton>
+            <AddPasswordForm fetchFunc={fetchFunc}/>
           </Box>
         </Box>
       </Box>
@@ -64,3 +81,17 @@ const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, setSelected }
 };
 
 export default memo(TableToolbar);
+
+function useMemo(arg0: () => any, arg1: never[]) {
+  throw new Error('Function not implemented.');
+}
+
+
+function debounce(handleChange: any, arg1: number) {
+  throw new Error('Function not implemented.');
+}
+
+
+function useEffect(arg0: () => () => void) {
+  throw new Error('Function not implemented.');
+}

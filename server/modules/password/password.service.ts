@@ -31,7 +31,6 @@ const passwordService = {
     return password;
   },
   deletePassword: (ids: IDType[]) => {
-    console.log('🚀 ~ file: password.service.ts:34 ~ ids:', ids);
     ids.forEach(async (id: string) => {
       const password = await passwordRepository.findByUserID(id);
       if (!password){
