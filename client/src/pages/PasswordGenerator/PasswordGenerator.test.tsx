@@ -3,8 +3,9 @@ import userEvent from '@testing-library/user-event';
 
 import CheckboxBar from '../../components/CheckboxBar/CheckboxBar';
 
-import { IPasswordOptions } from '../../components/types';
+
 import { WarningMessages, staticCheckboxPropsList } from '../../types/enums';
+import { IPasswordOptions } from '../../types/types';
 
 import PasswordGenerator from './PasswordGenerator';
 
@@ -44,7 +45,5 @@ describe('Password generator', () => {
     await userEvent.click(screen.getByTestId('generate-button'));
     expect(screen.getByRole('textbox')).not.toHaveValue(WarningMessages.LENGTH);
     expect(screen.getByRole('textbox')).not.toHaveValue(WarningMessages.OPTION);
-    /* expect(screen.getByRole('textbox')).toHaveDisplayValue(/[\w\p]+ug\[\]~`+!@#=$%^&*()_,.<>?;:'"|-\а-яА-Я\]/i); */
-    /* [\w\p{sc=Cyrillic}]+ug\[\]~`+!@#=$%^&*()_,.<>?;:'"|-\u0400-\u04FF]* */
   });
 });

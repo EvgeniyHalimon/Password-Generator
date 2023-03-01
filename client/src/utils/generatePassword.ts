@@ -1,6 +1,6 @@
 import { WarningMessages } from '../types/enums';
+import { IPasswordOptions } from '../types/types';
 
-import { IPasswordOptions } from './../components/types';
 import { getCharacters } from './getCharacters';
 
 const numbers: number[] = Array(10).fill(0).map((num:number, i:number) => num + i);

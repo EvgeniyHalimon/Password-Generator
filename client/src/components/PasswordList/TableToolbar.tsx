@@ -1,8 +1,6 @@
-
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Toolbar, Typography, IconButton, Box } from '@mui/material';
-/* import debounce from 'lodash.debounce'; */
-import { memo, FC } from 'react';
+import { memo, FC, ChangeEvent } from 'react';
 
 import { DELETE_PASSWORDS } from '../../constants/backendConstants';
 import useAxios from '../../hooks/useAxios';
@@ -19,19 +17,11 @@ const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, search, setSe
     setSelected([]);
   };
 
-  const handleSearchPassword = (e: any) => {
-    setSearch(e.target.value);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTimeout(() => {
+      setSearch(e.target.value);
+    },1000);
   };
-
-  /* const debouncedResults = useMemo(() => {
-    return debounce(handleSearchPassword, 1000);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      debouncedResults.cancel();
-    };
-  }); */
 
   return (
     <Toolbar
@@ -51,11 +41,10 @@ const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, search, setSe
         </Typography>
         <Box display='flex' alignItems='center' justifyContent='space-between' padding={'15px 0 5px 0'}>
           <StyledTextField 
+            type='text'
             placeholder='Password' 
-            variant='outlined' 
-            autoComplete='off' 
-            value={search}
-            onChange={(e) => handleSearchPassword(e)}
+            autoComplete='off'
+            onChange={handleChange}
           />
           <Box display='flex' alignItems='center'>
             {numSelected > 0 ?
@@ -81,17 +70,3 @@ const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, search, setSe
 };
 
 export default memo(TableToolbar);
-
-function useMemo(arg0: () => any, arg1: never[]) {
-  throw new Error('Function not implemented.');
-}
-
-
-function debounce(handleChange: any, arg1: number) {
-  throw new Error('Function not implemented.');
-}
-
-
-function useEffect(arg0: () => () => void) {
-  throw new Error('Function not implemented.');
-}

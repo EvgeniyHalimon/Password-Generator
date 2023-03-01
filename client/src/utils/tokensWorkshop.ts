@@ -1,4 +1,4 @@
-import { ITokens } from '../components/types';
+import { ITokens } from '../types/types';
 
 export const saveTokens = (data: ITokens) => {
   localStorage.setItem('accessToken', data.accessToken);

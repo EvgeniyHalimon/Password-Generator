@@ -1,7 +1,7 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { memo, FC } from 'react';
 
-import { IPasswordOptions } from '../types';
+import { IPasswordOptions } from '../../types/types';
 
 
 interface IPasswordOption{

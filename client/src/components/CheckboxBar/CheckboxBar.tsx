@@ -2,8 +2,8 @@ import { Box, FormGroup, FormLabel } from '@mui/material';
 import { FC, memo } from 'react';
 
 import { staticCheckboxPropsList } from '../../types/enums';
+import { IPasswordOptions } from '../../types/types';
 import PasswordOption from '../PasswordOption/PasswordOption';
-import { IPasswordOptions } from '../types';
 
 interface ICheckboxBar{
   passwordOptions: IPasswordOptions,
