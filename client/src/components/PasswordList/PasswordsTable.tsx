@@ -3,7 +3,7 @@ import { Box, Checkbox, Paper, Table, TableBody, TableCell,
   TableContainer, TableRow } from '@mui/material';
 import { useState, memo, useEffect } from 'react';
 
-import { GET_PASSWORDS } from '../../constants/backendConstants';
+import { GET_PASSWORDS, DECRYPT_PASSWORDS } from '../../constants/backendConstants';
 import useAxios from '../../hooks/useAxios';
 import { OrderOption, ITablehead, IPasswordObject } from '../../types/types';
 
@@ -20,7 +20,7 @@ const PasswordsTable = () => {
   const [selected, setSelected] = useState<string[]>([]);
   const [passwords, setPasswords] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
-  const LIMIT_PER_PAGE = 10;
+  const LIMIT_PER_PAGE = 8;
 
   const queries = {
     search: search,
@@ -30,7 +30,7 @@ const PasswordsTable = () => {
     sort: sort,
   };
 
-  const { getDataFromBackend } = useAxios();
+  const { getDataFromBackend, postDataToBackend } = useAxios();
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -89,6 +89,13 @@ const PasswordsTable = () => {
     }
   };
 
+  //! TODO: how to keep encrypted passwords after request?
+  const getDecryptedPasswords = async (password: string) => {
+    const decryptedPasswords = await postDataToBackend(DECRYPT_PASSWORDS, { innerPassword: password });
+    setTotalPages(decryptedPasswords.data.totalPages);
+    setPasswords(decryptedPasswords.data.passwords);
+  };
+
   useEffect(() => {
     getPasswords();
     return () => {
@@ -107,6 +114,7 @@ const PasswordsTable = () => {
           setSelected={setSelected}
           setSearch={setSearch}
         />
+        <button onClick={() => getDecryptedPasswords('1234')}>test button to get encrypted password</button>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -128,14 +136,12 @@ const PasswordsTable = () => {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row._id)}
-                    role='checkbox'
                     aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row._id}
                     selected={isItemSelected}
                   >
-                    <TableCell padding='checkbox' sx={{ pl: 1 }}>
+                    <TableCell padding='checkbox' sx={{ pl: 1 }} onClick={(event) => handleClick(event, row._id)} >
                       <Checkbox
                         color='primary'
                         checked={isItemSelected}
@@ -162,7 +168,7 @@ const PasswordsTable = () => {
         </TableContainer>
         <StyledPagination
           count={totalPages}
-          page={page + 1}
+          page={page}
           shape='rounded'
           onChange={(e, value) => handleChangePage(e, value)}
         />

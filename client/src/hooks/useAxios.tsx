@@ -14,8 +14,8 @@ const useAxios = () => {
     },
   });
 
-  const getDataFromBackend = (url: string): Promise<any> => {
-    return axiosInstance.get(`${url}`);
+  const getDataFromBackend = (url: string,data?: any): Promise<any> => {
+    return axiosInstance.get(`${url}`, data);
   };
     
   const postDataToBackend = (url: string, data: any): Promise<any> => {
@@ -26,7 +26,7 @@ const useAxios = () => {
     return axiosInstance.put(`${url}`, data);
   };
     
-  const deleteDataFromBackend = (url: string, data: any): Promise<any> => {
+  const deleteDataFromBackend = (url: string, data?: any): Promise<any> => {
     return axiosInstance.delete(`${url}`, data);
   };
 

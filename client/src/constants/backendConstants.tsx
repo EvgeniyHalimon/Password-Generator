@@ -35,4 +35,4 @@ export const GET_PASSWORDS = (queries : IQueries): string => {
   return `${PASSWORDS}?search=${queries.search}&page=${queries.page}&limit=${queries.limit}&sortBy=${queries.sortBy}&sort=${queries.sort}`;
 };
 
-export const DECRYPT_PASSWORDS = `${PASSWORDS}get-passwords`;
+export const DECRYPT_PASSWORDS = `${PASSWORDS}/get-passwords`;

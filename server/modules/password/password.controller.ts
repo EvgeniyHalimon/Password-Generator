@@ -6,7 +6,9 @@ import { passwordService } from './password.service';
 
 const router = express.Router();
 
-router.get('/get-passwords', async (req: CustomRequest, res: Response) => {
+//! TODO: how to refactor and do i need this?
+
+router.post('/get-passwords', async (req: CustomRequest, res: Response) => {
   try {
     const password = await passwordService.decryptPasswords(req.id, req.body);
     res.status(200).json(password);

@@ -8,7 +8,7 @@ import { userRepository } from '../users/users.repository';
 
 import { passwordRepository } from './password.repository';
 
-
+//! TODO: how to refactor and do i need this?
 const passwordService = {
   createPassword: async (id: IDType, role: string, body: IPasswordBody) => {
     const encryptedPassword = encrypt(body.password);
@@ -53,11 +53,12 @@ const passwordService = {
     const match = await bcrypt.compare(body.innerPassword, foundUser.innerPassword);
     if(match){
       const passwords = await passwordRepository.findByUserID(id);
+      const passwordsQuantity = await passwordRepository.passwordQuantity(id);
       //! TODO: remove any
       const result = passwords.map((password: IPasswordObject | any) => {
         return { ...password.toJSON(), password: decrypt(password.password) };
       });
-      return result;
+      return { passwords: result, totalPages: Math.ceil(passwordsQuantity / 8), totalPasswords: passwordsQuantity };
     }
   },
 };

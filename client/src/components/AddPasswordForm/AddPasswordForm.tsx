@@ -45,6 +45,7 @@ const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc }) => {
       if(data.data){
         setOpen(false);
         setPostSuccess(true);
+        //! TODO: how to refresh state without fetchFunc
         fetchFunc();
       }
     },

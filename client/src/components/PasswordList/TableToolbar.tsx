@@ -14,6 +14,8 @@ const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, search, setSe
 
   const [deleteSuccess, setDeleteSuccess] = useState(false);
 
+  //! TODO: how to refresh my state without request to backend?
+  //! TODO: this function works with issue, sometimes it delete, but fetchFunc return previous array
   const deletePasswords = async () => {
     const deleteResponce: any = await postDataToBackend(DELETE_PASSWORDS, { ids: passwords });
     setDeleteSuccess(true);
@@ -36,7 +38,7 @@ const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, search, setSe
         pr: { xs: 1, sm: 1 },
       }}
     >
-      <Box sx={{ width: '100%', p: '1.5rem 0' }}>
+      <Box sx={{ width: '100%', p: '1.3rem 0' }}>
         <Typography
           sx={{ flex: '1 1 100%' }}
           variant='h1'
@@ -45,7 +47,7 @@ const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, search, setSe
         >
           Passwords
         </Typography>
-        <Box display='flex' alignItems='center' justifyContent='space-between' padding={'15px 0 5px 0'}>
+        <Box display='flex' alignItems='center' justifyContent='space-between' padding={'10px 0 5px 0'}>
           <StyledTextField 
             type='text'
             placeholder='Password' 
