@@ -1,9 +1,10 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Toolbar, Typography, IconButton, Box } from '@mui/material';
-import { memo, FC, ChangeEvent } from 'react';
+import { Toolbar, Typography, IconButton, Box, Alert, Snackbar } from '@mui/material';
+import { memo, FC, ChangeEvent, useState } from 'react';
 
 import { DELETE_PASSWORDS } from '../../constants/backendConstants';
 import useAxios from '../../hooks/useAxios';
+import { WarningMessages } from '../../types/enums';
 import { ITableToolbar } from '../../types/types';
 import AddPasswordForm from '../AddPasswordForm/AddPasswordForm';
 import { StyledTextField } from '../StyledComponents/StyledTextField';
@@ -11,10 +12,15 @@ import { StyledTextField } from '../StyledComponents/StyledTextField';
 const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, search, setSelected, fetchFunc, setSearch }) => {
   const { postDataToBackend } = useAxios();
 
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
+
   const deletePasswords = async () => {
-    await postDataToBackend(DELETE_PASSWORDS, { ids: passwords });
-    await fetchFunc();
+    const deleteResponce: any = await postDataToBackend(DELETE_PASSWORDS, { ids: passwords });
+    setDeleteSuccess(true);
     setSelected([]);
+    if(deleteResponce.status === 204){
+      fetchFunc();
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -65,6 +71,14 @@ const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, search, setSe
           </Box>
         </Box>
       </Box>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        autoHideDuration={2000}
+        onClose={() => setDeleteSuccess(false)}
+        open={deleteSuccess}
+      >
+        <Alert severity='success' onClose={() => setDeleteSuccess(false)}>{numSelected !== 1 ? WarningMessages.DELETE_MANY : WarningMessages.DELETE_ONE}</Alert>
+      </Snackbar>
     </Toolbar>
   );
 };

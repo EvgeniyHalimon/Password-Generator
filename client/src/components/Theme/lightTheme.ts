@@ -39,7 +39,7 @@ export const lightTheme: ThemeOptions = {
       styleOverrides:{
         root: {
           margin: 0,
-          backgroundColor: '#eccdcc',
+          backgroundColor: '#f1aab7',
         },
       },
     },

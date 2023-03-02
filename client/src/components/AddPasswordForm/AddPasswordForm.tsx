@@ -1,11 +1,12 @@
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { IconButton, Box, Button } from '@mui/material';
+import { IconButton, Box, Button, Alert, Snackbar } from '@mui/material';
 import { useFormik } from 'formik';
 import { memo, useState, FC } from 'react';
 import * as yup from 'yup';
 
 import { PASSWORD } from '../../constants/backendConstants';
 import useAxios from '../../hooks/useAxios';
+import { WarningMessages } from '../../types/enums';
 import FormInput from '../FormInput/FormInput';
 import { StyledDialodAddForm } from '../StyledComponents/StyledDialodAddForm';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
@@ -29,6 +30,10 @@ interface IAddPasswordForm{
 
 const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc }) => {
   const { postDataToBackend } = useAxios();
+
+  const [postSuccess, setPostSuccess] = useState(false);
+  const [open, setOpen] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       applicationName: '',
@@ -39,12 +44,12 @@ const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc }) => {
       const data = await postDataToBackend(PASSWORD, values);
       if(data.data){
         setOpen(false);
+        setPostSuccess(true);
         fetchFunc();
       }
     },
   });
-  const [open, setOpen] = useState(false);
-
+  
   const handleOpen = () => {
     setOpen(!open);
     formik.values.applicationName = '';
@@ -86,6 +91,14 @@ const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc }) => {
           </Box>
         </Box>
       </StyledDialodAddForm>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        autoHideDuration={2000}
+        onClose={() => setPostSuccess(false)}
+        open={postSuccess}
+      >
+        <Alert severity='success' onClose={() => setPostSuccess(false)}>{WarningMessages.ADDED}</Alert>
+      </Snackbar>
     </>
   );
 };

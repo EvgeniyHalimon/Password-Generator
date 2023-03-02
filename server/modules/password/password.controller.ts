@@ -50,7 +50,6 @@ router.put('/', async (req: Request, res: Response) => {
 });
 
 router.post('/delete', async (req: Request, res: Response) => {
-  console.log('🚀 ~ file: password.controller.ts:53 ~ router.delete ~ req:', req.body);
   try {
     await passwordService.deletePassword(req.body.ids);
     res.status(204).json({ message: 'Password was deleted' });

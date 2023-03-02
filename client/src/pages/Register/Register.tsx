@@ -56,7 +56,7 @@ const RegisterForm = () => {
   });
 
   return(
-    <Box component='form' onSubmit={formik.handleSubmit}>
+    <Box component='form' sx={{ margin: 'auto' }}  onSubmit={formik.handleSubmit}>
       <FormInput
         id='username' 
         name='username' 

@@ -14,7 +14,7 @@ const passwordService = {
     const encryptedPassword = encrypt(body.password);
     const passwordsQuantity = await passwordRepository.passwordQuantity(id);
     if(role === 'user' && passwordsQuantity === 9){
-      throw new CustomError({ message: 'You have reach your account limit of passwords', status: 403 });
+      throw new CustomError({ message: 'You have reach your account limit of passwords', status: 401 });
     }
     await passwordRepository.createNewPassword({
       password: encryptedPassword,

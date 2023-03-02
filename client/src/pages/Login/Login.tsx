@@ -47,7 +47,7 @@ const LoginForm = () => {
   });
 
   return(
-    <Box component='form' onSubmit={formik.handleSubmit}>
+    <Box component='form' sx={{ margin: 'auto' }} onSubmit={formik.handleSubmit}>
       <FormInput
         id='email' 
         name='email' 

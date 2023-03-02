@@ -18,7 +18,11 @@ export enum PasswordOptionsField{
 
 export enum WarningMessages{
   OPTION = 'You must choose at least 1 option.',
-  LENGTH = 'Password length must not be 0. Set at least 16.'
+  LENGTH = 'Password length must not be 0. Set at least 16.',
+  DELETE_ONE = 'Password successfully deleted',
+  DELETE_MANY = 'Passwords successfully deleted',
+  ADDED = 'Password successfully added',
+  LIMIT = 'You have reach your account limit of passwords',
 }
 
 export const staticCheckboxPropsList = [
