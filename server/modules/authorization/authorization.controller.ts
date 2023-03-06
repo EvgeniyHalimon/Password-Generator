@@ -1,11 +1,12 @@
 import express, { Response, Request } from 'express';
 import { validate } from 'express-validation';
 
-import { CustomRequest, ITokens } from '../types/types';
+import { CustomRequest } from '../../shared/types/types';
 
 const router = express.Router();
 
 import { authorizationService } from './authorization.service';
+import { ITokens } from './types';
 
 import { loginSchema } from './validators/loginSchema';
 import { registerSchema } from './validators/registerSchema';
@@ -22,7 +23,7 @@ router.post('/login', validate(loginSchema, {}, {}), async (req: Request, res: R
 
 router.post('/register', validate(registerSchema, {}, {}), async (req: Request, res: Response) => {
   try {
-    await authorizationService.newUser(req.body);
+    await authorizationService.register(req.body);
     res.status(201).json({ 'success': `New username ${req.body.username} created!` });
   } catch (err: any) {
     res.status(500).json({ 'message': err.message });

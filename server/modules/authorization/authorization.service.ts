@@ -2,11 +2,13 @@ import bcrypt from 'bcrypt';
 
 import jwt, { Secret } from 'jsonwebtoken';
 
-import { SALT_ROUNDS } from '../constants/constants';
+import { SALT_ROUNDS } from '../../shared/constants/constants';
 
-import { IDType, ITokens, IUser } from '../types/types';
+import { IUser } from '../../shared/types/types';
 import { userRepository } from '../users/users.repository';
 import { userService } from '../users/users.service';
+
+import { ITokens } from './types';
 
 const ACCESS_KEY: Secret | any = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_KEY: Secret | any = process.env.REFRESH_TOKEN_SECRET;
@@ -38,7 +40,7 @@ const generateTokens = (foundUser: IUser | any) => {
 
 const authorizationService = {
   login: async (body: IUser) : Promise<ITokens | undefined> => {
-    const foundUser = await userService.findUser(body.email);
+    const foundUser = await userService.findByEmail(body.email);
     // evaluate password 
     const match = await bcrypt.compare(body.password, foundUser.password);
     if (match) {
@@ -46,23 +48,25 @@ const authorizationService = {
       return generateTokens(foundUser);
     }
   },
-  newUser: async (body: IUser) => {
-    const foundUser = await userService.checkIfUserExist(body.email);
+
+  register: async (body: IUser) => {
+    //encrypt the password
+    const hashedPwd = await bcrypt.hash(body.password, SALT_ROUNDS);
+    const hashedInnerPwd = await bcrypt.hash(body.innerPassword, SALT_ROUNDS);
+    //create and store the new user
+    await userRepository.createNewUser({
+      'username': body.username ,
+      'password': hashedPwd,
+      'innerPassword': hashedInnerPwd,
+      'email': body.email,
+    });
+    /* const foundUser = await userService.checkIfUserExist(body.email);
     if(!foundUser){
-      //encrypt the password
-      const hashedPwd = await bcrypt.hash(body.password, SALT_ROUNDS);
-      const hashedInnerPwd = await bcrypt.hash(body.innerPassword, SALT_ROUNDS);
-      //create and store the new user
-      await userRepository.createNewUser({
-        'username': body.username ,
-        'password': hashedPwd,
-        'innerPassword': hashedInnerPwd,
-        'email': body.email,
-      });
-    }
+    } */
   },
-  refreshToken: async (id: IDType): Promise<ITokens | undefined> => {
-    const foundUser = await userService.findOneUser(id);
+  
+  refreshToken: async (id: string): Promise<ITokens | undefined> => {
+    const foundUser = await userService.findByID(id);
     // evaluate jwt 
     if(foundUser){
       return generateTokens(foundUser);

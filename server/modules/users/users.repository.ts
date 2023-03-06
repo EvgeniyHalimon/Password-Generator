@@ -1,4 +1,4 @@
-import { IDType } from '../types/types';
+import { convertID } from '../../shared/convertID';
 
 import { User } from './users.entity';
 
@@ -10,23 +10,28 @@ interface IUser{
 }
 
 const userRepository = {
-  findUserById: async (id: IDType) => {
-    return await User.findById(id).exec();
+  findUserById: async (id: string) => {
+    return await User.findById(convertID(id)).exec();
   },
+
   findUser: async (email: string) => {
     return await User.findOne({ email: email }).select('+password').exec();
   },
+
   findAllUsers: async () => {
     return await User.find();
   },
-  deleteUser: async (id: IDType) => {
-    return await User.findByIdAndDelete(id);
+
+  deleteUser: async (id: string) => {
+    return await User.deleteOne({ _id : convertID(id) });
   },
+
   createNewUser: async(userObject: IUser) => {
     return await User.create(userObject);
   },
-  findInnerPassword: async (id: IDType) => {
-    return await User.findById(id).select('+innerPassword').exec();
+  
+  findUserByIdForDecrypt: async (id: string) => {
+    return await User.findById(convertID(id)).select('+innerPassword').exec();
   },
 };
 

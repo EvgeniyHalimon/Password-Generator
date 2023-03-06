@@ -2,18 +2,30 @@ import bcrypt from 'bcrypt';
 
 import { CustomError } from '../../shared/CustomError';
 import { decrypt, encrypt } from '../../shared/cipherMachine';
-import { IDType, IPasswordBody, IPasswordObject, IQueries, IUser } from '../types/types';
 
 import { userRepository } from '../users/users.repository';
 
 import { passwordRepository } from './password.repository';
+import { IDecryptedPasswordObject, IPasswordBody, IEncryptedPasswordObject, IQueries, Roles } from './types';
 
-//! TODO: how to refactor and do i need this?
+const LIMIT_PER_PAGE = 8;
+const LIMIT_OF_PASSWORDS = 9;
+
+const buildQueryObject = (query: any): IQueries => {
+  return {
+    page: Number(query.page) - 1 || 0,
+    limit: Number(query.limit) || 5,
+    search: query.search.toString() || '',
+    sortBy: query.sortBy.toString() || '',
+    sort: query.sort.toString() || 'asc',
+  };
+};
+
 const passwordService = {
-  createPassword: async (id: IDType, role: string, body: IPasswordBody) => {
+  create: async (id: string, role: string, body: IPasswordBody) => {
     const encryptedPassword = encrypt(body.password);
     const passwordsQuantity = await passwordRepository.passwordQuantity(id);
-    if(role === 'user' && passwordsQuantity === 9){
+    if(role === Roles.USER && passwordsQuantity === LIMIT_OF_PASSWORDS){
       throw new CustomError({ message: 'You have reach your account limit of passwords', status: 401 });
     }
     await passwordRepository.createNewPassword({
@@ -22,15 +34,17 @@ const passwordService = {
       userId: id,
     });
   },
-  updatePassword: async (body: IPasswordObject) => {
+
+  update: async (body: IEncryptedPasswordObject | IDecryptedPasswordObject) => {
     const pwd = typeof body.password === 'object' ? body.password : encrypt(body.password);
-    const password = await passwordRepository.findAndUpdate(body.id, { ...body, password: pwd  });
+    const password = await passwordRepository.findAndUpdate(body._id, { ...body, password: pwd  });
     if (!password){
       throw new CustomError({ message: 'Password not found', status: 404 });
     } 
     return password;
   },
-  deletePassword: (ids: IDType[]) => {
+
+  delete: (ids: string[]) => {
     ids.forEach(async (id: string) => {
       const password = await passwordRepository.findByUserID(id);
       if (!password){
@@ -39,26 +53,32 @@ const passwordService = {
       return passwordRepository.deletePassword(id);
     });
   },
-  getPasswords: async (id: IDType, queries: IQueries) => {
-    const passwords = await passwordRepository.findByIDAndPaginate(id, queries);
-    const passwordsQuantity = await passwordRepository.passwordQuantity(id);
+
+  get: async (id: string, queries: any) => {
+    const passwords = await passwordRepository.findByIDAndPaginate(id, buildQueryObject(queries));
+    const passwordsQuantity = passwords.length;
     if (!passwords){
       throw new CustomError({ message: 'Passwords not found not found', status: 404 });
     }
     return { passwords: passwords, totalPages: Math.ceil(passwordsQuantity / queries.limit), totalPasswords: passwordsQuantity };
   },
-  decryptPasswords: async (id: IDType, body: IUser) => {
-    const foundUser = await userRepository.findInnerPassword(id);
-    // evaluate password 
-    const match = await bcrypt.compare(body.innerPassword, foundUser.innerPassword);
+  
+  decrypt: async (id: string, innerPassword: string) => {
+    const foundUser = await userRepository.findUserByIdForDecrypt(id);
+    // evaluate password
+    const match = await bcrypt.compare(innerPassword, foundUser.innerPassword);
+    if (!match){
+      throw new CustomError({ message: 'Wrong password', status: 401 });
+    } 
     if(match){
       const passwords = await passwordRepository.findByUserID(id);
-      const passwordsQuantity = await passwordRepository.passwordQuantity(id);
+      console.log('🚀 ~ file: password.service.ts:65 ~ decrypt: ~ passwords:', passwords);
+      const passwordsQuantity = passwords.length;
       //! TODO: remove any
-      const result = passwords.map((password: IPasswordObject | any) => {
+      const result = passwords.map((password: IEncryptedPasswordObject) => {
         return { ...password.toJSON(), password: decrypt(password.password) };
       });
-      return { passwords: result, totalPages: Math.ceil(passwordsQuantity / 8), totalPasswords: passwordsQuantity };
+      return { passwords: result, totalPages: Math.ceil(passwordsQuantity / LIMIT_PER_PAGE), totalPasswords: passwordsQuantity };
     }
   },
 };

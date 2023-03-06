@@ -2,7 +2,7 @@ import crypto from 'crypto';
 
 import dotenv from 'dotenv';
 
-import { IEncryptedPassword } from '../modules/types/types';
+import { IEncryptedPassword } from '../modules/password/types';
 
 dotenv.config();
 
