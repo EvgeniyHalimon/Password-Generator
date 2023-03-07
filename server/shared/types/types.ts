@@ -3,8 +3,6 @@ import { ObjectId } from 'mongoose';
 ;
 export type Roles = 'admin' | 'user' | 'premium'
 
-export type IDType = ObjectId | string;
-
 export interface CustomRequest extends Request{
     id: string,
     role: Roles
@@ -12,11 +10,11 @@ export interface CustomRequest extends Request{
 
 export interface IUser{
     email: string,
-    password: string,
-    innerPassword: string,
+    password?: string,
+    innerPassword?: string,
     username: string,
     role?: Roles,
-    _id?: string,
+    _id?: ObjectId,
 }
 
 export interface IDecoded{

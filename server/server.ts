@@ -7,13 +7,13 @@ import mongoose from 'mongoose';
 
 import corsOptions from './config/corsOptions';
 import connectDB from './config/dbConnection';
+import authController from './modules/authorization/authorization.controller';
+import passwordController from './modules/password/password.controller';
+import userController from './modules/users/users.controller';
 import credentials from './shared/middleware/credentials';
 import errorHandler from './shared/middleware/errorHandler';
 import { logger } from './shared/middleware/logEvents';
 import verifyJWT from './shared/middleware/verifyJWT';
-import authController from './modules/authorization/authorization.controller';
-import passwordController from './modules/password/password.controller';
-import userController from './modules/users/users.controller';
 
 dotenv.config();
 const app = express();

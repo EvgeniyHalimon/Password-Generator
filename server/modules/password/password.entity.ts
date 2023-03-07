@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { IEncryptedPassword } from './types';
+import { IPasswordDoc } from './types';
 
 const { Schema } = mongoose;
 
@@ -22,4 +22,4 @@ const passwordSchema = new Schema({
   },
 });
 
-export const Password = mongoose.model<IEncryptedPassword>('Password', passwordSchema);
+export const Password = mongoose.model<IPasswordDoc>('Password', passwordSchema);

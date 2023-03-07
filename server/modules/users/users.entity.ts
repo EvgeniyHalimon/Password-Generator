@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+
+import { IUser } from '../../shared/types/types';
+
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
@@ -30,4 +33,4 @@ const userSchema = new Schema({
   },
 });
 
-export const User = mongoose.model('User', userSchema);
+export const User = mongoose.model<IUser>('User', userSchema);

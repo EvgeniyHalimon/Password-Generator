@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 
 import jwt, { Secret } from 'jsonwebtoken';
 
+import { CustomError } from '../../shared/CustomError';
 import { SALT_ROUNDS } from '../../shared/constants/constants';
 
 import { IUser } from '../../shared/types/types';
@@ -14,7 +15,7 @@ const ACCESS_KEY: Secret | any = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_KEY: Secret | any = process.env.REFRESH_TOKEN_SECRET;
 
 //! TODO: remove any
-const generateTokens = (foundUser: IUser | any) => {
+const generateTokens = (foundUser: IUser) => {
   const accessToken = jwt.sign(
     {
       'userInfo': {
@@ -41,6 +42,9 @@ const generateTokens = (foundUser: IUser | any) => {
 const authorizationService = {
   login: async (body: IUser) : Promise<ITokens | undefined> => {
     const foundUser = await userService.findByEmail(body.email);
+    if(!foundUser){
+      throw new CustomError({ message: 'Email or Password is invalid', status: 400 });
+    }
     // evaluate password 
     const match = await bcrypt.compare(body.password, foundUser.password);
     if (match) {
@@ -50,6 +54,10 @@ const authorizationService = {
   },
 
   register: async (body: IUser) => {
+    const foundUser = await userService.checkIfUserExist(body.email);
+    if(foundUser){
+      throw new CustomError({ message: 'User already exist', status: 400 });
+    }
     //encrypt the password
     const hashedPwd = await bcrypt.hash(body.password, SALT_ROUNDS);
     const hashedInnerPwd = await bcrypt.hash(body.innerPassword, SALT_ROUNDS);
@@ -60,9 +68,6 @@ const authorizationService = {
       'innerPassword': hashedInnerPwd,
       'email': body.email,
     });
-    /* const foundUser = await userService.checkIfUserExist(body.email);
-    if(!foundUser){
-    } */
   },
   
   refreshToken: async (id: string): Promise<ITokens | undefined> => {

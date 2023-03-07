@@ -1,14 +1,15 @@
 import express, { Response, Request } from 'express';
+import { validate } from 'express-validation';
 
 import { CustomRequest } from '../../shared/types/types';
 
 import { passwordService } from './password.service';
+import { decryptSchema } from './validators/decryptSchema';
+import { passwordSchema } from './validators/passwordSchema';
 
 const router = express.Router();
 
-//! TODO: how to refactor and do i need this?
-
-router.post('/display', async (req: CustomRequest, res: Response) => {
+router.post('/display', validate(decryptSchema, {}, {}), async (req: CustomRequest, res: Response) => {
   try {
     const password = await passwordService.decrypt(req.id, req.body.innerPassword);
     res.status(200).json(password);
@@ -26,7 +27,7 @@ router.get('/', async (req: CustomRequest, res: Response) => {
   }
 });
 
-router.post('/', async (req: CustomRequest, res: Response) => {
+router.post('/', validate(passwordSchema, {}, {}), async (req: CustomRequest, res: Response) => {
   try {
     await passwordService.create(req.id, req.role, req.body);
     res.status(201).json({ 'success': `New password for ${req.body.applicationName} created!` });
@@ -35,7 +36,7 @@ router.post('/', async (req: CustomRequest, res: Response) => {
   }
 });
 
-router.put('/', async (req: Request, res: Response) => {
+router.put('/', validate(passwordSchema, {}, {}), async (req: Request, res: Response) => {
   try {
     const password = await passwordService.update(req.body);
     res.json(password);

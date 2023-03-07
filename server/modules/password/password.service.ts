@@ -3,21 +3,23 @@ import bcrypt from 'bcrypt';
 import { CustomError } from '../../shared/CustomError';
 import { decrypt, encrypt } from '../../shared/cipherMachine';
 
+import { convertID } from '../../shared/convertID';
 import { userRepository } from '../users/users.repository';
 
 import { passwordRepository } from './password.repository';
-import { IDecryptedPasswordObject, IPasswordBody, IEncryptedPasswordObject, IQueries, Roles } from './types';
+import { IPasswordBody, IEncryptedPasswordObject, IQueries, Roles } from './types';
+
 
 const LIMIT_PER_PAGE = 8;
 const LIMIT_OF_PASSWORDS = 9;
 
-const buildQueryObject = (query: any): IQueries => {
+const buildQueryObject = (query: IQueries): IQueries => {
   return {
     page: Number(query.page) - 1 || 0,
     limit: Number(query.limit) || 5,
     search: query.search.toString() || '',
     sortBy: query.sortBy.toString() || '',
-    sort: query.sort.toString() || 'asc',
+    sort: query.sort || 'asc',
   };
 };
 
@@ -31,30 +33,24 @@ const passwordService = {
     await passwordRepository.createNewPassword({
       password: encryptedPassword,
       applicationName: body.applicationName,
-      userId: id,
+      userId: convertID(id),
     });
   },
 
-  update: async (body: IEncryptedPasswordObject | IDecryptedPasswordObject) => {
+  update: async (body: IEncryptedPasswordObject) => {
     const pwd = typeof body.password === 'object' ? body.password : encrypt(body.password);
-    const password = await passwordRepository.findAndUpdate(body._id, { ...body, password: pwd  });
+    const password = await passwordRepository.findAndUpdate(body.id , { ...body, password: pwd  });
     if (!password){
       throw new CustomError({ message: 'Password not found', status: 404 });
     } 
     return password;
   },
 
-  delete: (ids: string[]) => {
-    ids.forEach(async (id: string) => {
-      const password = await passwordRepository.findByUserID(id);
-      if (!password){
-        throw new CustomError({ message: 'Password not found', status: 404 });
-      } 
-      return passwordRepository.deletePassword(id);
-    });
+  delete: async (ids: string[]) => {
+    return await passwordRepository.deletePasswords(ids);
   },
 
-  get: async (id: string, queries: any) => {
+  get: async (id: string, queries: IQueries | any) => {
     const passwords = await passwordRepository.findByIDAndPaginate(id, buildQueryObject(queries));
     const passwordsQuantity = passwords.length;
     if (!passwords){
@@ -72,10 +68,9 @@ const passwordService = {
     } 
     if(match){
       const passwords = await passwordRepository.findByUserID(id);
-      console.log('🚀 ~ file: password.service.ts:65 ~ decrypt: ~ passwords:', passwords);
       const passwordsQuantity = passwords.length;
       //! TODO: remove any
-      const result = passwords.map((password: IEncryptedPasswordObject) => {
+      const result = passwords.map((password) => {
         return { ...password.toJSON(), password: decrypt(password.password) };
       });
       return { passwords: result, totalPages: Math.ceil(passwordsQuantity / LIMIT_PER_PAGE), totalPasswords: passwordsQuantity };
