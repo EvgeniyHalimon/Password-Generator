@@ -37,9 +37,9 @@ const passwordService = {
     });
   },
 
-  update: async (body: IEncryptedPasswordObject) => {
+  update: async (id: string, body: IEncryptedPasswordObject) => {
     const pwd = typeof body.password === 'object' ? body.password : encrypt(body.password);
-    const password = await passwordRepository.findAndUpdate(body.id , { ...body, password: pwd  });
+    const password = await passwordRepository.findAndUpdate(id, { ...body, password: pwd  });
     if (!password){
       throw new CustomError({ message: 'Password not found', status: 404 });
     } 
@@ -69,7 +69,6 @@ const passwordService = {
     if(match){
       const passwords = await passwordRepository.findByUserID(id);
       const passwordsQuantity = passwords.length;
-      //! TODO: remove any
       const result = passwords.map((password) => {
         return { ...password.toJSON(), password: decrypt(password.password) };
       });

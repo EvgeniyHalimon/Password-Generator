@@ -1,4 +1,4 @@
-import { Document, ObjectId } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export interface IEncryptedPassword{
     iv: string,
@@ -6,17 +6,12 @@ export interface IEncryptedPassword{
 }
 
 export interface IEncryptedPasswordObject{
-    id?: string,
-    userId: ObjectId ,
+    userId: Types.ObjectId,
     password: IEncryptedPassword,
     applicationName: string
 }
 
-export interface IDecryptedPasswordObject extends Omit<IEncryptedPasswordObject, 'password'> {
-    password: string
-}
-
-export interface IPasswordDoc extends IEncryptedPassword, Document {}
+export interface IPasswordDoc extends IEncryptedPasswordObject, Document {}
 
 export interface IPasswordBody{
     password: string,

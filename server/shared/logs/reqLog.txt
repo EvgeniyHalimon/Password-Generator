@@ -68,3 +68,14 @@
 20230307	13:59:33	912d373a-34eb-475d-b588-3e94463eaaac	POST	http://localhost:3000	/password/delete
 20230307	13:59:33	b6e6c844-ab39-4051-a58d-257e58d0a904	OPTIONS	http://localhost:3000	/password?search=&page=1&limit=8&sortBy=applicationName&sort=asc
 20230307	13:59:33	ee512e9d-4041-44e4-8f84-8c86ea2b00b9	GET	http://localhost:3000	/password?search=&page=1&limit=8&sortBy=applicationName&sort=asc
+20230307	16:47:28	cc83c091-4c26-469a-93f7-f4531be195a4	OPTIONS	http://localhost:3000	/password/display
+20230307	16:47:28	1ed6f0fc-0d35-46dc-8012-31d34348bc3c	POST	http://localhost:3000	/password/display
+20230307	16:47:29	a83c4a5f-1e0e-4e4e-9182-ac940140e541	OPTIONS	http://localhost:3000	/auth/refresh
+20230307	16:47:29	48ab5ff3-6f3f-463e-b2ee-4d7ae22606bc	GET	http://localhost:3000	/auth/refresh
+20230307	16:47:29	22fbef0a-39bf-4ad0-8985-7a8cf08b5bbf	POST	http://localhost:3000	/password/display
+20230307	16:55:19	a5aec012-bd13-4fce-9e40-383bdb75faf1	OPTIONS	http://localhost:3000	/password/display
+20230307	16:55:19	5bb45e6a-9eea-4fc9-9238-df324a7c66ae	POST	http://localhost:3000	/password/display
+20230307	17:02:08	c083c3c2-2800-4547-8ee6-84a50077e209	OPTIONS	http://localhost:3000	/password?search=&page=1&limit=8&sortBy=applicationName&sort=asc
+20230307	17:02:08	c08d0c62-254d-41b9-bade-dd4ee95ee561	GET	http://localhost:3000	/password?search=&page=1&limit=8&sortBy=applicationName&sort=asc
+20230307	17:02:13	c9ea46e8-dc98-4e8e-8ae1-2fea7a26fcf3	OPTIONS	http://localhost:3000	/password/display
+20230307	17:02:13	37abae8f-b210-4e6e-ab14-b26f5a40046a	POST	http://localhost:3000	/password/display

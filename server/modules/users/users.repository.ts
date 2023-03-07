@@ -1,4 +1,6 @@
 
+import { convertID } from '../../shared/convertID';
+
 import { User } from './users.entity';
 
 interface IUser{
@@ -10,7 +12,7 @@ interface IUser{
 
 const userRepository = {
   findUserById: async (id: string) => {
-    return await User.findById(id).exec();
+    return await User.findById(convertID(id)).exec();
   },
 
   findUser: async (email: string) => {
@@ -22,7 +24,7 @@ const userRepository = {
   },
 
   deleteUser: async (id: string) => {
-    return await User.deleteOne({ _id : id });
+    return await User.deleteOne({ _id : convertID(id) });
   },
 
   createNewUser: async(userObject: IUser) => {
@@ -30,7 +32,7 @@ const userRepository = {
   },
   
   findUserByIdForDecrypt: async (id: string) => {
-    return await User.findById(id).select('+innerPassword').exec();
+    return await User.findById(convertID(id)).select('+innerPassword').exec();
   },
 };
 

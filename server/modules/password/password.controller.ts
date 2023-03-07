@@ -38,7 +38,7 @@ router.post('/', validate(passwordSchema, {}, {}), async (req: CustomRequest, re
 
 router.put('/', validate(passwordSchema, {}, {}), async (req: Request, res: Response) => {
   try {
-    const password = await passwordService.update(req.body);
+    const password = await passwordService.update(req.body.id, req.body);
     res.json(password);
   } catch (error) {
     res.status(error.status).json({ 'message': error.message });   

@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-
+import dotenv from 'dotenv';
 import jwt, { Secret } from 'jsonwebtoken';
 
 import { CustomError } from '../../shared/CustomError';
@@ -11,10 +11,11 @@ import { userService } from '../users/users.service';
 
 import { ITokens } from './types';
 
-const ACCESS_KEY: Secret | any = process.env.ACCESS_TOKEN_SECRET;
-const REFRESH_KEY: Secret | any = process.env.REFRESH_TOKEN_SECRET;
+dotenv.config();
 
-//! TODO: remove any
+const ACCESS_KEY: Secret = process.env.ACCESS_TOKEN_SECRET;
+const REFRESH_KEY: Secret = process.env.REFRESH_TOKEN_SECRET;
+
 const generateTokens = (foundUser: IUser) => {
   const accessToken = jwt.sign(
     {
