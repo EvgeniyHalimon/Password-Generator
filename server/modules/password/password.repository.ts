@@ -2,7 +2,7 @@
 import { convertID } from '../../shared/convertID';
 
 import { Password } from './password.entity';
-import { IEncryptedPasswordObject, IPasswordDoc, IQueries } from './types';
+import { IPassword, IPasswordDoc, IQueries } from './types';
 
 
 const passwordRepository = {
@@ -22,11 +22,11 @@ const passwordRepository = {
     return await Password.findByIdAndDelete(convertID(id));
   },
 
-  createNewPassword: async(passwordObject: IEncryptedPasswordObject) => {
+  createNewPassword: async(passwordObject: IPassword) => {
     return await Password.create(passwordObject);
   },
 
-  findAndUpdate: async (id: string, passwordObject: IEncryptedPasswordObject) => {
+  findAndUpdate: async (id: string, passwordObject: IPassword) => {
     return await Password.findByIdAndUpdate(convertID(id), passwordObject);
   },
   

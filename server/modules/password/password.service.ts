@@ -7,7 +7,7 @@ import { convertID } from '../../shared/convertID';
 import { userRepository } from '../users/users.repository';
 
 import { passwordRepository } from './password.repository';
-import { IPasswordBody, IEncryptedPasswordObject, IQueries, Roles } from './types';
+import { IPasswordBody, IQueries, Roles, IPasswordUpdate } from './types';
 
 
 const LIMIT_PER_PAGE = 8;
@@ -37,9 +37,9 @@ const passwordService = {
     });
   },
 
-  update: async (id: string, body: IEncryptedPasswordObject) => {
+  update: async (body: IPasswordUpdate) => {
     const pwd = typeof body.password === 'object' ? body.password : encrypt(body.password);
-    const password = await passwordRepository.findAndUpdate(id, { ...body, password: pwd  });
+    const password = await passwordRepository.findAndUpdate(body.id, { ...body, password: pwd  });
     if (!password){
       throw new CustomError({ message: 'Password not found', status: 404 });
     } 

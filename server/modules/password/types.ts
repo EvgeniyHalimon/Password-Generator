@@ -5,13 +5,17 @@ export interface IEncryptedPassword{
     password: string,
 }
 
-export interface IEncryptedPasswordObject{
+export interface IPassword{
     userId: Types.ObjectId,
     password: IEncryptedPassword,
     applicationName: string
 }
 
-export interface IPasswordDoc extends IEncryptedPasswordObject, Document {}
+export interface IPasswordUpdate extends IPassword{
+    id: string
+}
+
+export interface IPasswordDoc extends IPassword, Document {}
 
 export interface IPasswordBody{
     password: string,
