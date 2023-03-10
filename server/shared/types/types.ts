@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { ObjectId } from 'mongoose';
 ;
-export type Roles = 'admin' | 'user' | 'premium'
+export type Roles = 'admin' | 'user' | 'premium';
 
 export interface CustomRequest extends Request{
     id: string,

@@ -82,7 +82,7 @@ const PasswordsTable = () => {
       try {
         const passwordsData: any = await getDataFromBackend(GET_PASSWORDS(queries));
         setTotalPages(passwordsData.data.totalPages);
-        setPasswords(passwordsData.data.passwords);
+        setPasswords(passwordsData.data.accounts);
       } catch (error) {
         console.log(error);
       }
@@ -91,9 +91,9 @@ const PasswordsTable = () => {
 
   //! TODO: how to keep encrypted passwords after request?
   const getDecryptedPasswords = async (password: string) => {
-    const decryptedPasswords = await postDataToBackend(DECRYPT_PASSWORDS, { innerPassword: password });
+    const decryptedPasswords = await postDataToBackend(DECRYPT_PASSWORDS(queries), { innerPassword: password });
     setTotalPages(decryptedPasswords.data.totalPages);
-    setPasswords(decryptedPasswords.data.passwords);
+    setPasswords(decryptedPasswords.data.accounts);
   };
 
   useEffect(() => {

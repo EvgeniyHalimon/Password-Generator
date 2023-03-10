@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 
-import { IPasswordDoc } from './types';
+import { IAccountDoc } from './types';
 
 const { Schema } = mongoose;
 
-const passwordSchema = new Schema({
+const accountSchema = new Schema({
   userId:{
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -22,4 +22,4 @@ const passwordSchema = new Schema({
   },
 });
 
-export const Password = mongoose.model<IPasswordDoc>('Password', passwordSchema);
+export const Account = mongoose.model<IAccountDoc>('Account', accountSchema);
