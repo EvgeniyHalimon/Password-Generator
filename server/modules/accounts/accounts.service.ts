@@ -4,13 +4,12 @@ import { CustomError } from '../../shared/CustomError';
 import { decrypt, encrypt } from '../../shared/cipherMachine';
 
 import { convertID } from '../../shared/convertID';
+import { IDeleteResponse } from '../../shared/types/types';
 import { userRepository } from '../users/users.repository';
 
 import { accountsRepository } from './accounts.repository';
-import { IPasswordBody, IQueries, Roles, IPasswordUpdate } from './types';
+import { IPasswordBody, IQueries, Roles, IPasswordUpdate, IAccountDecryptedResponce, IAccountResponce } from './types';
 
-
-const LIMIT_PER_PAGE = 8;
 const LIMIT_OF_PASSWORDS = 9;
 
 const buildQueryObject = (query: IQueries): IQueries => {
@@ -24,7 +23,7 @@ const buildQueryObject = (query: IQueries): IQueries => {
 };
 
 const accountsService = {
-  create: async (id: string, role: string, body: IPasswordBody) => {
+  create: async (id: string, role: string, body: IPasswordBody): Promise<void> => {
     const encryptedPassword = encrypt(body.password);
     const accountsQuantity = await accountsRepository.accountsQuantity(id);
     if(role === Roles.USER && accountsQuantity === LIMIT_OF_PASSWORDS){
@@ -37,20 +36,19 @@ const accountsService = {
     });
   },
 
-  update: async (body: IPasswordUpdate) => {
+  update: async (body: IPasswordUpdate): Promise<void> => {
     const pwd = typeof body.password === 'object' ? body.password : encrypt(body.password);
     const account = await accountsRepository.findAndUpdate(body.id, { ...body, password: pwd  });
     if (!account){
       throw new CustomError({ message: 'Account not found', status: 404 });
-    } 
-    return account;
+    }
   },
 
-  delete: async (ids: string[]) => {
+  delete: async (ids: string[]): Promise<IDeleteResponse> => {
     return await accountsRepository.delete(ids);
   },
 
-  get: async (id: string, queries: IQueries) => {
+  get: async (id: string, queries: IQueries): Promise<IAccountResponce> => {
     const accounts = await accountsRepository.findByIDAndPaginate(id, buildQueryObject(queries));
     if (!accounts){
       throw new CustomError({ message: 'Accounts not found not found', status: 404 });
@@ -58,7 +56,7 @@ const accountsService = {
     return { accounts: accounts[0].data, totalPages: Math.ceil(accounts[0].meta.totalPages), totalAccounts: accounts[0].meta.totalAccounts };
   },
   
-  decrypt: async (id: string, innerPassword: string, queries: IQueries | any) => {
+  decrypt: async (id: string, innerPassword: string, queries: IQueries): Promise<IAccountDecryptedResponce> => {
     const foundUser = await userRepository.findUserByIdForDecrypt(id);
     // evaluate password
     const match = await bcrypt.compare(innerPassword, foundUser.innerPassword);

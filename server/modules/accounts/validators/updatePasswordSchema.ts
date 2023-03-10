@@ -1,6 +1,6 @@
 import { Joi } from 'express-validation';
 
-const passwordSchema = {
+const updatePasswordSchema = {
   body: Joi.object({
     id: Joi.string()
       .required(),
@@ -13,4 +13,4 @@ const passwordSchema = {
   }),
 };
 
-export { passwordSchema };
+export { updatePasswordSchema };

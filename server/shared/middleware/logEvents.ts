@@ -7,7 +7,7 @@ import { NextFunction, Request, Response } from 'express';
 
 
 
-export const logEvents = async (message:string, logName:string) => {
+export const logEvents = async (message:string, logName:string): Promise<void> => {
   const dateTime = `${format(new Date(), 'yyyyMMdd\tHH:mm:ss')}`;
   const logItem = `${dateTime}\t${randomUUID()}\t${message}\n`;
 
@@ -22,7 +22,7 @@ export const logEvents = async (message:string, logName:string) => {
   }
 };
 
-export const logger = (req: Request, res:Response, next: NextFunction) => {
+export const logger = (req: Request, res:Response, next: NextFunction): void => {
   logEvents(`${req.method}\t${req.headers.origin}\t${req.url}`, 'reqLog.txt');
   console.log(`${req.method} ${req.path}`);
   next();

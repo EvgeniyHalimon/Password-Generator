@@ -7,13 +7,14 @@ import { accountsService } from './accounts.service';
 import { IQueries } from './types';
 import { decryptSchema } from './validators/decryptSchema';
 import { passwordSchema } from './validators/passwordSchema';
+import { updatePasswordSchema } from './validators/updatePasswordSchema';
 
 const router = express.Router();
 
 router.post('/display', validate(decryptSchema, {}, {}), async (req: CustomRequest, res: Response) => {
   try {
-    const account = await accountsService.decrypt(req.id, req.body.innerPassword, req.query);
-    console.log('🚀 ~ file: accounts.controller.ts:15 ~ router.post ~ account:', account);
+    const queries: IQueries = req.query as unknown as IQueries;
+    const account = await accountsService.decrypt(req.id, req.body.innerPassword, queries);
     res.status(200).json(account);
   } catch (error) {
     res.status(error.status).json({ 'message': error.message });    
@@ -39,10 +40,10 @@ router.post('/', validate(passwordSchema, {}, {}), async (req: CustomRequest, re
   }
 });
 
-router.put('/', validate(passwordSchema, {}, {}), async (req: Request, res: Response) => {
+router.put('/', validate(updatePasswordSchema, {}, {}), async (req: Request, res: Response) => {
   try {
-    const account = await accountsService.update(req.body);
-    res.json(account);
+    await accountsService.update(req.body);
+    res.status(200).json({ 'success': 'Account updated!' });
   } catch (error) {
     res.status(error.status).json({ 'message': error.message });   
   }
@@ -51,7 +52,7 @@ router.put('/', validate(passwordSchema, {}, {}), async (req: Request, res: Resp
 router.post('/delete', async (req: Request, res: Response) => {
   try {
     await accountsService.delete(req.body.ids);
-    res.status(204).json({ message: 'Account was deleted' });
+    res.status(204).json({ message: 'Account deleted' });
   } catch (error) {
     res.status(error.status).json({ 'message': error.message });   
   }

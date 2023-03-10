@@ -8,7 +8,7 @@ dotenv.config();
 
 const key = process.env.SECRET_KEY;
 
-export const encrypt = (password: string) => {
+export const encrypt = (password: string): IEncryptedPassword => {
   const iv = Buffer.from(crypto.randomBytes(16));
   const cipher = crypto.createCipheriv('aes-256-ctr', key, iv);
 
@@ -23,7 +23,7 @@ export const encrypt = (password: string) => {
   };
 };
 
-export const decrypt = (encryption: IEncryptedPassword) => {
+export const decrypt = (encryption: IEncryptedPassword): string => {
   const decipher = crypto.createDecipheriv(
     'aes-256-ctr',
     Buffer.from(key),

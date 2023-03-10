@@ -6,6 +6,7 @@ import { CustomError } from '../../shared/CustomError';
 import { SALT_ROUNDS } from '../../shared/constants/constants';
 
 import { IUser } from '../../shared/types/types';
+import { IUserGenerateTokens } from '../users/types';
 import { userRepository } from '../users/users.repository';
 import { userService } from '../users/users.service';
 
@@ -16,7 +17,7 @@ dotenv.config();
 const ACCESS_KEY: Secret = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_KEY: Secret = process.env.REFRESH_TOKEN_SECRET;
 
-const generateTokens = (foundUser: IUser) => {
+const generateTokens = (foundUser: IUserGenerateTokens): ITokens => {
   const accessToken = jwt.sign(
     {
       'userInfo': {
@@ -54,7 +55,7 @@ const authorizationService = {
     }
   },
 
-  register: async (body: IUser) => {
+  register: async (body: IUser): Promise<void> => {
     const foundUser = await userService.checkIfUserExist(body.email);
     if(foundUser){
       throw new CustomError({ message: 'User already exist', status: 400 });

@@ -1,5 +1,4 @@
 import { Request } from 'express';
-import { ObjectId } from 'mongoose';
 ;
 export type Roles = 'admin' | 'user' | 'premium';
 
@@ -14,11 +13,15 @@ export interface IUser{
     innerPassword?: string,
     username: string,
     role?: Roles,
-    _id?: ObjectId,
 }
 
 export interface IDecoded{
   userInfo: { id: string, role: Roles, },
   iat: number,
   exp: number
+}
+
+export interface IDeleteResponse{
+  acknowledged: boolean, 
+  deletedCount: number
 }
