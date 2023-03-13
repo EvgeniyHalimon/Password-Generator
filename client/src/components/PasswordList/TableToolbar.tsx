@@ -10,14 +10,14 @@ import AddPasswordForm from '../AddPasswordForm/AddPasswordForm';
 import { StyledTextField } from '../StyledComponents/StyledTextField';
 
 const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, search, setSelected, fetchFunc, setSearch }) => {
-  const { postDataToBackend } = useAxios();
+  const { post } = useAxios();
 
   const [deleteSuccess, setDeleteSuccess] = useState(false);
 
   //! TODO: how to refresh my state without request to backend?
   //! TODO: this function works with issue, sometimes it delete, but fetchFunc return previous array
   const deletePasswords = async () => {
-    const deleteResponce: any = await postDataToBackend(DELETE_PASSWORDS, { ids: passwords });
+    const deleteResponce: any = await post(DELETE_PASSWORDS, { ids: passwords });
     setDeleteSuccess(true);
     setSelected([]);
     if(deleteResponce.status === 204){
@@ -50,7 +50,7 @@ const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, search, setSe
         <Box display='flex' alignItems='center' justifyContent='space-between' padding={'10px 0 5px 0'}>
           <StyledTextField 
             type='text'
-            placeholder='Password' 
+            placeholder='Search account..' 
             autoComplete='off'
             onChange={handleChange}
           />

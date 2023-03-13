@@ -29,7 +29,7 @@ interface IAddPasswordForm{
 }
 
 const AddPasswordFromGenerator: FC<IAddPasswordForm> = ({ password }) => {
-  const { postDataToBackend } = useAxios();
+  const { post } = useAxios();
 
   const [postSuccess, setPostSuccess] = useState(false);
   const [limitAlert, setLimitAlert] = useState(false);
@@ -56,7 +56,7 @@ const AddPasswordFromGenerator: FC<IAddPasswordForm> = ({ password }) => {
           initialValues={values} 
           onSubmit={ async (values) => {
             try {
-              const data = await postDataToBackend(PASSWORD, values);
+              const data = await post(PASSWORD, values);
               if(data.data){
                 setOpen(false);
                 setPostSuccess(true);

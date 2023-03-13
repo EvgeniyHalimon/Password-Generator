@@ -4,12 +4,12 @@ import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
-import FormInput from '../../components/FormInput/FormInput';
-import { SignInReminderText } from '../../components/SignInReminderText/SignInReminderText';
-import { SubmitButton } from '../../components/SubmitButton/SubmitButton';
-import { REGISTER } from '../../constants/backendConstants';
-import useAxios from '../../hooks/useAxios';
-import { saveTokens } from '../../utils/tokensWorkshop';
+import FormInput from '../components/FormInput/FormInput';
+import { SignInReminderText } from '../components/SignInReminderText/SignInReminderText';
+import { SubmitButton } from '../components/SubmitButton/SubmitButton';
+import { REGISTER } from '../constants/backendConstants';
+import useAxios from '../hooks/useAxios';
+import { saveTokens } from '../utils/tokensWorkshop';
 
 const validationSchema = yup.object({
   username: yup
@@ -36,7 +36,7 @@ const validationSchema = yup.object({
 
 const RegisterForm = () => {
   const navigate = useNavigate();
-  const { postDataToBackend } = useAxios();
+  const { post } = useAxios();
   
   const formik = useFormik({
     initialValues: {
@@ -47,7 +47,7 @@ const RegisterForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      const data = await postDataToBackend(REGISTER, values);
+      const data = await post(REGISTER, values);
       if(data.data){
         navigate('/login');
         saveTokens(data.data);

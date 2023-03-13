@@ -1,4 +1,4 @@
-import { SignInReminderText } from '../../components/SignInReminderText/SignInReminderText';
+import { SignInReminderText } from '../components/SignInReminderText/SignInReminderText';
 
 const Welcome = () => {
   return(

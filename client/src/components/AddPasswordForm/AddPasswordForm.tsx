@@ -29,7 +29,7 @@ interface IAddPasswordForm{
 }
 
 const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc }) => {
-  const { postDataToBackend } = useAxios();
+  const { post } = useAxios();
 
   const [postSuccess, setPostSuccess] = useState(false);
   const [open, setOpen] = useState(false);
@@ -41,7 +41,7 @@ const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc }) => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      const data = await postDataToBackend(PASSWORD, values);
+      const data = await post(PASSWORD, values);
       if(data.data){
         setOpen(false);
         setPostSuccess(true);

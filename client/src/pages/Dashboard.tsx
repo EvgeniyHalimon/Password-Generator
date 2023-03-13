@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 
-import { GET_ALL_USERS } from '../../constants/backendConstants';
-import useAxios from '../../hooks/useAxios';
-import { uid } from '../../utils/uniqueId';
+import { GET_ALL_USERS } from '../constants/backendConstants';
+import useAxios from '../hooks/useAxios';
+import { uid } from '../utils/uniqueId';
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
-  const { getDataFromBackend } = useAxios();
+  const { get } = useAxios();
 
   const getUsers = async () => {
-    const data = await getDataFromBackend(GET_ALL_USERS);
+    const data = await get(GET_ALL_USERS);
     setUsers(data.data);
   };
 
