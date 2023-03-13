@@ -17,7 +17,7 @@ const userService = {
   findByEmail : async (email: string): Promise<IUserDocResponce> => {
     const username = await userRepository.findUser(email);
     if (!username){
-      throw new CustomError({ message: 'Unauthorized', status: 401 });
+      throw new CustomError({ message: 'No such email', status: 401 });
     } 
     return username;
   },

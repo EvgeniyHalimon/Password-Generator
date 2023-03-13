@@ -50,11 +50,12 @@ const useAxios = () => {
         } catch (error: any) {
           if (error.response && error.response.data) {
             removeTokens();
-            return Promise.reject(error.response.data);
+            return error.response.data;
           }
-          return Promise.reject(error);
+          return error.response.data;
         }
       }
+      return err.response.data;
     },
   );
     

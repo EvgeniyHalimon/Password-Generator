@@ -44,15 +44,12 @@ const generateTokens = (foundUser: IUserGenerateTokens): ITokens => {
 const authorizationService = {
   login: async (body: IUser) : Promise<ITokens | undefined> => {
     const foundUser = await userService.findByEmail(body.email);
-    if(!foundUser){
-      throw new CustomError({ message: 'Email or Password is invalid', status: 400 });
-    }
     // evaluate password 
     const match = await bcrypt.compare(body.password, foundUser.password);
-    if (match) {
-      // create JWTs
-      return generateTokens(foundUser);
+    if (!match) {
+      throw new CustomError({ message: 'Password is invalid', status: 400 });
     }
+    return generateTokens(foundUser);
   },
 
   register: async (body: IUser): Promise<void> => {

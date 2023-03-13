@@ -5,3 +5,11 @@ a{
 a:visited{
     color: inherit;
 }
+
+
+.form{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    align-items: center;
+}

@@ -1,9 +1,10 @@
 import { Box } from '@mui/material';
 import { useFormik } from 'formik';
-import { memo, useContext } from 'react';
+import { memo, useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
 import * as yup from 'yup';
 
+import ErrorMessage from '../components/ErrorMessage';
 import FormInput from '../components/FormInput/FormInput';
 import { SubmitButton } from '../components/SubmitButton/SubmitButton';
 import { LOGIN } from '../constants/backendConstants';
@@ -15,7 +16,8 @@ import { getAccessToken, saveTokens } from '../utils/tokensWorkshop';
 const validationSchema = yup.object({
   email: yup
     .string()
-    .trim(),
+    .trim()
+    .email('Enter a valid email'),
   password: yup
     .string()
     .trim(),
@@ -25,6 +27,8 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const { post } = useAxios();
   const { setUser } = useContext(AuthContext);
+
+  const [errorMessage, setErrorMessage] = useState('');
   
   const formik = useFormik({
     initialValues: {
@@ -39,11 +43,12 @@ const LoginForm = () => {
         setUser(getAccessToken());
         navigate('/dashboard');
       }
+      setErrorMessage(data.message);
     },
   });
 
   return(
-    <Box component='form' sx={{ margin: 'auto' }} onSubmit={formik.handleSubmit}>
+    <Box component='form' sx={{ margin: 'auto' }} onSubmit={formik.handleSubmit} className='form'>
       <FormInput
         id='email' 
         name='email' 
@@ -65,6 +70,7 @@ const LoginForm = () => {
         helperText={formik.touched.password && formik.errors.password}  
       />
       <SubmitButton />
+      <ErrorMessage message={errorMessage}/>
     </Box>
   );
 };
