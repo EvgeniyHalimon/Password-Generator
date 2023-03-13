@@ -6,8 +6,7 @@ const passwordSchema = {
       .required()
       .min(2),
     password: Joi.string()
-      .required()
-      .min(8),
+      .required(),
   }),
 };
 
