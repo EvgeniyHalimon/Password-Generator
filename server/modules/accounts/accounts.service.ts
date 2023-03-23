@@ -51,7 +51,7 @@ const accountsService = {
   get: async (id: string, queries: IQueries): Promise<IAccountResponce> => {
     const accounts = await accountsRepository.findByIDAndPaginate(id, buildQueryObject(queries));
     if (!accounts){
-      throw new CustomError({ message: 'Accounts not found not found', status: 404 });
+      throw new CustomError({ message: 'Accounts not found', status: 404 });
     }
     return { accounts: accounts[0].data, totalPages: Math.ceil(accounts[0].meta.totalPages), totalAccounts: accounts[0].meta.totalAccounts };
   },
@@ -62,14 +62,12 @@ const accountsService = {
     const match = await bcrypt.compare(innerPassword, foundUser.innerPassword);
     if (!match){
       throw new CustomError({ message: 'Wrong password', status: 401 });
-    } 
-    if(match){
-      const accounts = await accountsRepository.findByIDAndPaginate(id, buildQueryObject(queries));
-      const decryptedAccounts = accounts[0].data.map((account) => {
-        return { ...account, password: decrypt(account.password) };
-      });
-      return { accounts: decryptedAccounts, totalPages: Math.ceil(accounts[0].meta.totalPages), totalAccounts: accounts[0].meta.totalAccounts };
     }
+    const accounts = await accountsRepository.findByIDAndPaginate(id, buildQueryObject(queries));
+    const decryptedAccounts = accounts[0].data.map((account) => {
+      return { ...account, password: decrypt(account.password) };
+    });
+    return { accounts: decryptedAccounts, totalPages: Math.ceil(accounts[0].meta.totalPages), totalAccounts: accounts[0].meta.totalAccounts };
   },
 };
 

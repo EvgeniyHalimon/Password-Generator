@@ -28,28 +28,36 @@ const accountsRepository = {
         },
       },
       {
-        $unwind: '$total',
+        $unwind: { path: '$total', preserveNullAndEmptyArrays: true },
       },
       {
         $project: {
           data: {
-            $slice: ['$data', queries.page * queries.limit, {
-              $ifNull: [queries.limit, `$total.${queries.sortBy}`],
-            }],
+            $ifNull: [
+              {
+                $slice: ['$data', queries.page * queries.limit, {
+                  $ifNull: [queries.limit, `$total.${queries.sortBy}`],
+                }],
+              },
+              [],
+            ],
           },
           meta: {
-            totalAccounts: `$total.${queries.sortBy}`,
+            totalAccounts: { $ifNull: [`$total.${queries.sortBy}`, 0] },
             limit: {
-              $literal:queries.limit ,
+              $literal: queries.limit ,
             },
             totalPages: {
-              $ceil: {
-                $divide: [`$total.${queries.sortBy}`, queries.limit],
-              },
+              $ifNull: [{
+                $ceil: {
+                  $divide: [`$total.${queries.sortBy}`, queries.limit],
+                },
+              }, 0],
             },
           },
         },
       },
+      
     ]);
   },
 
