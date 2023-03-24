@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import ErrorMessage from '../components/ErrorMessage';
 import FormInput from '../components/FormInput/FormInput';
 import { SubmitButton } from '../components/SubmitButton/SubmitButton';
+import VisibilityButton from '../components/VisibilityButton';
 import { LOGIN } from '../constants/backendConstants';
 import { AuthContext } from '../context/AuthContext';
 import useAxios from '../hooks/useAxios';
@@ -29,6 +30,7 @@ const LoginForm = () => {
   const { setUser } = useContext(AuthContext);
 
   const [errorMessage, setErrorMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   
   const formik = useFormik({
     initialValues: {
@@ -71,6 +73,7 @@ const LoginForm = () => {
       />
       <SubmitButton />
       <ErrorMessage message={errorMessage}/>
+      <VisibilityButton showPassword={showPassword} setShowPassword={setShowPassword} id={'loginVisibilityIcon'}/>
     </Box>
   );
 };

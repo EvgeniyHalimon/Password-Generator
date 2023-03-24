@@ -10,6 +10,8 @@ import { WarningMessages } from '../../types/enums';
 import FormInput from '../FormInput/FormInput';
 import { StyledDialodAddForm } from '../StyledComponents/StyledDialodAddForm';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
+import VisibilityButton from '../VisibilityButton';
+import './style.scss';
 
 const validationSchema = yup.object({
   applicationName: yup
@@ -32,6 +34,7 @@ const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc }) => {
 
   const [postSuccess, setPostSuccess] = useState(false);
   const [open, setOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -51,7 +54,11 @@ const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc }) => {
   });
   
   const handleOpen = () => {
-    setOpen(!open);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
     formik.values.applicationName = '';
     formik.values.password = '';
   };
@@ -77,15 +84,17 @@ const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc }) => {
             id='password' 
             name='password' 
             label='Password' 
-            type='password' 
+            type={showPassword ? 'text' : 'password'} 
             value={formik.values.password} 
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)} 
             helperText={formik.touched.password && formik.errors.password}  
+            hasIcon={true}
           />
+          <VisibilityButton showPassword={showPassword} setShowPassword={setShowPassword} id={'visibilityButton'}/>
           <Box display='flex' >
             <SubmitButton />
-            <Button variant='contained' className='button' onClick={handleOpen}>
+            <Button variant='contained' className='button' onClick={handleClose}>
               Close
             </Button>
           </Box>

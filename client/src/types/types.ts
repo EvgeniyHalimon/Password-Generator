@@ -16,6 +16,7 @@ export interface IFormInput{
     onChange: any,
     error: undefined | boolean,
     helperText: string | undefined | boolean,
+    hasIcon?: boolean
 }
 
 export interface ITokens{

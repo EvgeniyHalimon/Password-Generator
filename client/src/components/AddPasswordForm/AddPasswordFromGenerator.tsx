@@ -40,7 +40,11 @@ const AddPasswordFromGenerator: FC<IAddPasswordForm> = ({ password }) => {
   };
   
   const handleOpen = () => {
-    setOpen(!open);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
     values.applicationName = '';
     values.password = '';
   };
@@ -53,6 +57,7 @@ const AddPasswordFromGenerator: FC<IAddPasswordForm> = ({ password }) => {
       <StyledDialodAddForm open={open}>
         <Formik 
           initialValues={values} 
+          validationSchema={validationSchema}
           onSubmit={ async (values) => {
             try {
               const data = await post(PASSWORD, values);
@@ -91,8 +96,8 @@ const AddPasswordFromGenerator: FC<IAddPasswordForm> = ({ password }) => {
               />
               <Box display='flex' >
                 <SubmitButton />
-                <Button variant='contained' className='button' onClick={handleOpen}>
-              Close
+                <Button variant='contained' className='button' onClick={handleClose}>
+                  Close
                 </Button>
               </Box>
             </Form>

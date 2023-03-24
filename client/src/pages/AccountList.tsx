@@ -17,7 +17,7 @@ const AccountList = () => {
   const [sort, setSort] = useState<OrderOption>('asc');
   const [sortBy, setSortBy] = useState<keyof ITablehead>('applicationName');
   const [selected, setSelected] = useState<string[]>([]);
-  const [passwords, setPasswords] = useState([]);
+  const [accounts, setAccounts] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const LIMIT_PER_PAGE = 8;
 
@@ -42,7 +42,7 @@ const AccountList = () => {
 
   const selectAllAccounts = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = passwords.map((n: any) => n._id);
+      const newSelected = accounts.map((n: any) => n._id);
       setSelected(newSelected);
       return;
     }
@@ -81,7 +81,7 @@ const AccountList = () => {
       try {
         const passwordsData: any = await get(GET_PASSWORDS(queries));
         setTotalPages(passwordsData.data.totalPages);
-        setPasswords(passwordsData.data.accounts);
+        setAccounts(passwordsData.data.accounts);
       } catch (error) {
         console.log(error);
       }
@@ -92,7 +92,7 @@ const AccountList = () => {
   const getDecryptedPasswords = async (password: string) => {
     const decryptedPasswords = await post(DECRYPT_PASSWORDS(queries), { innerPassword: password });
     setTotalPages(decryptedPasswords.data.totalPages);
-    setPasswords(decryptedPasswords.data.accounts);
+    setAccounts(decryptedPasswords.data.accounts);
   };
 
   useEffect(() => {
@@ -119,50 +119,48 @@ const AccountList = () => {
             sx={{ minWidth: 750 }}
             aria-labelledby='tableTitle'
           >
-            <Tablehead
-              numSelected={selected.length}
-              order={sort}
-              orderBy={sortBy}
-              onSelectAllClick={selectAllAccounts}
-              onRequestSort={handleRequestSort}
-              rowCount={passwords.length}
-            />
-            <TableBody>
-              {passwords.map((row: IPasswordObject) => {
-                const isItemSelected = isSelected(row._id);
-                const labelId = `enhanced-table-checkbox-${row._id}`;
+            {!accounts.length ?  <TableCell align='center'>There is no accounts yet.</TableCell> :
+              <><Tablehead
+                numSelected={selected.length}
+                order={sort}
+                orderBy={sortBy}
+                onSelectAllClick={selectAllAccounts}
+                onRequestSort={handleRequestSort}
+                rowCount={accounts.length} /><TableBody>
+                {accounts.map((row: IPasswordObject) => {
+                  const isItemSelected = isSelected(row._id);
+                  const labelId = `enhanced-table-checkbox-${row._id}`;
 
-                return (
-                  <TableRow
-                    hover
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row._id}
-                    selected={isItemSelected}
-                  >
-                    <TableCell padding='checkbox' sx={{ pl: 1 }} onClick={(event) => selectAccount(event, row._id)} >
-                      <Checkbox
-                        color='primary'
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      component='th'
-                      id={labelId}
-                      scope='row'
-                      padding='none'
-                      align='center'
+                  return (
+                    <TableRow
+                      hover
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row._id}
+                      selected={isItemSelected}
                     >
-                      {row.applicationName}
-                    </TableCell>
-                    <TableCell align='center'>{typeof row.password === 'object' ? '********' : row.password}</TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
+                      <TableCell padding='checkbox' sx={{ pl: 1 }} onClick={(event) => selectAccount(event, row._id)}>
+                        <Checkbox
+                          color='primary'
+                          checked={isItemSelected}
+                          inputProps={{
+                            'aria-labelledby': labelId,
+                          }} />
+                      </TableCell>
+                      <TableCell
+                        component='th'
+                        id={labelId}
+                        scope='row'
+                        padding='none'
+                        align='center'
+                      >
+                        {row.applicationName}
+                      </TableCell>
+                      <TableCell align='center'>{typeof row.password === 'object' ? '********' : row.password}</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody></>}
           </Table>
         </TableContainer>
         <StyledPagination
