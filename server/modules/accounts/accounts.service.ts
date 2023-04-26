@@ -8,7 +8,7 @@ import { IDeleteResponse } from '../../shared/types/types';
 import { userRepository } from '../users/users.repository';
 
 import { accountsRepository } from './accounts.repository';
-import { IPasswordBody, IQueries, Roles, IPasswordUpdate, IAccountDecryptedResponce, IAccountResponce } from './types';
+import { IPasswordBody, IQueries, Roles, IPasswordUpdate, IAccountResponce, IAccountDecrypted } from './types';
 
 const LIMIT_OF_PASSWORDS = 40;
 
@@ -56,18 +56,23 @@ const accountsService = {
     return { accounts: accounts[0].data, totalPages: Math.ceil(accounts[0].meta.totalPages), totalAccounts: accounts[0].meta.totalAccounts };
   },
   
-  decrypt: async (id: string, innerPassword: string, queries: IQueries): Promise<IAccountDecryptedResponce> => {
-    const foundUser = await userRepository.findUserByIdForDecrypt(id);
+  decrypt: async (userId: string, id: string, innerPassword: string): Promise<IAccountDecrypted> => {
+    const foundUser = await userRepository.findUserByIdForDecrypt(userId);
+    const foundAccount = await accountsRepository.findByAccountID(id);
     // evaluate password
     const match = await bcrypt.compare(innerPassword, foundUser.innerPassword);
     if (!match){
       throw new CustomError({ message: 'Wrong password', status: 401 });
     }
+    return Object.defineProperty(foundAccount['_doc'], 'password', { value: decrypt(foundAccount['_doc'].password) });
+
+    /* 
+    FOR MASS DECRYPTION
     const accounts = await accountsRepository.findByIDAndPaginate(id, buildQueryObject(queries));
     const decryptedAccounts = accounts[0].data.map((account) => {
       return { ...account, password: decrypt(account.password) };
     });
-    return { accounts: decryptedAccounts, totalPages: Math.ceil(accounts[0].meta.totalPages), totalAccounts: accounts[0].meta.totalAccounts };
+    return { accounts: decryptedAccounts, totalPages: Math.ceil(accounts[0].meta.totalPages), totalAccounts: accounts[0].meta.totalAccounts }; */
   },
 };
 

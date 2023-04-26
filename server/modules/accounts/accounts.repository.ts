@@ -5,8 +5,8 @@ import { Account } from './accounts.entity';
 import { IAccount, IAccountWithMetaDoc, IAccountDoc, IQueries } from './types';
 
 const accountsRepository = {
-  findByUserID: async (id: string): Promise<IAccountDoc[]> => {
-    return await Account.find({ userId: convertID(id) }).exec();
+  findByAccountID: async (id: string): Promise<IAccountDoc> => {
+    return await Account.findById(convertID(id)).exec();
   },
 
   findByIDAndPaginate: async (id: string, queries: IQueries): Promise<IAccountWithMetaDoc[]> => {

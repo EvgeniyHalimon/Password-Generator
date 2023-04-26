@@ -14,7 +14,7 @@ const router = express.Router();
 router.post('/display', validate(decryptSchema, {}, {}), async (req: CustomRequest, res: Response) => {
   try {
     const queries: IQueries = req.query as unknown as IQueries;
-    const account = await accountsService.decrypt(req.id, req.body.innerPassword, queries);
+    const account = await accountsService.decrypt(req.id, req.body.id, req.body.innerPassword);
     res.status(200).json(account);
   } catch (error) {
     res.status(error.status).json({ 'message': error.message });    
@@ -34,7 +34,6 @@ router.get('/', async (req: CustomRequest, res: Response) => {
 router.post('/', validate(passwordSchema, {}, {}), async (req: CustomRequest, res: Response) => {
   try {
     const data = await accountsService.create(req.id, req.role, req.body);
-    console.log('🚀 ~ file: accounts.controller.ts:37 ~ router.post ~ data:', data);
     res.status(201).json(data);
   } catch (error) {
     res.status(error.status).json({ 'message': error.message });
