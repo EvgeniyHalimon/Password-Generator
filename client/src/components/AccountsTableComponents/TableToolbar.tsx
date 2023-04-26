@@ -9,13 +9,11 @@ import { ITableToolbar } from '../../types/types';
 import AddPasswordForm from '../AddPasswordForm/AddPasswordForm';
 import { StyledTextField } from '../StyledComponents/StyledTextField';
 
-const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, search, setSelected, fetchFunc, setSearch }) => {
+const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, setSelected, fetchFunc, setSearch, accounts, setAccounts }) => {
   const { post } = useAxios();
 
   const [deleteSuccess, setDeleteSuccess] = useState(false);
-
-  //! TODO: how to refresh my state without request to backend?
-  //! TODO: this function works with issue, sometimes it delete, but fetchFunc return previous array
+  
   const deletePasswords = async () => {
     const deleteResponce: any = await post(DELETE_PASSWORDS, { ids: passwords });
     setDeleteSuccess(true);
@@ -69,7 +67,7 @@ const TableToolbar: FC<ITableToolbar> = ({ numSelected, passwords, search, setSe
               </Typography> : 
               null
             }
-            <AddPasswordForm fetchFunc={fetchFunc}/>
+            <AddPasswordForm fetchFunc={fetchFunc} accounts={accounts} setAccounts={setAccounts}/>
           </Box>
         </Box>
       </Box>

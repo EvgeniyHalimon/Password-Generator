@@ -32,16 +32,7 @@ const accountsRepository = {
       },
       {
         $project: {
-          data: {
-            $ifNull: [
-              {
-                $slice: ['$data', queries.page * queries.limit, {
-                  $ifNull: [queries.limit, `$total.${queries.sortBy}`],
-                }],
-              },
-              [],
-            ],
-          },
+          data: '$data',
           meta: {
             totalAccounts: { $ifNull: [`$total.${queries.sortBy}`, 0] },
             limit: {
@@ -58,7 +49,7 @@ const accountsRepository = {
         },
       },
       
-    ]);
+    ]).collation({ locale: 'en' });
   },
 
   create: async(passwordObject: IAccount): Promise<IAccountDoc> => {

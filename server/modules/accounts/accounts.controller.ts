@@ -33,8 +33,9 @@ router.get('/', async (req: CustomRequest, res: Response) => {
 
 router.post('/', validate(passwordSchema, {}, {}), async (req: CustomRequest, res: Response) => {
   try {
-    await accountsService.create(req.id, req.role, req.body);
-    res.status(201).json({ 'success': `New account for ${req.body.applicationName} created!` });
+    const data = await accountsService.create(req.id, req.role, req.body);
+    console.log('🚀 ~ file: accounts.controller.ts:37 ~ router.post ~ data:', data);
+    res.status(201).json(data);
   } catch (error) {
     res.status(error.status).json({ 'message': error.message });
   }

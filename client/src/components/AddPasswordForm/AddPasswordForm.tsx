@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { PASSWORD } from '../../constants/backendConstants';
 import useAxios from '../../hooks/useAxios';
 import { WarningMessages } from '../../types/enums';
+import ErrorMessage from '../ErrorMessage';
 import FormInput from '../FormInput/FormInput';
 import { StyledDialodAddForm } from '../StyledComponents/StyledDialodAddForm';
 import { SubmitButton } from '../SubmitButton/SubmitButton';
@@ -27,14 +28,18 @@ const validationSchema = yup.object({
 
 interface IAddPasswordForm{
   fetchFunc: any
+  setAccounts: any
+  accounts: any
 }
 
-const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc }) => {
+const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc, setAccounts, accounts }) => {
+  console.log('🚀 ~ file: AddPasswordForm.tsx:35 ~ accounts:', accounts);
   const { post } = useAxios();
 
   const [postSuccess, setPostSuccess] = useState(false);
   const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const formik = useFormik({
     initialValues: {
@@ -44,11 +49,14 @@ const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc }) => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const data = await post(PASSWORD, values);
+      console.log('🚀 ~ file: AddPasswordForm.tsx:50 ~ onSubmit: ~ data:', data);
+      setErrorMessage(data.message);
       if(data.data){
         setOpen(false);
         setPostSuccess(true);
         //! TODO: how to refresh state without fetchFunc
         fetchFunc();
+        /* setAccounts(...data.data, accounts); */
       }
     },
   });
@@ -98,6 +106,7 @@ const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc }) => {
               Close
             </Button>
           </Box>
+          <ErrorMessage message={errorMessage}/>
         </Box>
       </StyledDialodAddForm>
       <Snackbar

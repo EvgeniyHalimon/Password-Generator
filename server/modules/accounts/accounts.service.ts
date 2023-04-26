@@ -10,7 +10,7 @@ import { userRepository } from '../users/users.repository';
 import { accountsRepository } from './accounts.repository';
 import { IPasswordBody, IQueries, Roles, IPasswordUpdate, IAccountDecryptedResponce, IAccountResponce } from './types';
 
-const LIMIT_OF_PASSWORDS = 9;
+const LIMIT_OF_PASSWORDS = 40;
 
 const buildQueryObject = (query: IQueries): IQueries => {
   return {
@@ -23,13 +23,13 @@ const buildQueryObject = (query: IQueries): IQueries => {
 };
 
 const accountsService = {
-  create: async (id: string, role: string, body: IPasswordBody): Promise<void> => {
+  create: async (id: string, role: string, body: IPasswordBody): Promise<any> => {
     const encryptedPassword = encrypt(body.password);
     const accountsQuantity = await accountsRepository.accountsQuantity(id);
     if(role === Roles.USER && accountsQuantity === LIMIT_OF_PASSWORDS){
       throw new CustomError({ message: 'You have reach your account limit of accounts', status: 401 });
     }
-    await accountsRepository.create({
+    return await accountsRepository.create({
       password: encryptedPassword,
       applicationName: body.applicationName,
       userId: convertID(id),

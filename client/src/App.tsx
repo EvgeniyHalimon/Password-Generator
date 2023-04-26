@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { Layout } from './components/Layout';
 import { AuthContext } from './context/AuthContext';
-import AccountList from './pages/AccountList';
+import AccountsTable from './pages/AccountsTable';
 import { Dashboard } from './pages/Dashboard';
 import { Login } from './pages/Login';
 import PasswordGenerator from './pages/PasswordGenerator/PasswordGenerator';
@@ -24,7 +24,7 @@ function App() {
         <Route element={<ProtectedRoute user={user}/>}>
           <Route path='/dashboard' element={<Dashboard />}/>
           <Route path='/password-generator' element={<PasswordGenerator />}/>
-          <Route path='/password-list' element={<AccountList />}/>
+          <Route path='/password-list' element={<AccountsTable />}/>
         </Route>
       </Route>
     </Routes>

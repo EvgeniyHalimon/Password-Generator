@@ -3,15 +3,15 @@ import { Box, Checkbox, Paper, Table, TableBody, TableCell,
   TableContainer, TableRow } from '@mui/material';
 import { useState, memo, useEffect } from 'react';
 
-import TableToolbar from '../components/PasswordList/TableToolbar';
-import Tablehead from '../components/PasswordList/Tablehead';
+import TableToolbar from '../components/AccountsTableComponents/TableToolbar';
+import Tablehead from '../components/AccountsTableComponents/Tablehead';
 import { StyledPagination } from '../components/StyledComponents/StyledPagination';
 import { DECRYPT_PASSWORDS, GET_PASSWORDS } from '../constants/backendConstants';
 import useAxios from '../hooks/useAxios';
 
 import { IPasswordObject, ITablehead, OrderOption } from '../types/types';
 
-const AccountList = () => {
+const AccountsTable = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<OrderOption>('asc');
@@ -88,7 +88,6 @@ const AccountList = () => {
     }
   };
 
-  //! TODO: how to keep encrypted passwords after request?
   const getDecryptedPasswords = async (password: string) => {
     const decryptedPasswords = await post(DECRYPT_PASSWORDS(queries), { innerPassword: password });
     setTotalPages(decryptedPasswords.data.totalPages);
@@ -107,11 +106,12 @@ const AccountList = () => {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <TableToolbar 
           numSelected={selected.length} 
-          passwords={selected} 
-          search={search}
+          passwords={selected}
           fetchFunc={getPasswords}
           setSelected={setSelected}
           setSearch={setSearch}
+          accounts={accounts}
+          setAccounts={setAccounts}
         />
         <button onClick={() => getDecryptedPasswords('1234')}>test button to get encrypted password</button>
         <TableContainer>
@@ -119,48 +119,48 @@ const AccountList = () => {
             sx={{ minWidth: 750 }}
             aria-labelledby='tableTitle'
           >
-            {!accounts.length ?  <TableCell align='center'>There is no accounts yet.</TableCell> :
-              <><Tablehead
-                numSelected={selected.length}
-                order={sort}
-                orderBy={sortBy}
-                onSelectAllClick={selectAllAccounts}
-                onRequestSort={handleRequestSort}
-                rowCount={accounts.length} /><TableBody>
-                {accounts.map((row: IPasswordObject) => {
-                  const isItemSelected = isSelected(row._id);
-                  const labelId = `enhanced-table-checkbox-${row._id}`;
+            <Tablehead
+              numSelected={selected.length}
+              order={sort}
+              orderBy={sortBy}
+              onSelectAllClick={selectAllAccounts}
+              onRequestSort={handleRequestSort}
+              rowCount={accounts.length} />
+            <TableBody>
+              {accounts.map((row: IPasswordObject) => {
+                const isItemSelected = isSelected(row._id);
+                const labelId = `enhanced-table-checkbox-${row._id}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row._id}
-                      selected={isItemSelected}
+                return (
+                  <TableRow
+                    hover
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row._id}
+                    selected={isItemSelected}
+                  >
+                    <TableCell padding='checkbox' sx={{ pl: 1 }} onClick={(event) => selectAccount(event, row._id)}>
+                      <Checkbox
+                        color='primary'
+                        checked={isItemSelected}
+                        inputProps={{
+                          'aria-labelledby': labelId,
+                        }} />
+                    </TableCell>
+                    <TableCell
+                      component='th'
+                      id={labelId}
+                      scope='row'
+                      padding='none'
+                      align='center'
                     >
-                      <TableCell padding='checkbox' sx={{ pl: 1 }} onClick={(event) => selectAccount(event, row._id)}>
-                        <Checkbox
-                          color='primary'
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }} />
-                      </TableCell>
-                      <TableCell
-                        component='th'
-                        id={labelId}
-                        scope='row'
-                        padding='none'
-                        align='center'
-                      >
-                        {row.applicationName}
-                      </TableCell>
-                      <TableCell align='center'>{typeof row.password === 'object' ? '********' : row.password}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody></>}
+                      {row.applicationName}
+                    </TableCell>
+                    <TableCell align='center'>{typeof row.password === 'object' ? '********' : row.password}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
           </Table>
         </TableContainer>
         <StyledPagination
@@ -174,4 +174,4 @@ const AccountList = () => {
   );
 };
 
-export default memo(AccountList);
+export default memo(AccountsTable);
