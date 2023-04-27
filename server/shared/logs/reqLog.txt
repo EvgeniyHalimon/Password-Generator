@@ -5615,3 +5615,8 @@
 20230427	12:57:45	4d5bc2d8-da13-45dc-910b-b089276af6e9	GET	http://localhost:3000	/password?search=&page=1&limit=8&sortBy=applicationName&sort=asc
 20230427	12:57:53	9634e2e3-4454-497e-a786-11014c0370f4	OPTIONS	http://localhost:3000	/password?search=&page=1&limit=8&sortBy=applicationName&sort=asc
 20230427	12:57:53	f3158b70-17ca-4d92-beab-20aaf65f7124	GET	http://localhost:3000	/password?search=&page=1&limit=8&sortBy=applicationName&sort=asc
+20230427	14:30:48	f8e77877-6aa3-4323-b6e8-5a3d26a00c06	OPTIONS	http://localhost:3000	/password?search=&page=1&limit=8&sortBy=applicationName&sort=asc
+20230427	14:30:48	fd2c2f72-bea3-4445-bd22-cdefe1c5ff2b	GET	http://localhost:3000	/password?search=&page=1&limit=8&sortBy=applicationName&sort=asc
+20230427	14:30:48	7c6365e0-3b42-4629-8e23-60641e90b8fb	OPTIONS	http://localhost:3000	/auth/refresh
+20230427	14:30:48	f2b137ff-5352-44fa-9d97-2c330c4d3366	GET	http://localhost:3000	/auth/refresh
+20230427	14:30:48	73b1f288-0a7f-4dfc-b100-401e7bd73406	GET	http://localhost:3000	/password?search=&page=1&limit=8&sortBy=applicationName&sort=asc

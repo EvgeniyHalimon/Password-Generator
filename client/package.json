@@ -33,7 +33,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix",
-    "prepare": "husky install"
+    "prepare": "cd .. && husky install front/.husky"
   },
   "eslintConfig": {
     "extends": [
