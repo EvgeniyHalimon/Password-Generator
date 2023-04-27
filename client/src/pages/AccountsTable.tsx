@@ -1,8 +1,9 @@
 
 import { Box, Checkbox, Paper, Table, TableBody, TableCell,
   TableContainer, TableRow } from '@mui/material';
-import { useState, memo, useEffect } from 'react';
+import { useState, memo, useEffect, useCallback } from 'react';
 
+import MutableTableCell from '../components/AccountsTableComponents/MutableTableCell';
 import TableToolbar from '../components/AccountsTableComponents/TableToolbar';
 import Tablehead from '../components/AccountsTableComponents/Tablehead';
 import { StyledPagination } from '../components/StyledComponents/StyledPagination';
@@ -17,8 +18,9 @@ const AccountsTable = () => {
   const [sort, setSort] = useState<OrderOption>('asc');
   const [sortBy, setSortBy] = useState<keyof ITablehead>('applicationName');
   const [selected, setSelected] = useState<string[]>([]);
-  const [accounts, setAccounts] = useState([]);
+  const [accounts, setAccounts] = useState<any>([]);
   const [totalPages, setTotalPages] = useState(0);
+  
   const LIMIT_PER_PAGE = 8;
 
   const queries = {
@@ -88,11 +90,22 @@ const AccountsTable = () => {
     }
   };
 
-  const getDecryptedPasswords = async (password: string) => {
-    const decryptedPasswords = await post(DECRYPT_PASSWORDS(queries), { innerPassword: password });
-    setTotalPages(decryptedPasswords.data.totalPages);
-    setAccounts(decryptedPasswords.data.accounts);
-  };
+  const getDecryptedPasswords = useCallback( async (e: any, id: string) => {
+    if(e.target.value.trim() !== ''){
+      const decryptedPassword = await post(DECRYPT_PASSWORDS, { id: id, innerPassword: e.target.value });
+      if(decryptedPassword.message){
+        setAccounts(accounts.map((account: IPasswordObject) => {
+          if(account._id === id) return { ...account, password: decryptedPassword.message };
+          return account;
+        }));
+      } else if (!decryptedPassword.message) {
+        const indexOfEncryptedPassword = accounts.findIndex((account: { _id: string; }) => account._id === id);
+        accounts.findIndex((account: { _id: string; }) => account._id === id);
+        accounts.splice(indexOfEncryptedPassword, 1, decryptedPassword.data);
+        setAccounts([...accounts]);
+      }
+    }
+  }, [accounts]);
 
   useEffect(() => {
     getPasswords();
@@ -113,7 +126,6 @@ const AccountsTable = () => {
           accounts={accounts}
           setAccounts={setAccounts}
         />
-        <button onClick={() => getDecryptedPasswords('1234')}>test button to get encrypted password</button>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -128,8 +140,8 @@ const AccountsTable = () => {
               rowCount={accounts.length} />
             <TableBody>
               {accounts.map((row: IPasswordObject) => {
-                const isItemSelected = isSelected(row._id);
-                const labelId = `enhanced-table-checkbox-${row._id}`;
+                const isItemSelected = isSelected(row?._id);
+                const labelId = `enhanced-table-checkbox-${row?._id}`;
 
                 return (
                   <TableRow
@@ -139,13 +151,14 @@ const AccountsTable = () => {
                     key={row._id}
                     selected={isItemSelected}
                   >
-                    <TableCell padding='checkbox' sx={{ pl: 1 }} onClick={(event) => selectAccount(event, row._id)}>
+                    <TableCell padding='checkbox' sx={{ pl: 1 }} onClick={(event) => selectAccount(event, row?._id)}>
                       <Checkbox
                         color='primary'
                         checked={isItemSelected}
                         inputProps={{
                           'aria-labelledby': labelId,
-                        }} />
+                        }} 
+                      />
                     </TableCell>
                     <TableCell
                       component='th'
@@ -154,9 +167,13 @@ const AccountsTable = () => {
                       padding='none'
                       align='center'
                     >
-                      {row.applicationName}
+                      {row?.applicationName}
                     </TableCell>
-                    <TableCell align='center'>{typeof row.password === 'object' ? '********' : row.password}</TableCell>
+                    <MutableTableCell 
+                      id={row._id} 
+                      getDecryptedPasswords={getDecryptedPasswords}
+                      passwordField={typeof row?.password === 'object' ? '********' : row?.password}
+                    /> 
                   </TableRow>
                 );
               })}

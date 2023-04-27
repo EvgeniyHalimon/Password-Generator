@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { AuthContext } from '../../context/AuthContext';
 
-import { removeTokens } from '../../utils/tokensWorkshop';
+import { getAccessToken, removeTokens } from '../../utils/tokensWorkshop';
 
 import { LogoutButton } from './LogoutButton';
 
@@ -56,7 +56,7 @@ const Navigation: FC<INavigation> = ({ mode, setTheme }) => {
         </Box>
         <Box>
           {
-            localStorage.getItem('accessToken') === null ? 
+            getAccessToken() == null ? 
               <RegisterButton onClick={register}/> : 
               <LogoutButton onClick={logout}/>
           }

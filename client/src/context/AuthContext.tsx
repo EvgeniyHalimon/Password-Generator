@@ -1,5 +1,7 @@
 import { createContext, FC, ReactNode, useState, useMemo, useEffect, memo } from 'react';
 
+import { getAccessToken } from '../utils/tokensWorkshop';
+
 interface IAuthContext{
     user: string | null,
     setUser: (value: string | null) => void
@@ -15,7 +17,7 @@ interface IAuthProvider{
 }
 
 const AuthProvider: FC<IAuthProvider> = ({ children }) => {
-  const [user, setUser] = useState<string | null>(() => localStorage.getItem('accessToken') ? localStorage.getItem('accessToken') : null);
+  const [user, setUser] = useState<string | null>(() => getAccessToken() ? getAccessToken() : null);
 
   const authProviderValues = useMemo(() => ({ user: user, setUser: setUser }), [user]);
 

@@ -33,7 +33,6 @@ interface IAddPasswordForm{
 }
 
 const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc, setAccounts, accounts }) => {
-  console.log('🚀 ~ file: AddPasswordForm.tsx:35 ~ accounts:', accounts);
   const { post } = useAxios();
 
   const [postSuccess, setPostSuccess] = useState(false);
@@ -49,14 +48,11 @@ const AddPasswordForm: FC<IAddPasswordForm> = ({ fetchFunc, setAccounts, account
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const data = await post(PASSWORD, values);
-      console.log('🚀 ~ file: AddPasswordForm.tsx:50 ~ onSubmit: ~ data:', data);
       setErrorMessage(data.message);
       if(data.data){
         setOpen(false);
         setPostSuccess(true);
-        //! TODO: how to refresh state without fetchFunc
         fetchFunc();
-        /* setAccounts(...data.data, accounts); */
       }
     },
   });
