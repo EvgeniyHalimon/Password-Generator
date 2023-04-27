@@ -3,12 +3,13 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
+        "build:server": "npx tsc",
         "dev": "cd client && npm run start",
         "lint:client": "eslint \"client/**/*.{ts,tsx}\"",
         "lint:server": "eslint \"server/**/*.{ts,tsx}\"",
         "lint:fix-client": "eslint \"client/**/*.{ts,tsx}\" --fix",
         "lint:fix-server": "eslint \"server/**/*.{ts,tsx}\" --fix",
-        "prepare": "husky install",
+        "prepare": "husky install ./husky",
         "server": "cd server && nodemon --exec ts-node server.ts"
     },
     "browserslist": {
