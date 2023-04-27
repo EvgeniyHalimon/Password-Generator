@@ -1,8 +1,7 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { Alert, Box, IconButton, Snackbar } from '@mui/material';
+import { Alert, Box, IconButton, Snackbar, TextField } from '@mui/material';
 import { memo, useRef, FC } from 'react';
 
-import AddPasswordFromGenerator from '../AddPasswordForm/AddPasswordFromGenerator';
 import './style.scss';
 
 interface IPasswordInput{
@@ -12,7 +11,6 @@ interface IPasswordInput{
 }
 
 export async function copyTextToClipboard(password:string, setClipboardOpen: any) {
-  if(password === '') return;
   if ('clipboard' in navigator) {
     setClipboardOpen(true);
     return await navigator.clipboard.writeText(password);
@@ -25,30 +23,26 @@ export async function copyTextToClipboard(password:string, setClipboardOpen: any
 const PasswordInput: FC<IPasswordInput> = ({ openClipboard, setClipboardOpen, password }) => {
   const ref = useRef<any>(null);
 
-  const handleClick = () => {
+  const handleClick = (e:any) => {
     ref.current.select();
   };
 
   return (
     <>
-      <Box className='wrapper' role='container'>
-        <div className='wrapper-box'>
-          <input 
-            className='wrapper-box-input' 
-            value={password} 
-            ref={ref}
-            role='textfield'
-          />
-          
-          {password.length >= 8 ? <AddPasswordFromGenerator password={password}/> : null}
-          <IconButton 
-            className='wrapper-box-icon-button' 
-            onClick={() => copyTextToClipboard(password, setClipboardOpen)} 
-            onFocus={() => handleClick()}
-          >
-            <ContentCopyIcon role='copy-icon'/>
-          </IconButton>
-        </div>
+      <Box className='container-box' role='container'>
+        <TextField 
+          className='container-box-input' 
+          value={password} 
+          ref={ref}
+          role='textfield'
+        />
+        <IconButton 
+          className='container-box-icon-button' 
+          onClick={() => copyTextToClipboard(password, setClipboardOpen)} 
+          onFocus={(e: any) => handleClick(e)}
+        >
+          <ContentCopyIcon role='copy-icon'/>
+        </IconButton>
       </Box>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

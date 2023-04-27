@@ -1,18 +1,16 @@
 import { ThemeOptions } from '@mui/material';
 
-import { typography } from './typography';
-
 export const lightTheme: ThemeOptions = {
   palette: {
     mode: 'light',
     primary: {
-      main: '#8b4754',
+      main: '#4e000f',
     },
     secondary: {
       main: '#f50057',
     },
     background: {
-      paper: '#f1aab7',
+      paper: '#ffc0cb',
       default: '#eccdcc',
     },
     divider: 'rgba(0,0,0,0.68)',
@@ -26,20 +24,20 @@ export const lightTheme: ThemeOptions = {
       primary: '#0e0e25',
     },
   },
-  typography: typography,
+  typography: {
+    h1: {
+      fontSize: '6rem',
+      lineHeight: 1.2,
+      fontFamily: 'Syne Mono',
+    },
+    fontFamily: 'Inconsolata',
+    fontSize: 14,
+  },
   components:{
     MuiTextField:{
       styleOverrides:{
         root: {
           backgroundColor: '#f19292',
-        },
-      },
-    },
-    MuiFormHelperText:{
-      styleOverrides:{
-        root: {
-          margin: 0,
-          backgroundColor: '#f1aab7',
         },
       },
     },

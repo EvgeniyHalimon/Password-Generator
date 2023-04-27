@@ -1,7 +1,5 @@
 import { ThemeOptions } from '@mui/material';
 
-import { typography } from './typography';
-
 export const darkTheme: ThemeOptions = {
   palette: {
     mode: 'dark',
@@ -23,20 +21,20 @@ export const darkTheme: ThemeOptions = {
       main: '#2c2dea',
     },
   },
-  typography: typography,
+  typography: {
+    h1: {
+      fontSize: '6rem',
+      lineHeight: 1.2,
+      fontFamily: 'Syne Mono',
+    },
+    fontFamily: 'Inconsolata',
+    fontSize: 14,
+  },
   components:{
     MuiTextField:{
       styleOverrides:{
         root: {
           backgroundColor: '#3a1b1b',
-        },
-      },
-    },
-    MuiFormHelperText:{
-      styleOverrides:{
-        root: {
-          margin: 0,
-          backgroundColor: 'transparent',
         },
       },
     },
