@@ -36,7 +36,7 @@ export const darkTheme: ThemeOptions = {
       styleOverrides:{
         root: {
           margin: 0,
-          backgroundColor: '#734d4d',
+          backgroundColor: 'transparent',
         },
       },
     },

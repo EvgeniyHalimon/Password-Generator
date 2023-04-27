@@ -6,7 +6,15 @@ a:visited{
     color: inherit;
 }
 
-#reminder{
-    color: blue;
-    text-decoration: underline;
+.form{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    align-items: center;
+}
+
+#loginVisibilityIcon{
+    top: -46.5%;
+    width: 40px;
+    align-self: end;
 }

@@ -1,46 +1,47 @@
-import { ObjectId } from 'mongoose';
-
 import { CustomError } from '../../shared/CustomError';
+import { IDeleteResponse, IUser } from '../../shared/types/types';
+
+import { IUserDocResponce } from './types';
 
 import { userRepository } from './users.repository';
 
 const userService = {
-  findOneUser : async (id: ObjectId | string) => {
+  findByID : async (id: string): Promise<IUserDocResponce> => {
     const user = await userRepository.findUserById(id);
     if (!user){
       throw new CustomError({ message: `User ID ${id} not found`, status: 404 });
     } 
     return user;
   },
-  findUser : async (email: string) => {
+
+  findByEmail : async (email: string): Promise<IUserDocResponce> => {
     const username = await userRepository.findUser(email);
     if (!username){
-      throw new CustomError({ message: 'Unauthorized', status: 401 });
+      throw new CustomError({ message: 'No such email', status: 401 });
     } 
     return username;
   },
-  checkIfUserExist : async (email: string) => {
+
+  checkIfUserExist : async (email: string): Promise<IUser> => {
     const username = await userRepository.findUser(email);
     if (username){
       throw new CustomError({ message: 'User already exists', status: 409 });
     } 
     return username;
   },
-  findAllUsers : async () => {
+
+  findAll : async (): Promise<IUser[]> => {
     const users = await userRepository.findAllUsers();
     if (!users){
       throw new CustomError({ message: 'No users found', status: 204 });
     } 
     return users;
   },
-  deleteUser : async (id: ObjectId | string) => {
-    const user = await userRepository.findUserById(id);
-    if (!user){
-      throw new CustomError({ message: `User ID ${id} not found`, status: 404 });
-    } 
-    return userRepository.deleteUser(id);
+  
+  delete : async (id: string): Promise<IDeleteResponse> => {
+    return await userRepository.deleteUser(id);
   },
 };
 
-export{ userService };
+export { userService };
    

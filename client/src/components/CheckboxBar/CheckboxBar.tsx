@@ -1,13 +1,13 @@
 import { Box, FormGroup, FormLabel } from '@mui/material';
 import { FC, memo } from 'react';
 
+import { staticCheckboxPropsList } from '../../types/enums';
+import { IPasswordOptions } from '../../types/types';
 import PasswordOption from '../PasswordOption/PasswordOption';
-import { staticCheckboxPropsList } from '../enums';
-import { IPasswordOptions } from '../types';
 
 interface ICheckboxBar{
   passwordOptions: IPasswordOptions,
-  updatePasswordOption: any,
+  updatePasswordOption(field: keyof IPasswordOptions, isChecked: boolean): void,
 }
 
 const CheckboxBar: FC<ICheckboxBar> = ({ passwordOptions, updatePasswordOption }) => {

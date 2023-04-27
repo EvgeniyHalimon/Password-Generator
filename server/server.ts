@@ -7,12 +7,13 @@ import mongoose from 'mongoose';
 
 import corsOptions from './config/corsOptions';
 import connectDB from './config/dbConnection';
-import credentials from './middleware/credentials';
-import errorHandler from './middleware/errorHandler';
-import { logger } from './middleware/logEvents';
-import verifyJWT from './middleware/verifyJWT';
+import accountController from './modules/accounts/accounts.controller';
 import authController from './modules/authorization/authorization.controller';
 import userController from './modules/users/users.controller';
+import credentials from './shared/middleware/credentials';
+import errorHandler from './shared/middleware/errorHandler';
+import { logger } from './shared/middleware/logEvents';
+import verifyJWT from './shared/middleware/verifyJWT';
 
 dotenv.config();
 const app = express();
@@ -55,6 +56,7 @@ app.use((err: ValidationError, req: Request, res: Response, next: NextFunction) 
 app.use(verifyJWT);
 app.use('/auth', authController);
 app.use('/users', userController);
+app.use('/password', accountController);
 
 mongoose.connection.once('open', () => {
   console.log('Connected to MongoDB');

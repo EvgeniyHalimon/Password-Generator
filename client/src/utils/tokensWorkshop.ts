@@ -1,19 +1,19 @@
-import { ITokens } from '../components/types';
+import { ITokens } from '../types/types';
 
 export const saveTokens = (data: ITokens) => {
-  localStorage.setItem('accessToken', data.accessToken);
-  localStorage.setItem('refreshToken', data.refreshToken);
+  localStorage.setItem('carasique_accessToken', data.accessToken);
+  localStorage.setItem('carasique_refreshToken', data.refreshToken);
 };
 
 export const removeTokens = () => {
-  localStorage.removeItem('accessToken');
-  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('carasique_accessToken');
+  localStorage.removeItem('carasique_refreshToken');
 };
 
 export const getRefreshToken = () => {
-  return localStorage.getItem('refreshToken') ?? 'token';
+  return localStorage.getItem('carasique_refreshToken') ?? '';
 };
 
 export const getAccessToken = () => {
-  return localStorage.getItem('accessToken') ?? 'token';
+  return localStorage.getItem('carasique_accessToken') ?? '';
 };

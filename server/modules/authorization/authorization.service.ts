@@ -1,22 +1,28 @@
 import bcrypt from 'bcrypt';
-
+import dotenv from 'dotenv';
 import jwt, { Secret } from 'jsonwebtoken';
-import { ObjectId } from 'mongoose';
 
-import { SALT_ROUNDS } from '../constants/constants';
+import { CustomError } from '../../shared/CustomError';
+import { SALT_ROUNDS } from '../../shared/constants/constants';
 
-import { ILoginService } from '../types/types';
+import { IUser } from '../../shared/types/types';
+import { IUserGenerateTokens } from '../users/types';
 import { userRepository } from '../users/users.repository';
 import { userService } from '../users/users.service';
 
-const ACCESS_KEY: Secret | any = process.env.ACCESS_TOKEN_SECRET;
-const REFRESH_KEY: Secret | any = process.env.REFRESH_TOKEN_SECRET;
+import { ITokens } from './types';
 
-const generateTokens = (foundUser: any) => {
+dotenv.config();
+
+const ACCESS_KEY: Secret = process.env.ACCESS_TOKEN_SECRET;
+const REFRESH_KEY: Secret = process.env.REFRESH_TOKEN_SECRET;
+
+const generateTokens = (foundUser: IUserGenerateTokens): ITokens => {
   const accessToken = jwt.sign(
     {
       'userInfo': {
         'id': foundUser._id,
+        'role': foundUser.role,
       },
     },
     ACCESS_KEY,
@@ -26,6 +32,7 @@ const generateTokens = (foundUser: any) => {
     {
       'userInfo': {
         'id': foundUser._id,
+        'role': foundUser.role,
       },
     },
     REFRESH_KEY,
@@ -35,32 +42,35 @@ const generateTokens = (foundUser: any) => {
 };
 
 const authorizationService = {
-  login: async (body: any) : Promise<ILoginService | undefined> => {
-    const foundUser: any = await userService.findUser(body.email);
+  login: async (body: IUser) : Promise<ITokens | undefined> => {
+    const foundUser = await userService.findByEmail(body.email);
     // evaluate password 
     const match = await bcrypt.compare(body.password, foundUser.password);
-    if (match) {
-      // create JWTs
-      return generateTokens(foundUser);
+    if (!match) {
+      throw new CustomError({ message: 'Password is invalid', status: 400 });
     }
+    return generateTokens(foundUser);
   },
-  newUser: async (body: any) => {
+
+  register: async (body: IUser): Promise<void> => {
     const foundUser = await userService.checkIfUserExist(body.email);
-    if(!foundUser){
-      //encrypt the password
-      const hashedPwd = await bcrypt.hash(body.password, SALT_ROUNDS);
-      const hashedInnerPwd = await bcrypt.hash(body.innerPassword, SALT_ROUNDS);
-      //create and store the new user
-      await userRepository.createNewUser({
-        'username': body.username ,
-        'password': hashedPwd,
-        'innerPassword': hashedInnerPwd,
-        'email': body.email,
-      });
+    if(foundUser){
+      throw new CustomError({ message: 'User already exist', status: 400 });
     }
+    //encrypt the password
+    const hashedPwd = await bcrypt.hash(body.password, SALT_ROUNDS);
+    const hashedInnerPwd = await bcrypt.hash(body.innerPassword, SALT_ROUNDS);
+    //create and store the new user
+    await userRepository.createNewUser({
+      'username': body.username ,
+      'password': hashedPwd,
+      'innerPassword': hashedInnerPwd,
+      'email': body.email,
+    });
   },
-  refreshToken: async (id: ObjectId | string) => {
-    const foundUser = await userService.findOneUser(id);
+  
+  refreshToken: async (id: string): Promise<ITokens | undefined> => {
+    const foundUser = await userService.findByID(id);
     // evaluate jwt 
     if(foundUser){
       return generateTokens(foundUser);

@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const users = await userService.findAllUsers();
+    const users = await userService.findAll();
     res.json(users);
   } catch (error: any) {
     res.status(error.status).json({ 'message': error.message });
@@ -15,7 +15,7 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.get('/:id', async (req: Request, res: Response) => {
   try {
-    const user = await userService.findOneUser(req.params.id);
+    const user = await userService.findByID(req.params.id);
     res.json(user);
   } catch (error: any) {
     res.status(error.status).json({ 'message': error.message });
@@ -24,7 +24,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
-    await userService.deleteUser(req.params.id);
+    await userService.delete(req.params.id);
     res.send({ message: 'User was deleted' });
   } catch (error: any) {
     res.status(error.status).json({ 'message': error.message });

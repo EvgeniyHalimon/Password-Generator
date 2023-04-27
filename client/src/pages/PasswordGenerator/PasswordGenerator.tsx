@@ -5,8 +5,9 @@ import { GenerateButton } from '../../components/Button';
 import CheckboxBar from '../../components/CheckboxBar/CheckboxBar';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import PasswordLengthSlider from '../../components/PasswordLengthSlider/PasswordLengthSlider';
-import { WarningMessages } from '../../components/enums';
-import { IPasswordOptions } from '../../components/types';
+
+import { WarningMessages } from '../../types/enums';
+import { IPasswordOptions } from '../../types/types';
 import { generatePassword } from '../../utils/generatePassword';
 import './styles.scss';
 

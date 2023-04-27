@@ -14,20 +14,20 @@ const useAxios = () => {
     },
   });
 
-  const getDataFromBackend = (url: string): Promise<any> => {
-    return axiosInstance.get(`${url}`);
+  const get = (url: string,data?: any): Promise<any> => {
+    return axiosInstance.get(`${url}`, data);
   };
     
-  const postDataToBackend = (url: string, data: any): Promise<any> => {
+  const post = (url: string, data: any): Promise<any> => {
     return axiosInstance.post(`${url}`, data);
   };
     
-  const putDataToBackend = (url: string, data: any): Promise<any> => {
+  const put = (url: string, data: any): Promise<any> => {
     return axiosInstance.put(`${url}`, data);
   };
     
-  const deleteDataFromBackend = (url: string): Promise<any> => {
-    return axiosInstance.delete(`${url}`);
+  const deleteData = (url: string, data?: any): Promise<any> => {
+    return axiosInstance.delete(`${url}`, data);
   };
 
   axiosInstance.interceptors.response.use(
@@ -39,7 +39,7 @@ const useAxios = () => {
       axiosInstance.defaults.headers['Authorization'] =  `Bearer ${refreshToken}`;
       if (err.response.status === 403 && err.response) {
         try {
-          const response = await getDataFromBackend(REFRESH);
+          const response = await get(REFRESH);
           if (response?.status === 200) {
             saveTokens(response.data);
             return axiosInstance({
@@ -50,15 +50,16 @@ const useAxios = () => {
         } catch (error: any) {
           if (error.response && error.response.data) {
             removeTokens();
-            return Promise.reject(error.response.data);
+            return error.response.data;
           }
-          return Promise.reject(error);
+          return error.response.data;
         }
       }
+      return err.response.data;
     },
   );
     
-  return { getDataFromBackend, postDataToBackend, putDataToBackend, deleteDataFromBackend };
+  return { get, post, put, deleteData };
 };
 
 export default useAxios;

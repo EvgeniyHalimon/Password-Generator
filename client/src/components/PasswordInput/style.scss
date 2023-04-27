@@ -1,18 +1,31 @@
-.container-box{
+.wrapper{
     display: flex;
     justify-content: space-between;
 
-    &-input{
-        width: 94%;
-        text-align: center;
-        background-color: rgb(137 97 95);
-        border-radius: 5px;
-        border: none !important;
+    &-box{
         box-shadow: 1px 2px 7px 3px rgb(0 0 0 / 78%);
-        margin-right: 10px !important;
-    }
+        display: flex;
+        align-items: center;
+        background: white;
+        width: 100%;
+        height: 2.7rem;
+        border-radius: 5px;
+        padding: 0 10px;
 
-    &-icon-button{
-        width: 56px;
+        &-input{
+            width: 100%;
+            border: none;
+            margin-right: 10px;
+            height: 2rem;
+            outline: none;
+        }
+
+        &-icon-button{
+            margin-right: 10px !important;
+        }
+
+        &-icon-button:last-child{
+            margin-right: 0 !important;
+        }
     }
 }
